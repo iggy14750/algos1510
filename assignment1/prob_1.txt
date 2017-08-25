@@ -1,0 +1,33 @@
+Problem 1a) 8 balls with two weighings, one ball heavier than the rest, proceeds as follows:
+    First weigh any 3 balls against any other 3 balls.
+        Case 1) The two sides are even. This means the heavy ball is one of the remaining two--simply weigh those against each other and pick the heavier.
+        Case 2) WLOG, suppose the left side is heavier. Then the heavy ball is on that side, and you can weigh two of the left balls against each other.
+             2a) They are even. Then the heavy ball is the third ball from the left side.
+             2b) WLOG, suppose the left side is heavier. Then that is the heavy ball.
+             2c) As 2b w/ right side heavy.
+        Case 3) As 2, with right side heavy.
+
+
+Problem 1b) 12 balls with three weighings, one ball heavier or lighter than the rest. The key here is to use a single step to both significantly narrow down the number of possible balls AND determine if those balls each have the potential to be heavy or light but not both. Solution follows:
+    First weigh any 4 balls against any other 4 balls.
+        Case 1) Two sides are even. So the oddball is in the remaining 4, therefore weigh any 3 of the normal 8 against any 3 of the suspect 4.
+             1a) Two sides are even. So the oddball is the one oddball that wasn't weighed. So weigh it against any of the normal ones to determine if it's heavy or light.
+             1b) WLOG, suppose the suspect side is heavier. Then one of those 3 balls is the oddball, AND is heavy. Weigh any 2 of the 3 suspect balls against each other.
+             1b.1) The two sides are even. Then the heavy ball is the remaining ball.
+             1b.2) WLOG, one side is heavier--then that ball is the oddball (heavy).
+             1b.3) As 1b.2, w/ other side heavier.
+             1c) As 1b, with suspect side lighter.
+             
+        Case 2) WLOG, left side is "heavy" (or right side is light). So the oddball is in those 8. Now for the important step:
+                Weigh one ball from the left side with two from the right; against one from the left with one from the right with one normal ball.
+                This effectively divides the working set into three groups of three ({L,R,R}, {L,R,N}, {L,L,R}), which is the maximum number that can be determined with the one remaining weighing.
+             2a) The two sides are even. Then the oddball is in the group of two "heavies" (from the left side) and one "light" (from the right side).
+                   Now weigh the two "heavies" against each other. If one is heavier, it is the (heavy) oddball. Otherwise the third one is the (light) oddball.
+             2b) The side with {L,R,R} is "heavier". Then either that L ball is heavy or the R ball on the opposite side (from {L,R,N}) is light. 
+                   Take a known normal ball and weigh it against either, say the "heavy" L ball. If the L is heavy, it's the (heavy) oddball. Otherwise the R is the (light) oddball.
+             2c) The side with {L,R,N} is now "heavier". Then either that L ball is heavy or one of the R balls previously from the right (now in {L,R,R}) is light.
+                   Weigh the two "light" R balls against each other. If one is lighter, it is the (light) oddball. Otherwise the L ball is the (heavy) oddball.
+             
+        Case 3) As above, with right side "heavy" (or left side light).
+             
+        
