@@ -8,10 +8,10 @@ def pairs(group):
 
 def make_move(left, right, total_time, moving_right, message):
     if not left:
-        print(message)
+        print(message, end = '')
         print("====================================")
         print("Total Time: {} min".format(total_time))
-        print("====================================")
+        print("====================================\n")
         return
     if moving_right:
         for mv_right in pairs(left):

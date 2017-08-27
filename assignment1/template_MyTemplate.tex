@@ -1,0 +1,154 @@
+\documentclass{article}
+\author{Isaac B Goss \& Jon Dyer}
+\title{Assignment 1: Interview Questions}
+\date{Monday, August 28, 2017}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+\usepackage[margin=0.8in]{geometry}
+\providecommand{\soln}{\textbf{Solution: }}
+
+\begin{document}
+\maketitle
+
+    \section*{Problem 1}
+    
+    \begin{enumerate}[label=\Alph*.]
+        \item You are given 8 identical looking balls. 7 of them weigh exactly the same
+        and 1 is heavier than the rest. You are provided with a simple mechanical
+        balance and you are restricted to only 2 uses. Find the heavier ball.
+        
+            \soln First weigh any 3 balls against any other 3 balls.
+        
+            \begin{enumerate}[label=\textbf{Case \arabic*.}]
+                \item The two sides are even.
+                This means the heavy ball is one of the remaining two--simply weigh those against each other and pick the heavier.
+                
+                \item WLOG, suppose the left side is heavier. 
+                Then the heavy ball is on that side, and you can weigh two of the left balls against each other.
+                
+                \begin{enumerate}[label=(\alph*)]
+                    \item They are even. Then the heavy ball is the third ball from the left side.
+                    \item WLOG, suppose the left side is heavier. Then that is the heavy ball.
+                    \item As 2b w/ right side heavy.
+                \end{enumerate}
+            \end{enumerate}
+        
+        
+        \item Now you are give 12 identical looking balls. One of them is heavier or lighter
+        (you don’t know which) than the rest of the 11. You are provided with a
+        simple mechanical balance and you are restricted to only 3 uses. Find the
+        odd ball and determine whether it is heavier or lighter than the rest.
+        
+        \soln First weigh any 4 balls against any other 4 balls.
+        
+        \begin{enumerate}[label=\textbf{Case \arabic*.}]
+            \item Two sides are even. So the oddball is in the remaining 4, therefore weigh any 3 of the normal 8 against any 3 of the suspect 4.
+            
+            \begin{enumerate}[label=(\alph*)]
+                \item Two sides are even. So the oddball is the one oddball that wasn't weighed. So weigh it against any of the normal ones to determine if it's heavy or light.
+                \item WLOG, suppose the suspect side is heavier. Then one of those 3 balls is the oddball, AND is heavy. Weigh any 2 of the 3 suspect balls against each other.
+                
+                \begin{enumerate}[label=\roman*]
+                    \item The two sides are even. Then the heavy ball is the remaining ball.
+                    \item WLOG, one side is heavier--then that ball is the oddball (heavy).
+                    \item As 1b.2, w/ other side heavier.
+                \end{enumerate}
+                
+                \item As 1b, with suspect side lighter.
+                
+            \end{enumerate}
+            
+            \item WLOG, left side is "heavy" (or right side is light). So the oddball is in those 8. Now for the important step:
+            Weigh one ball from the left side with two from the right; against one from the left with one from the right with one normal ball.
+            This effectively divides the working set into three groups of three ({L,R,R}, {L,R,N}, {L,L,R}), which is the maximum number that can be determined with the one remaining weighing.
+            
+            \begin{enumerate}[label=(\alph*)]
+                \item The two sides are even. Then the oddball is in the group of two "heavies" (from the left side) and one "light" (from the right side).
+                Now weigh the two "heavies" against each other. If one is heavier, it is the (heavy) oddball. Otherwise the third one is the (light) oddball.
+                \item The side with {L,R,R} is "heavier". Then either that L ball is heavy or the R ball on the opposite side (from {L,R,N}) is light. 
+                Take a known normal ball and weigh it against either, say the "heavy" L ball. If the L is heavy, it's the (heavy) oddball. Otherwise the R is the (light) oddball.
+                \item The side with {L,R,N} is now "heavier". Then either that L ball is heavy or one of the R balls previously from the right (now in {L,R,R}) is light.
+                Weigh the two "light" R balls against each other. If one is lighter, it is the (light) oddball. Otherwise the L ball is the (heavy) oddball.
+            \end{enumerate}
+        \end{enumerate}
+    \end{enumerate}
+    
+
+    \section*{Problem 2}
+    Four people need to cross a rickety bridge at night. Unfortunately, they have only
+    one torch and the bridge is too dangerous to cross without one. The bridge is only
+    strong enough to support two people at a time. Not all people take the same time
+    to cross the bridge. The times for the four people are, 1 min, 2 mins, 7 mins and
+    10 mins. When two people cross together the time taken is equal to the time of
+    the slower person. What is the shortest time needed for all four of them to cross
+    the bridge?
+    
+    \soln There are two optimal solutions, each taking a total of 17 minutes. I will refer to each person by the time they require to cross the bridge.
+    \begin{enumerate}
+        \item \begin{enumerate}
+            \item Move 1 and 2 across the bridge.
+            \item 1 Moves back across.
+            \item Move 10 and 7 across together.
+            \item 2 brings the torch back across.
+            \item 1 and 2 again cross the bridge.
+        \end{enumerate}
+        
+        \item \begin{enumerate}
+            \item Move 1 and 2 across the bridge.
+            \item Move 2 back across.
+            \item 10 and 7 cross the bridge together.
+            \item 1 brings the torch back.
+            \item 1 and 2 cross back across the bridge.
+        \end{enumerate}
+    \end{enumerate}
+    
+    This can be shown by brute-force done with the following code listing:
+    \lstset{
+        basicstyle   = \footnotesize,
+        commentstyle = \color{purple},
+        frame        = single,
+        language     = Python,
+        stringstyle  = \color{orange},
+        numbers      = left,
+        showstringspaces=false,
+        deletekeywords = {len, max, format},
+        morekeywords = {yield},
+        keywordstyle = \color{blue},
+    }
+    \lstinputlisting[firstline=3]{bridge.py}
+    
+    
+    \section*{Problem 5}
+    100 prisoners are stuck in the prison in solitary cells. The warden of the prison
+    got bored one day and offered them a challenge. He will put one prisoner per day,
+    selected at random (a prisoner can be selected more than once), into a special
+    room with a light bulb and a switch which controls the bulb. No other prisoners
+    can see or control the light bulb while not in the room. The prisoner in the special
+    room can either turn on the bulb, turn off the bulb, or do nothing. On any day, any prisoner can stop this process and say every prisoner has been in the special
+    room at least once. If that happens to be true, all the prisoners will be set free.
+    If it is false, then all the prisoners will be executed. The prisoners are given some
+    time to discuss and figure out a solution. Once they agree on a solution and the
+    random choosing starts, they are not able to communicate until they are either
+    released or executed in which case they won’t be able to communicate anyway.
+    How do they ensure they all go free?
+    
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
