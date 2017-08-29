@@ -1,0 +1,20 @@
+Either there is an interval in OPT which does not overlap any interval in A(I), in which case contradiction
+OR
+There are intervals o in OPT that overlap intervals a in A(I) in one of the following ways:
+    1. The differing interval o in OPT overlapped with fewer other intervals than the interval a in A(I), which is a contradiction
+    2. The differing interval o in OPT overlapped with more other intervals than the interval a in A(I), in which case
+        a. Some intervals o in OPT overlapped other intervals FRED which were not overlapped by the choice a in A(I), in which 
+            case A could have chosen the least overlapping member of FRED to be in A(I), making an OPT' with FRED + a + FRED more similar to A(I)
+            than OPT
+        b. 
+    3. 
+    
+    
+Region of difference (ROD) --> must be more intervals than A(I) in that region 
+    (if there are fewer, then A(I) has more disjoint intervals than OPT, contradicting optimality of OPT).
+    (if the same, then A(I) has the same cardinality as OPT, contradicting incorrectness of A(I)).
+    if more, then
+        1. There exists at least one interval in OPT that is disjoint from all in A(I) --> contradiction (A(I) would've chosen it)
+        2a. There are interval(s) in ROD in OPT that are smaller than all the ROD intervals in A(I) --> contradiction (A(I) would've chosen them)
+            So all intervals in ROD in OPT must be at least the same size as the smallest in A(I)...
+        2b. 
