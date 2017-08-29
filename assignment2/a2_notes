@@ -15,17 +15,20 @@ PROOF: Assume, to get a contradiction, that A does not solve the problem. That i
            chosen such an interval.
         2. There cannot exist any interval in Opt that has fewer overlaps than every interval in A(I). This would again contradict the
            algorithm, since A would have chosen such an interval, it having fewer overlaps.
-           
-           So every interval in OPT must have at least as many overlaps as the minimum overlapping interval in A(I), denoted min\{A(I)\}.
+        3. So every interval in OPT must have at least as many overlaps as the minimum overlapping interval in A(I), denoted min\{A(I)\}.
            That is, for all intervals x in Opt, overlaps(x) >= overlaps(min{A(I)}).
+        
+        Because there are strictly more intervals in Opt than A(I) and each has \textbf{at least} the number of overlaps as min\{A(I)\},
+        it follows that, within the RoD, the total set of intervals in Opt overlaps more than the total set of intervals in A(I).
+        That is, SUM(over x in Opt) of overlaps(x) > SUM(over y in A(I)) of overlaps(y).
+        
+        
+        Because there are more overlaps in Opt than in A(I), there are necessarily fewer remaining intervals once those in OPT have been
+        selected. In this case, there must be 0 remaining (else Opt would have selected more, contradicting its selection as optimal). Then
+        because the selection of intervals in A(I) has overlapped (and hence eliminated) strictly fewer other intervals, there must be some
+        nonzero number of intervals left for A to select. This contradicts algorithm A--if we included those leftover intervals in A(I), then
+        A(I) would ultimately match the cardinality of Opt, once again contradicting the nonoptimality of A(I).
+        
+        In any case, we have derived a contradiction, proving that A does in fact solve the problem.
            
-        3. Because there are strictly more intervals in OPT than A(I) and each has \textbf{at least} the number of overlaps as the 
-           min_overlaps\{A(I)\}, it follows that, within the RoD, the total set of intervals in OPT overlaps more than the total set of intervals in A(I).
-            
-           Because there are more overlaps in OPT than in A(I), there are fewer remaining intervals once those in OPT have been selected. In this
-           case, there must be 0 remaining (else OPT would have selected more, contradicting our selection of OPT as optimal). Then because
-           the selection of intervals in A(I) has overlapped (and hence eliminated) strictly fewer other intervals, there must be some nonzero
-           number of intervals left. This contradicts algorithm A. If we include those leftover intervals in A(I), then it meets cardinality
-           of OPT, once again contradicting the nonoptimality of A(I).
-           
-           If RoD in OPT has more total overlaps than in A(I).... something about eliminating more intervals????
+        
