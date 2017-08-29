@@ -38,40 +38,7 @@
 
     Prove or disprove that this algorithm solves the problem.\\
     
-    \soln Either there is an interval in $Opt$ which does not overlap any interval in $A(I)$, in which case contradiction OR
-
-    There are intervals $o \in Opt$ that overlap intervals $a \in A(I)$ in one of the following ways:
-    
-    \begin{enumerate}
-        \item The differing interval $o \in Opt$ overlapped with fewer other intervals than the interval $a \in A(I)$, which is a contradiction.
-        \item The differing interval o in OPT overlapped with more other intervals than the interval a in A(I), in which case.
-        \begin{enumerate}
-            \item Some intervals $o \in Opt$ overlapped other intervals $FRED$ which were not overlapped by the choice $a \in A(I)$, in which case $A$ could have chosen the least overlapping member of $FRED$ to be in $A(I)$, making an $Opt'$ with $FRED + a + FRED$ more similar to $A(I)$ than $Opt$.
-            \item
-        \end{enumerate}
-        \item
-    \end{enumerate}
-    
-    BETTER LAYOUT/ARGUMENT
-    
-    
-    
-
-    Region of difference (ROD) $\implies$ must be more intervals than $A(I)$ in that region (if there are fewer, then $A(I)$ has more disjoint intervals than $Opt$, contradicting optimality of $Opt$) (if the same, then $A(I)$ has the same cardinality as $Opt$, contradicting incorrectness of $A(I)$). If more, then:
-    
-    \begin{enumerate}
-        \item There exists at least one interval in $Opt$ that is disjoint from all in $A(I) \implies$ contradiction ($A$ would've chosen it).
-        
-        \item There are interval(s) in ROD in $Opt$ that are have fewer overlaps than all the ROD intervals in $A(I) \implies $ contradiction ($A$ would've chosen them).
-        So all intervals in ROD in $Opt$ must have at least as many overlaps as least overlapping interval in $A(I)$...
-        
-        \item Argument about number of overlaps... see following, or possibly by exchange would be easier.
-        If the intervals in ROD in $Opt$ have fewer total overlaps than those in $A(I)$, then [INSERT NUMBER THEORY -- maybe pigeon-hole related?]
-        One of them must have fewer overlaps than any in $A(I) \implies$ contradiction ($A$ would've chosen it)
-        If ROD in $Opt$ has same number of total overlaps as in $A(I)$, then at least one of those intervals has less/equal overlaps as one in $A(I)$
-        [triangle inequality?]
-    \end{enumerate}
-    
+    \soln $\displaystyle \sum_{x \in Opt} \text{overlaps}(x) $
     
     \section*{Problem 2}
     
