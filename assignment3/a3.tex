@@ -7,8 +7,10 @@
 \usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{listings}
+\usepackage{amsthm}
 \usepackage[usenames,dvipsnames,svgnames]{xcolor}
 \usepackage[margin=0.8in]{geometry}
+\newtheorem{thm}{Claim}
 \providecommand{\soln}{\textbf{Solution: }}
 \providecommand{\image}[1]{
     \begin{center}
@@ -25,6 +27,39 @@
     
     \begin{enumerate}[label=(\alph*)]
         \item Stop at every gas station, and fill the tank with just enough gas to make it to the next gas station.
+        
+        \begin{thm}
+            This algorithm, Fill-as-you-go ($FAYG$), is optimal.
+        \end{thm}
+        \begin{proof}
+            Assume, to get a contradiction, that $FAYG$ is not optimal.
+            That is, assume that for some input $I$, $FAYG$ produces a non-optimal output.
+            Let $FAYG(I)$ be such an output, and let $Opt(I)$ be an optimal output which agrees with $FAYG(I)$ for a maximum number of steps.
+            
+            Consider the first point of disagreement between $Opt(I)$ and $FAYG(I)$.
+            This would be some stop $x_i$ where the two algorithms take different amounts of time filling up.
+            Since $FAYG$ always gets just enough fuel to get to the next station, and $Opt$ and $FAYG$ have agreed up to this point, burning and obtaining the same amount of fuel, and $FAYG(x_i) \ne Opt(x_i)$, we have that $FAYG(x_i) < Opt(x_i)$
+            
+            Call the difference in time here $d$.
+            Let's consider another output called $Opt'$ which is identical to $Opt$ in every way, except the following changes:
+            
+            \begin{enumerate}[label=\arabic*.]
+                \item Let the time $Opt'(x_i) = Opt(x_i) - d = FAYG(x_i)$.
+                \item Add the time $d$ to the following stop, so that $Opt'(x_{i+1}) = Opt(x_{i+1}) + d$ (unless this would overfill the tank, in which case space the remaining time out to the next stop, etc).
+            \end{enumerate}
+            
+            We can easily see now that $Opt'(I)$ is still optimal.
+            \begin{enumerate}[label=\arabic*.]
+                \item There is still sufficient fuel to get from stop $x_i$ to $x_{i+1}$, since the amount $Opt'$ gets at that point matches exactly how much $FAYG(I)$ gets which is sufficient.
+                \item The total amount of fuel consumed does not change, as the time $d$ is simply shifted to later visits.
+            \end{enumerate}
+            
+            The only difference between the two is the $Opt'(I)$ agrees with $FAYG(I)$ for one more step than does $Opt(I)$.
+            This is a contradiction on the maximal agreement between $Opt$ and $FAYG$.
+            For this reason, $FAYG$ is optimal.
+            
+        \end{proof}
+        
         
         \item Stop if and only if you don't have enough gas to make it to the next gas station, and if you stop, fill the tank up all the way.
     \end{enumerate}

@@ -10,7 +10,7 @@ A) THEOREM: The fill-as-you-go (FAYG?) algorithm correctly solves the problem.
             - Consider the first point of disagreement between Opt(I) and F(I). This would be a stop x_i where the
                two algorithms take different amounts of time filling up. Since FAYG always gets just enough fuel to
                make it to the next station, and Opt(x<sub>i</sub>) \!= F(x<sub>i</sub>), we know that Opt must take *more* time here than
-               FAYG.
+               FAYG. [They have obtained and burned exactly as much fuel up to this point].
             - Call the difference in time here d. Let's consider another output called Opt' which is identical to
                Opt in every way except the following changes:
                 1. Let the time Opt'(x<sub>i</sub>) be Opt(x<sub>i</sub>) - d (which = F(x<sub>i</sub>)); and
