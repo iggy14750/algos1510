@@ -1,0 +1,96 @@
+\documentclass{article}
+\author{Isaac B Goss \& Jonathan Dyer}
+\title{Assignment 3: Greedy Algorithms}
+\date{Friday, September 1, 2017}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+\usepackage[margin=0.8in]{geometry}
+\providecommand{\soln}{\textbf{Solution: }}
+\providecommand{\image}[1]{
+    \begin{center}
+        \includegraphics{#1}
+    \end{center}
+}
+\providecommand{\prob}[1]{\section*{Problem #1}}
+
+\begin{document}
+\maketitle
+
+    \prob{1}
+    You wish to drive from point $A$ to point $B$ along a highway minimizing the time that you are stopped for gas. You are told beforehand the capacity $C$ of your gas tank in liters, you rate $F$ of fuel consumption in liters/kilometer, the rate $r$ in liters/minute at which you can fill your tank at a gas station, and locations $A = x_1, \dots, B = x_n$ of the gas stations along the highway. So if you stop to fill your tank from 2 liters to 8 liters, you would have to stop for $6/r$ minutes. Consider the following two algorithms. For each, prove or disprove that each correctly solve the problem.
+    
+    \begin{enumerate}[label=(\alph*)]
+        \item Stop at every gas station, and fill the tank with just enough gas to make it to the next gas station.
+        
+        \item Stop if and only if you don't have enough gas to make it to the next gas station, and if you stop, fill the tank up all the way.
+    \end{enumerate}
+    
+
+    \prob{6}
+    We consider a greedy algorithm for two related problems.
+    
+    \begin{lstlisting}
+For i = 1 to n
+    Place the ith word on the current line if it fits
+        else place the ith word on a new line.
+    \end{lstlisting}
+    
+    \begin{enumerate}[label=(\alph*)]
+        \item The input to this problem consists of an ordered list of $n$ words. 
+        The length of the $i$th word is $w_i$, that is the $i$th word takes up $w_i$ spaces. 
+        (For simplicity assume that there are no spaces between words.)
+        The goal is to break this ordered list of words into lines, this is called a layout. 
+        Note that you can not reorder the words. 
+        The length of a line is the sum of the lengths of the words on that line. 
+        The ideal line length is $L$. 
+        No line may be longer than $L$, although it may be shorter. 
+        The penalty for having a line of length $K$ is $L − K$. 
+        The total penalty is the sum of the line penalties.
+        The problem is to find a layout that minimizes the total penalty.
+        
+        
+        \item The input to this problem consists of a list of $n$ ordered words.
+        The length of the $i$th word is $w_i$, that is the $i$th word takes up $w_i$ spaces.
+        (For simplicity assume that there are no spaces between words.)
+        The goal is to break this ordered list of words into lines, this is called a layout.
+        Note that you cannot re-order the words.
+        The length of a line is the sum of the lengths of the words on that line.
+        The ideal line length is $L$.
+        No line may be longer than $L$, although it may be shorter.
+        The penalty for having a line of length $K$ is $L - K$.
+        \emph{The total penalty is the \textbf{maximum} of the line penalties.}
+        The problem is to find a layout that minimizes the total penalty.
+        
+        
+    \end{enumerate}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
