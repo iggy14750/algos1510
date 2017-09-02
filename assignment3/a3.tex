@@ -117,7 +117,7 @@ For i = 1 to n
         	
         	Now, we consider another layout, $Opt'(I)$, which is like $Opt(I)$ in every way, except that word $i$ is placed back on line $l$. Note that this agrees with $A(I)$ for another line.
         	Now, when we move this word back up, we find that this layout has just as much penalty as does $Opt(I)$.
-        	It is clear to see that $w_i$ penalty has been added to line $l+1$ by removing $i$, but that same penalty hash been removed from line $l$ by moving $i$ there.
+        	It is clear to see that $w_i$ penalty has been added to line $l+1$ by removing $i$, but that same penalty has been removed from line $l$ by moving $i$ there.
         	Thus, $Opt'(I)$ is also optimal, and agrees with $A(I)$ for one more line than does $Opt(I)$, which is a contradiction of the definition of $Opt(I)$.
         	
         	With this contradiction, we have that $A$ is correct.
@@ -135,6 +135,23 @@ For i = 1 to n
         The penalty for having a line of length $K$ is $L - K$.
         \emph{The total penalty is the \textbf{maximum} of the line penalties.}
         The problem is to find a layout that minimizes the total penalty.
+        
+		\begin{thm}
+			The above algorithm, $A$, does not solve this problem.
+		\end{thm}
+		\begin{proof}
+			Consider the following counter example.
+			Let $L = 5$, and our input be words of the following length $(2,3,1)$.
+			Notice that the output of $A$ creates a higher peak penalty than does the optimal solution (4 vs 3):
+			\begin{center}
+			\begin{tabular}{l | l}
+				A(I) & Opt(I)\\
+				\hline
+				5-(2+3)=0 & 5-2 = 3\\
+				5-1=4     & 5-(3+1)=1\\
+			\end{tabular}
+			\end{center}
+		\end{proof}
         
         
     \end{enumerate}
