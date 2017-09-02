@@ -40,3 +40,31 @@ B) CLAIM: The totally-full (TF?) algorithm does not correctly solve the problem;
             excess fuel, which means the time taken to fill up at the final stop (x<sub>k</sub>) could have been reduced.
             
             Thus the algorithm produces an inoptimal result and is incorrect.
+
+6) Consider the contra, A(I), Opt(I), etc
+
+We have some line l where A(I) and Opt(I) first differ.
+They will differ because a word i will be on this line in A(I) and not in Opt(I).
+This is because it is more optimal for this word to be on the next line, causing some other word to break.
+
+Consider Opt'(I), where Opt'(I) is exactly the same as Opt(I), except that i is on line l.
+This still satisfies all criteria, except that it may have more overall penalty than Opt(I).
+First, on line l, we actually have w_i less penalty, 
+but are a wash becuase there is w_i penalty on line l+1. But remember that we had to break some other word, j, onto line l+2. 
+The same thing happens: line l+2 increases in penalty, but l+3 loses the same amount.
+
+At some point, this process of line breaking has to end.
+If it does not end by breaking to a final new line, then overall penalty has not changed.
+This is because some word was moved onto a line big enough to fit it without breaking another word.
+So, that word's penalty would either be on the upper or lower lines, but still there.
+
+Now, if the line breaking ends by putting some word onto a new line all by itself, then there is the additional penalty of the unused space of that line.
+If this were the case, Opt(I) could be equally or less optimal than A(I), and so this is not possible.
+
+Thus, we have found a new solution, Opt'(I), which agrees with A(I) for (at least) one more line than does Opt(I), which contradicts the definition of Opt(I).
+
+Thus, with this contradiction, we have that algorithm A is indeed correct.
+
+
+
+

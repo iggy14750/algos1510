@@ -11,10 +11,9 @@
 \usepackage[usenames,dvipsnames,svgnames]{xcolor}
 \usepackage[margin=0.8in]{geometry}
 \newtheorem{thm}{Claim}
-\providecommand{\soln}{\textbf{Solution: }}
 \providecommand{\image}[1]{
     \begin{center}
-        \includegraphics{#1}
+        \includegraphics[width=0.5\textwidth]{#1}
     \end{center}
 }
 \providecommand{\prob}[1]{\section*{Problem #1}}
@@ -62,6 +61,19 @@
         
         
         \item Stop if and only if you don't have enough gas to make it to the next gas station, and if you stop, fill the tank up all the way.
+        
+        \begin{thm}
+        	The Totally-full ($TF$) algorithm does not correctly solve the problem.
+        \end{thm}
+        
+        \begin{proof}
+        	Consider the final time $TF$ fills up.
+        	Call this point $x_k$.
+        	If we say our destination is $x_n$, then we need only exactly $F(x_n - x_k)$ liters of fuel to get to our destination (albeit on an empty tank).
+        	If that amount is \emph{any} less than $C$, then there will be excess fuel, which means the time taken to fill up at the final stop ($x_k$) could have been reduced.
+        	
+        	Thus $TF$ produces a non-optimal result, and is therefore incorrect.
+		\end{proof}
     \end{enumerate}
     
 
@@ -86,6 +98,30 @@ For i = 1 to n
         The penalty for having a line of length $K$ is $L − K$. 
         The total penalty is the sum of the line penalties.
         The problem is to find a layout that minimizes the total penalty.
+        
+        \begin{thm}
+        	The above algorithm, $A$, does indeed solve this problem.
+        \end{thm}
+        \begin{proof}
+        	Assume, to get a contradiction, that $A$ is incorrect.
+        	In which case, there would exist some input $I$ on which $A$ would produce some incorrect output.
+        	Call this output $A(I)$.
+        	Consider, also, an optimal solution which agrees with $A$ for the most lines of any optimal solution.
+        	We call this output $Opt(I)$.
+        	Now we find the first line $l$, on which $A(I)$ and $Opt(I)$ differ.
+        	Note that $A$ will not overfill a line, so the only potential problem is that is may produce a layout with greater overall penalty than $Opt(I)$.
+        	This will be because some word $i$, which could fit on line $l$, would create a more optimal solution by breaking it onto another line.
+        	Thus, we have this picture between $A(I)$ and $Opt(I)$:
+        	
+        	\image{p6a}
+        	
+        	Now, we consider another layout, $Opt'(I)$, which is like $Opt(I)$ in every way, except that word $i$ is placed back on line $l$. Note that this agrees with $A(I)$ for another line.
+        	Now, when we move this word back up, we find that this layout has just as much penalty as does $Opt(I)$.
+        	It is clear to see that $w_i$ penalty has been added to line $l+1$ by removing $i$, but that same penalty hash been removed from line $l$ by moving $i$ there.
+        	Thus, $Opt'(I)$ is also optimal, and agrees with $A(I)$ for one more line than does $Opt(I)$, which is a contradiction of the definition of $Opt(I)$.
+        	
+        	With this contradiction, we have that $A$ is correct.
+        \end{proof}
         
         
         \item The input to this problem consists of a list of $n$ ordered words.
