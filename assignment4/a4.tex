@@ -173,14 +173,21 @@
     
     \textbf{SJF:} Pick $J_m$ to be the job with minimal size $x_i$.
     Ties are broken arbitrarily.
+    
     \textbf{SRPT:} Let $y_{i,t}$ be the total time that job $J_m$ has been run before time $t$.
     Pick $J_m$ to be a job which has minimal remaining processing time, that is, that has minimal $x_i - y_{i, t}$.
     Ties broken arbitrarily.
     
     
     \begin{thm}
-        
+        SJF is not optimal.
     \end{thm}
+    \begin{proof}
+        Consider the following collection of jobs: $\{ a=(3,6),b=(0,8) \}$.
+        \image{p10atable}
+        We can see that SJF schedules $a$ first so that it finishes one unit later than $b$ does in Opt.
+        This increases the overall completion time, and so SJF is not optimal.
+    \end{proof}
 
 \end{document}
 
