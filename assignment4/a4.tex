@@ -151,6 +151,36 @@
             That is, A is correct.
         \end{proof}
     \end{enumerate}
+    
+    \prob{10}
+    INPUT: A collection of jobs $J_1, \dots, J_n$, where the $i$th job is a tuple $(r_i, x_i)$ of non-negative integers specifying the release time and size of the job.
+    
+    OUTPUT: A preemptive feasible schedule for these jobs on one processor that minimizes the total completion time $\sum_{i=1}^{n} C_i$.
+    
+    We consider two greedy algorithms for solving this problem that schedule in an online fashion, that is, algorithms of the following form.
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+    t = 0
+    While there are jobs left not completely scheduled:
+        Among those jobs (*$J_i$*) such that (*$r_i \leq t$*), and that have previously 
+        been scheduled for less than (*$x_i$*) time units:
+            Pick a job (*$J_m$*) to schedule at time (*$t$*) according to some rule.
+        Increment t.
+    \end{lstlisting}
+    
+    One can get different greedy algorithms depending on the rule for selecting $J_m$. 
+    For each of the following greedy algorithms, prove or disprove that the algorithm is correct. 
+    Proofs of correctness must use an exchange argument.
+    
+    \textbf{SJF:} Pick $J_m$ to be the job with minimal size $x_i$.
+    Ties are broken arbitrarily.
+    \textbf{SRPT:} Let $y_{i,t}$ be the total time that job $J_m$ has been run before time $t$.
+    Pick $J_m$ to be a job which has minimal remaining processing time, that is, that has minimal $x_i - y_{i, t}$.
+    Ties broken arbitrarily.
+    
+    
+    \begin{thm}
+        
+    \end{thm}
 
 \end{document}
 
