@@ -1,0 +1,180 @@
+\documentclass{article}
+\author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
+\title{Assignment 4: Greedy Algorithms}
+\date{Monday, September 11, 2017}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+
+\newtheorem{thm}{Claim}
+\providecommand{\prob}[1]{\section*{Problem #1}}
+\providecommand{\image}[1]{
+    \begin{center}
+        \includegraphics{#1}
+    \end{center}
+}
+
+
+\begin{document}
+\maketitle
+
+    \prob{9}
+    The input consists of $n$ skiers with heights $p_1,\dots,p_n$ and $n$ skies with heights $s_1,\dots,s_n$.
+    The problem is to assign each skier to a ski to minimize the average difference between the height of a skier and his/her assigned ski.
+    That is, if the $i$th skier is given the $\alpha(i)$th ski, then we want to minimize
+    $$ \frac{1}{n} \sum_{i=1}^n |p_i - s_{\alpha(i)} | $$
+    
+    \begin{enumerate}[label=(\alph*)]
+        \item Consider the following greedy algorithm.
+        \begin{lstlisting}
+        Repeat this process until every skier has a ski:
+            Find the skier and ski whose height difference is minimized.
+            Assign the skier this ski.
+        \end{lstlisting}
+        Prove or disprove this algorithm correct.
+        
+        \begin{thm}
+            This algorithm is incorrect.
+        \end{thm}
+        \begin{proof}
+            Consider the following counter-example.
+            \image{p9table}
+        \end{proof}
+        
+        \item Consider the following greedy algorithm.
+        \begin{lstlisting}
+        Sort the people and skies in order of increasing height.
+        Assign to each person the ski in the same position in the ordering.
+        \end{lstlisting}
+        Prove or disprove this algorithm correct.
+        
+        \begin{thm}
+            This algorithm, A, is indeed correct.
+        \end{thm}
+        \begin{proof}
+            Assume, to reach a contradiction, that it does not.
+            Then, there would be some input I on which A does not produce an optimal output.
+            Consider some optimal solution Opt(I) which agrees with A(I) for the greatest number of steps of any other optimal solution.
+            
+            Let's call the first point of difference the $i$th person and ski (by A's ordering).
+            In all solutions, we keep the people stable, and note the change by moving the skies.
+            Ski $s_i$ is thus replaced in Opt(I) by some other ski $s_j$.
+            Note that $i < j$, because $s_j$ has not yet appeared in A(I), $i$ being the first point of disagreement.
+            This implies also that $s_i < s_j$ (Note that when comparing skies or people, we are considering their height).
+            This is a strict inequality because $s_i$ was replaced by a \emph{different} ski.
+            
+            Now, $s_i$ must be somewhere else in Opt(I).
+            As $i$ is the first point of disagreement, we can say that $s_i$ must have been assigned to some later person $p_k$ ($j$ is not necessarily equal to $k$).
+            By saying that $i < k$, we have also said that $p_i \leq p_k$.
+
+            Now, we construct a new solution, Opt'(I), which agrees with Opt(I) for all cases except for two.
+            There is a ``swap'' between $s_i$ and $s_j$ in Opt'(I) from Opt(I), so that $s_i$ is re-assigned to $p_i$, and $s_j$ is assigned to $p_k$.
+            It is clear that Opt'(I) agrees with A(I) for one more step than Opt(I).
+            Consult the following picture of the situation.
+            
+            \begin{center}
+            \begin{tabular}{r | p{0.22\textwidth}}
+                A(I) & \ldots $p_{i-1}, p_i$ \ldots \newline
+                    \ldots $s_{i-1}, s_i$ \ldots\\
+                \hline
+                Opt(I) & \ldots $p_{i-1}, p_i$ \ldots $p_k$ \ldots \newline
+                \ldots $s_{i-1}, s_j$ \ldots $s_i$ \ldots \\
+                \hline
+                Opt'(I) & \ldots $p_{i-1}, p_i$ \ldots $p_k$ \ldots \newline
+                \ldots $s_{i-1}, s_i$ \ldots $s_j$ \ldots \\
+            \end{tabular}
+            \end{center}
+            
+            By assumption, we have that Opt(I) is an optimal solution which agrees with A(I) for the maximal number of steps.
+            Because Opt'(I) agrees with A(I) for one more step, it follows that it is not optimal.
+            
+            If this were the case, we would have that:
+            $$ |p_i - s_j| + |p_k - s_i| < |p_i - s_i| + |p_k - s_j| $$
+            
+            We shall consider 6 cases to show that this cannot hold.
+            \begin{enumerate}[label=Case \arabic*.]
+                \item $ s_i < s_j \leq p_i \leq p_k $.
+                \begin{align*}
+                    (p_i - s_j) + (p_k - s_i) &< (p_i - s_i) + (p_k - s_j)\\
+                    p_i + p_k - s_i - s_j &< p_i + p_k - s_i - s_j\\
+                    0 &< 0
+                \end{align*}
+                
+                \item $ s_i \leq p_i < s_j \leq p_k $.
+                \begin{align*}
+                    (s_j - p_i) + (p_k - s_i) &< (p_i - s_i) + (p_k - s_j)\\
+                    s_j - p_i &< p_i - s_j\\
+                    2s_j &< 2p_i\\
+                    s_j &< p_i 
+                \end{align*}
+                
+                \item $ p_i \leq s_i < s_j \leq p_k $.
+                \begin{align*}
+                    (s_j - p_i) + (p_k - s_i) &< (s_i - p_i) + (p_k - s_j)\\
+                    s_j - s_i &< s_i - s_j\\
+                    2s_j &< 2s_i\\
+                    s_j &< s_i
+                \end{align*}
+                
+                \item $ p_i \leq s_i \leq p_k < s_j $.
+                \begin{align*}
+                    (s_j - p_i) + (p_k - s_i) &< (s_i - p_i) + (s_j - p_k)\\
+                    p_k - s_i &< s_i - p_k\\
+                    2p_k &< 2s_i\\
+                    p_k &< s_i
+                \end{align*}
+                
+                \item $ p_i \leq p_k \leq s_i < s_j $.
+                \begin{align*}
+                    (s_j - p_i) + (s_i - p_k) &< (s_i - p_i) + (s_j - p_k)\\
+                    0 &< 0
+                \end{align*}
+                
+                \item $ s_i \leq p_i \leq p_k < s_j $.
+                \begin{align*}
+                    (s_j - p_i) + (p_k - s_i) &< (p_i - s_i) + (s_j - p_k)\\
+                    p_k - p_i &< p_i - p_k\\
+                    2p_k &< 2p_i\\
+                    p_k &< p_i
+                \end{align*}
+            \end{enumerate}
+            
+            As we can see, it is impossible that this switch leaves Opt'(I) worse off than Opt(I).
+            Thus, Opt'(I) is indeed optimal.
+            This is a contradiction on the definition of Opt(I).
+            Therefore, we have that A produces an optimal output on all input.
+            That is, A is correct.
+        \end{proof}
+    \end{enumerate}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
