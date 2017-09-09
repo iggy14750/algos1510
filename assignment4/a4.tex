@@ -46,6 +46,7 @@
             \image{p9table}
         \end{proof}
         
+        \pagebreak % totally optional, just trying different flow.
         \item Consider the following greedy algorithm.
         \begin{lstlisting}
         Sort the people and skies in order of increasing height.
@@ -152,6 +153,7 @@
         \end{proof}
     \end{enumerate}
     
+    \pagebreak % completely optional, just trying for flow
     \prob{10}
     INPUT: A collection of jobs $J_1, \dots, J_n$, where the $i$th job is a tuple $(r_i, x_i)$ of non-negative integers specifying the release time and size of the job.
     
@@ -187,6 +189,38 @@
         \image{p10atable}
         We can see that SJF schedules $a$ first so that it finishes one unit later than $b$ does in Opt.
         This increases the overall completion time, and so SJF is not optimal.
+    \end{proof}
+
+    \begin{thm}
+        Algorithm SRPT is optimal.
+    \end{thm}
+    \begin{proof}
+        Assume, to reach a contradiction, that this is not the case.
+        Then there exists some input I on which SRPT produces a sub-optimal output.
+        We can call this output S(I).
+        Now we say that Opt(I) is an optimal output on I which agrees with S(I) for the maximum number of \emph{job endings}.
+        That is, at any point in time when a job ends in S(I), it also ends in Opt(I), and visa versa, until some final time $t$.
+        
+        This difference is not because Opt(I) finished a job before S(I).
+        If Opt(I) could run some job to completion before S(I), it certainly would have been a job with less remaining processing time than what S(I) ran at the time.
+        
+        At time $t$, S(I) completes some job $m$, where Opt(I) chooses some other job; call it $k$.
+        Note that $k$ must be run later in S(I), and also that $m$ must finish later in Opt(I).
+        We can call this time when $m$ terminates in Opt(I) $u$.
+        
+        Now, we are interested in another output, Opt'(I). 
+        This is exactly like Opt(I), but $m$ is run at time $t$ as in S(I), and $k$ runs at time $u$.
+        This, of course, now shares a greater number of job endings with S(I) than does Opt(I).
+        
+        \image{p10btable}
+        
+        Now it is left to show that Opt'(I) is also optimal.
+        Note that $k$ must have strictly more processing time remaining than $m$ at time $t$.
+        If they are tied (both having only 1 unit left), then we are done.
+        Because of this fact, when this swap is done, we have reduced the completion time of $m$ by moving it forward, but could have only increased the completion time of $k$ by at most one unit.
+        With this, we have that such a move will leave Opt'(I) with equal or lesser completion time of Opt(I).
+        
+        Thus, we have contradicted the definition of Opt(I), and shown that SRPT is indeed optimal.
     \end{proof}
 
 \end{document}
