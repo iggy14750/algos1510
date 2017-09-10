@@ -1,0 +1,23 @@
+Notes on problem 13 a):
+
+Our greedy algorithm:
+A(x) = At any time interval k, the job with the least number of time intervals remaining with the machine turned on before its deadline is chosen.
+
+Theorem: A(x) is correct
+Proof: Assume there exists an input I such that A(I) produces incorrect output.
+
+Let A(I) = ...
+Let OPT(I) = ...
+
+A(I) = A_{j_o} ... A_{j_m} ...
+OPT(I) = O_{j_o} ... O_{j_n} ... O_{j_m}
+
+Let p = the first point of disagreement between A and OPT (this is the j_m in A and j_n in OPT)
+Let OPT'(I) = OPT but with jobs O_{j_n} and O_{j_m} swapped
+
+OPT'(I) = O'_{j_m} ... O'_{j_n}
+
+We have moved one step closer to A(I).
+Since j_m was located at time p in A(I), it had fewer chances for placement than j_n by definition of algorithm A.  Therefore, j_n 's deadline must be after j_m 's deadline.
+Since we swapped their locations, j_m will now finish earlier in time, which is valid, and j_n will finish later in time, which is valid as well since its deadline is later than j_m 's as shown earlier.
+Because of this, we have moved one step closer to A(I) and each job has the chance to finish before its deadline, so there is a contradiction.
