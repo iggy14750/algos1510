@@ -11,6 +11,7 @@
 \usepackage{listings}
 \usepackage[usenames,dvipsnames,svgnames]{xcolor}
 
+\setlength{\parindent}{0pt}
 \newtheorem{thm}{Claim}
 \providecommand{\prob}[1]{\section*{Problem #1}}
 \providecommand{\image}[1]{
@@ -24,214 +25,57 @@
 \maketitle
 
     \prob{12}
-	INPUT: Positive integers r1, . . . , rn and c1, . . . , cn.
-	OUTPUT: An n by n matrix A with 0/1 entries such that for all i the sum of the ith row in A is ri
-	and the sum of the ith column in A is ci
-	, if such a matrix exists.
-	Think of the problem this way. You want to put pawns on an n by n chessboard so that the ith row
-	has ri pawns and the ith column has ci pawns.
-	Consider the following greedy algorithm that constructs A row by row. Assume that the first i − 1
-	rows have been constructed. Let aj be the number of 1’s in the jth column in the first i−1 rows. Now
-	the ri columns with with maximum cj − aj are assigned 1’s in row i, and the rest of the columns are
-	assigned 0’s. That is, the columns that still needs the most 1’s are given 1’s.
+	INPUT: Positive integers $r_1$, . . . , $r_n$ and $c_1$, . . . , $c_n$. \\
+	OUTPUT: An n by n matrix A with 0/1 entries such that for all $i$ the sum of the $i$\textsuperscript{th} row in A is $r_i$ and the sum of
+	the $i$\textsuperscript{th} column in A is $c_i$, if such a matrix exists. Consider the following greedy algorithm that constructs A row
+	by row. Assume that the first $i - 1$ rows have been constructed. Let $a_j$ be the number of 1\textsc{\char13}s in the $j$\textsuperscript{th} column in
+	the first $i - 1$ rows. Now the $r_i$ columns with the maximum $c_j - a_j$ are assigned 1\textsc{\char13}s in row $i$, and the rest of the columns
+	are assigned 0\textsc{\char13}s. That is, the columns that still needs the most 1\textsc{\char13}s are given 1\textsc{\char13}s.
+	
+	\begin{proof}
+	Assume for a contradiction there exists some input matrix $I$ such that $A(I)$ produces incorrect input. \\
+	
+	Let $A(I)$ = the greedy algorithm's output on input $I$ \\
+	Let $OPT(I)$ = the optimal solution on input $I$ that agrees
+	with $A(I)$ for the most number of steps \\\\
+ 	
+	$OPT(I)$ = 
+	\begin{bmatrix}
+		\vdots \\
+		\dots & $x_{j}y_{i}$ & \dots & $x_{j+s}y_{i}$ & \dots \\
+		\dots & $x_{j}y_{i+t}$ & \dots & $x_{j+s}y_{i+t}$ & \dots \\
+		\vdots
+	\end{bmatrix}
+	
+	$A(I)$ = \hspace{12}
+	\begin{bmatrix}
+		\vdots \\
+		\dots & $x_{j}y_{i}$ & \dots & $x_{j+s}y_{i}$ & \dots \\
+		\dots & $x_{j}y_{i+t}$ & \dots & $x_{j+s}y_{i+t}$ & \dots \\
+		\vdots
+	\end{bmatrix} \\\\
 
-	The input consists of $n$ skiers with heights $p_1,\dots,p_n$ and $n$ skies with heights $s_1,\dots,s_n$.
-    The problem is to assign each skier to a ski to minimize the average difference between the height of a skier and his/her assigned ski.
-    That is, if the $i$th skier is given the $\alpha(i)$th ski, then we want to minimize
-    $$ \frac{1}{n} \sum_{i=1}^n |p_i - s_{\alpha(i)} | $$
-
-    \begin{enumerate}[label=(\alph*)]
-        \item Consider the following greedy algorithm.
-        \begin{lstlisting}
-        Repeat this process until every skier has a ski:
-            Find the skier and ski whose height difference is minimized.
-            Assign the skier this ski.
-        \end{lstlisting}
-        Prove or disprove this algorithm correct.
-
-        \begin{thm}
-            This algorithm is incorrect.
-        \end{thm}
-        \begin{proof}
-            Consider the following counter-example.
-            \image{p9table}
-        \end{proof}
-
-        \pagebreak % totally optional, just trying different flow.
-        \item Consider the following greedy algorithm.
-        \begin{lstlisting}
-        Sort the people and skies in order of increasing height.
-        Assign to each person the ski in the same position in the ordering.
-        \end{lstlisting}
-        Prove or disprove this algorithm correct.
-
-        \begin{thm}
-            This algorithm, A, is indeed correct.
-        \end{thm}
-        \begin{proof}
-            Assume, to reach a contradiction, that it does not.
-            Then, there would be some input I on which A does not produce an optimal output.
-            Consider some optimal solution Opt(I) which agrees with A(I) for the greatest number of steps of any other optimal solution.
-
-            Let's call the first point of difference the $i$th person and ski (by A's ordering).
-            In all solutions, we keep the people stable, and note the change by moving the skies.
-            Ski $s_i$ is thus replaced in Opt(I) by some other ski $s_j$.
-            Note that $i < j$, because $s_j$ has not yet appeared in A(I), $i$ being the first point of disagreement.
-            This implies also that $s_i < s_j$ (Note that when comparing skies or people, we are considering their height).
-            This is a strict inequality because $s_i$ was replaced by a \emph{different} ski.
-
-            Now, $s_i$ must be somewhere else in Opt(I).
-            As $i$ is the first point of disagreement, we can say that $s_i$ must have been assigned to some later person $p_k$ ($j$ is not necessarily equal to $k$).
-            By saying that $i < k$, we have also said that $p_i \leq p_k$.
-
-            Now, we construct a new solution, Opt'(I), which agrees with Opt(I) for all cases except for two.
-            There is a ``swap'' between $s_i$ and $s_j$ in Opt'(I) from Opt(I), so that $s_i$ is re-assigned to $p_i$, and $s_j$ is assigned to $p_k$.
-            It is clear that Opt'(I) agrees with A(I) for one more step than Opt(I).
-            Consult the following picture of the situation.
-
-            \begin{center}
-            \begin{tabular}{r | p{0.22\textwidth}}
-                A(I) & \ldots $p_{i-1}, p_i$ \ldots \newline
-                    \ldots $s_{i-1}, s_i$ \ldots\\
-                \hline
-                Opt(I) & \ldots $p_{i-1}, p_i$ \ldots $p_k$ \ldots \newline
-                \ldots $s_{i-1}, s_j$ \ldots $s_i$ \ldots \\
-                \hline
-                Opt'(I) & \ldots $p_{i-1}, p_i$ \ldots $p_k$ \ldots \newline
-                \ldots $s_{i-1}, s_i$ \ldots $s_j$ \ldots \\
-            \end{tabular}
-            \end{center}
-
-            By assumption, we have that Opt(I) is an optimal solution which agrees with A(I) for the maximal number of steps.
-            Because Opt'(I) agrees with A(I) for one more step, it follows that it is not optimal.
-
-            If this were the case, we would have that:
-            $$ |p_i - s_j| + |p_k - s_i| < |p_i - s_i| + |p_k - s_j| $$
-
-            We shall consider 6 cases to show that this cannot hold.
-            \begin{enumerate}[label=Case \arabic*.]
-                \item $ s_i < s_j \leq p_i \leq p_k $.
-                \begin{align*}
-                    (p_i - s_j) + (p_k - s_i) &< (p_i - s_i) + (p_k - s_j)\\
-                    p_i + p_k - s_i - s_j &< p_i + p_k - s_i - s_j\\
-                    0 &< 0
-                \end{align*}
-
-                \item $ s_i \leq p_i < s_j \leq p_k $.
-                \begin{align*}
-                    (s_j - p_i) + (p_k - s_i) &< (p_i - s_i) + (p_k - s_j)\\
-                    s_j - p_i &< p_i - s_j\\
-                    2s_j &< 2p_i\\
-                    s_j &< p_i
-                \end{align*}
-
-                \item $ p_i \leq s_i < s_j \leq p_k $.
-                \begin{align*}
-                    (s_j - p_i) + (p_k - s_i) &< (s_i - p_i) + (p_k - s_j)\\
-                    s_j - s_i &< s_i - s_j\\
-                    2s_j &< 2s_i\\
-                    s_j &< s_i
-                \end{align*}
-
-                \item $ p_i \leq s_i \leq p_k < s_j $.
-                \begin{align*}
-                    (s_j - p_i) + (p_k - s_i) &< (s_i - p_i) + (s_j - p_k)\\
-                    p_k - s_i &< s_i - p_k\\
-                    2p_k &< 2s_i\\
-                    p_k &< s_i
-                \end{align*}
-
-                \item $ p_i \leq p_k \leq s_i < s_j $.
-                \begin{align*}
-                    (s_j - p_i) + (s_i - p_k) &< (s_i - p_i) + (s_j - p_k)\\
-                    0 &< 0
-                \end{align*}
-
-                \item $ s_i \leq p_i \leq p_k < s_j $.
-                \begin{align*}
-                    (s_j - p_i) + (p_k - s_i) &< (p_i - s_i) + (s_j - p_k)\\
-                    p_k - p_i &< p_i - p_k\\
-                    2p_k &< 2p_i\\
-                    p_k &< p_i
-                \end{align*}
-            \end{enumerate}
-
-            As we can see, it is impossible that this switch leaves Opt'(I) worse off than Opt(I).
-            Thus, Opt'(I) is indeed optimal.
-            This is a contradiction on the definition of Opt(I).
-            Therefore, we have that A produces an optimal output on all input.
-            That is, A is correct.
-        \end{proof}
-    \end{enumerate}
-
-    \pagebreak % completely optional, just trying for flow
-    \prob{10}
-    INPUT: A collection of jobs $J_1, \dots, J_n$, where the $i$th job is a tuple $(r_i, x_i)$ of non-negative integers specifying the release time and size of the job.
-
-    OUTPUT: A preemptive feasible schedule for these jobs on one processor that minimizes the total completion time $\sum_{i=1}^{n} C_i$.
-
-    We consider two greedy algorithms for solving this problem that schedule in an online fashion, that is, algorithms of the following form.
-    \begin{lstlisting}[escapeinside={(*}{*)}]
-    t = 0
-    While there are jobs left not completely scheduled:
-        Among those jobs (*$J_i$*) such that (*$r_i \leq t$*), and that have previously
-        been scheduled for less than (*$x_i$*) time units:
-            Pick a job (*$J_m$*) to schedule at time (*$t$*) according to some rule.
-        Increment t.
-    \end{lstlisting}
-
-    One can get different greedy algorithms depending on the rule for selecting $J_m$.
-    For each of the following greedy algorithms, prove or disprove that the algorithm is correct.
-    Proofs of correctness must use an exchange argument.
-
-    \textbf{SJF:} Pick $J_m$ to be the job with minimal size $x_i$.
-    Ties are broken arbitrarily.
-
-    \textbf{SRPT:} Let $y_{i,t}$ be the total time that job $J_m$ has been run before time $t$.
-    Pick $J_m$ to be a job which has minimal remaining processing time, that is, that has minimal $x_i - y_{i, t}$.
-    Ties broken arbitrarily.
-
-
-    \begin{thm}
-        SJF is not optimal.
-    \end{thm}
-    \begin{proof}
-        Consider the following collection of jobs: $\{ a=(3,6),b=(0,8) \}$.
-        \image{p10atable}
-        We can see that SJF schedules $a$ first so that it finishes one unit later than $b$ does in Opt.
-        This increases the overall completion time, and so SJF is not optimal.
-    \end{proof}
-
-    \begin{thm}
-        Algorithm SRPT is optimal.
-    \end{thm}
-    \begin{proof}
-        Assume, to reach a contradiction, that this is not the case.
-        Then there exists some input I on which SRPT produces a sub-optimal output.
-        We can call this output S(I).
-        Now we say that Opt(I) is an optimal output on I which agrees with S(I) for the maximum number of \emph{job endings}.
-        That is, at any point in time when a job ends in S(I), it also ends in Opt(I), and visa versa, until some final time $t$.
-
-        This difference is not because Opt(I) finished a job before S(I).
-        If Opt(I) could run some job to completion before S(I), it certainly would have been a job with less remaining processing time than what S(I) ran at the time.
-
-        At time $t$, S(I) completes some job $m$, where Opt(I) chooses some other job; call it $k$.
-        Note that $k$ must be run later in S(I), and also that $m$ must finish later in Opt(I).
-        We can call this time when $m$ terminates in Opt(I) $u$.
-
-        Now, we are interested in another output, Opt'(I).
-        This is exactly like Opt(I), but $m$ is run at time $t$ as in S(I), and $k$ runs at time $u$.
-        This, of course, now shares a greater number of job endings with S(I) than does Opt(I).
-
-        \image{p10btable}
-
-        Now it is left to show that Opt'(I) is also optimal.
-        Note that $k$ must have strictly more processing time remaining than $m$ at time $t$.
-        If they are tied (both having only 1 unit left), then we are done.
-        Because of this fact, when this swap is done, we have reduced the completion time of $m$ by moving it forward, but could have only increased the completion time of $k$ by at most one unit.
-        With this, we have that such a move will leave Opt'(I) with equal or lesser completion time of Opt(I).
-
-        Thus, we have contradicted the definition of Opt(I), and shown that SRPT is indeed optimal.
-    \end{proof}
+	Let $x_jy_i$ = the first point of disagreement between $A(I)$ and $OPT(I)$\\
+	Since the value of $x_jy_i$ differs in both $A(I)$ and $OPT(I)$, they must hold opposite values; this introduces two cases:
+	\begin{enumerate}
+		\item $A_{x_{j}y_{i}}$ = 0, $A_{x_{j+s}y_{i}}$ = 1, $A_{x_{j}y_{i+t}}$ = 1, $A_{x_{j+s}y_{i+t}}$ = 0 to ensure $\sum_{a=0}^{n} x_ar_i = r_i$ and $\sum_{a=0}^{n} c_jy_a = c_j$
+		\item $A_{x_{j}y_{i}}$ = 1, $A_{x_{j+s}y_{i}}$ = 0, $A_{x_{j}y_{i+t}}$ = 0, $A_{x_{j+s}y_{i+t}}$ = 1 to ensure $\sum_{a=0}^{n} x_ar_i = r_i$ and $\sum_{a=0}^{n} c_jy_a = c_j$
+	\end{enumerate}
+	
+	In either case, if $OPT(I)$ disagrees with $A(I)$ at $x_jy_i$, its values must be flipped for all values in $A(I)$ in both cases
+	above. \\
+	
+	Let $OPT\textsc{\char13}(I)$ = $OPT(I)$ but with the values of $OPT_{x_jy_i}$, $OPT_{x_{j+s}y_i}$ , $OPT_{x_jy_{i+t}$, and $OPT_{x_{j+s}y_{i+t}}$flipped \\
+		
+	Due to this flip, we have successfully moved one step closer to $A(I)$. For the first case, the $i$\textsuperscript{th} row of $OPT\textsc{\char13}(I)$
+	sums to $r_i - 1 + 1 = r_i$, the $(i + t)$\textsuperscript{th} row sums to $r_{i+t} + 1 - 1 = r_{i+t}$, the $j$\textsuperscript{th} column sums to $c_j + 1 - 1 = c_j$ , and the $(j + s)$\textsuperscript{th} column sums to $c_{j+s} - 1 + 1 = c_{j+s}$. As one can see, the rows and columns sum to the same values. \\
+	
+	Clearly, the same sums will hold up in the second case as well; the only difference is the values are flipped.
+	
+	Therefore, $OPT\textsc{\char13}(I)$ has moved one step closer to $A(I)$ and the rows and columns sum up to the same value, so it is still optimal. \\
+	
+	This creates a contradiction of our initial assumption that input matrix $I$ produces incorrect input, so $A(I)$ is
+	indeed correct.
+	\end{proof}
 
 \end{document}
