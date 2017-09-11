@@ -33,27 +33,27 @@
 	are assigned 0\textsc{\char13}s. That is, the columns that still needs the most 1\textsc{\char13}s are given 1\textsc{\char13}s.
 	
 	\begin{proof}
-	Assume for a contradiction there exists some input matrix $I$ such that $A(I)$ produces incorrect input. \\
+	Assume for a contradiction there exists some input matrix $I$ such that $A(I)$ produces incorrect input.
 	
-	Let $A(I)$ = the greedy algorithm's output on input $I$ \\
+	Let $A(I)$ = the greedy algorithm's output on input $I$.
 	Let $OPT(I)$ = the optimal solution on input $I$ that agrees
-	with $A(I)$ for the most number of steps \\\\
+	with $A(I)$ for the most number of steps.
  	
 	$OPT(I)$ = 
-	\begin{bmatrix}
+	$\begin{bmatrix}
 		\vdots \\
-		\dots & $x_{j}y_{i}$ & \dots & $x_{j+s}y_{i}$ & \dots \\
-		\dots & $x_{j}y_{i+t}$ & \dots & $x_{j+s}y_{i+t}$ & \dots \\
+		\dots & x_{j}y_{i} & \dots & x_{j+s}y_{i} & \dots \\
+		\dots & x_{j}y_{i+t} & \dots & x_{j+s}y_{i+t} & \dots \\
 		\vdots
-	\end{bmatrix}
+	\end{bmatrix}$
 	
-	$A(I)$ = \hspace{12}
-	\begin{bmatrix}
+	$A(I)$ = %\hspace{12}
+	$\begin{bmatrix}
 		\vdots \\
-		\dots & $x_{j}y_{i}$ & \dots & $x_{j+s}y_{i}$ & \dots \\
-		\dots & $x_{j}y_{i+t}$ & \dots & $x_{j+s}y_{i+t}$ & \dots \\
+		\dots & x_{j}y_{i} & \dots & x_{j+s}y_{i} & \dots \\
+		\dots & x_{j}y_{i+t} & \dots & x_{j+s}y_{i+t} & \dots \\
 		\vdots
-	\end{bmatrix} \\\\
+	\end{bmatrix} $
 
 	Let $x_jy_i$ = the first point of disagreement between $A(I)$ and $OPT(I)$\\
 	Since the value of $x_jy_i$ differs in both $A(I)$ and $OPT(I)$, they must hold opposite values; this introduces two cases:
@@ -63,9 +63,9 @@
 	\end{enumerate}
 	
 	In either case, if $OPT(I)$ disagrees with $A(I)$ at $x_jy_i$, its values must be flipped for all values in $A(I)$ in both cases
-	above. \\
+	above.
 	
-	Let $OPT\textsc{\char13}(I)$ = $OPT(I)$ but with the values of $OPT_{x_jy_i}$, $OPT_{x_{j+s}y_i}$ , $OPT_{x_jy_{i+t}$, and $OPT_{x_{j+s}y_{i+t}}$flipped \\
+	Let $OPT\textsc{\char13}(I)$ = $OPT(I)$ but with the values of $OPT_{x_jy_i}$, $OPT_{x_{j+s}y_i}$ , $OPT_{x_jy_{i+t}}$, and $OPT_{x_{j+s}y_{i+t}}$ flipped
 		
 	Due to this flip, we have successfully moved one step closer to $A(I)$. For the first case, the $i$\textsuperscript{th} row of $OPT\textsc{\char13}(I)$
 	sums to $r_i - 1 + 1 = r_i$, the $(i + t)$\textsuperscript{th} row sums to $r_{i+t} + 1 - 1 = r_{i+t}$, the $j$\textsuperscript{th} column sums to $c_j + 1 - 1 = c_j$ , and the $(j + s)$\textsuperscript{th} column sums to $c_{j+s} - 1 + 1 = c_{j+s}$. As one can see, the rows and columns sum to the same values. \\
