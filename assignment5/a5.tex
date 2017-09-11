@@ -68,11 +68,11 @@
 	Let $OPT\textsc{\char13}(I)$ = $OPT(I)$ but with the values of $OPT_{x_jy_i}$, $OPT_{x_{j+s}y_i}$ , $OPT_{x_jy_{i+t}}$, and $OPT_{x_{j+s}y_{i+t}}$ flipped
 		
 	Due to this flip, we have successfully moved one step closer to $A(I)$. For the first case, the $i$\textsuperscript{th} row of $OPT\textsc{\char13}(I)$
-	sums to $r_i - 1 + 1 = r_i$, the $(i + t)$\textsuperscript{th} row sums to $r_{i+t} + 1 - 1 = r_{i+t}$, the $j$\textsuperscript{th} column sums to $c_j + 1 - 1 = c_j$ , and the $(j + s)$\textsuperscript{th} column sums to $c_{j+s} - 1 + 1 = c_{j+s}$. As one can see, the rows and columns sum to the same values. \\
+	sums to $r_i - 1 + 1 = r_i$, the $(i + t)$\textsuperscript{th} row sums to $r_{i+t} + 1 - 1 = r_{i+t}$, the $j$\textsuperscript{th} column sums to $c_j + 1 - 1 = c_j$ , and the $(j + s)$\textsuperscript{th} column sums to $c_{j+s} - 1 + 1 = c_{j+s}$. As one can see, the rows and columns sum to the same values.
 	
 	Clearly, the same sums will hold up in the second case as well; the only difference is the values are flipped.
 	
-	Therefore, $OPT\textsc{\char13}(I)$ has moved one step closer to $A(I)$ and the rows and columns sum up to the same value, so it is still optimal. \\
+	Therefore, $OPT\textsc{\char13}(I)$ has moved one step closer to $A(I)$ and the rows and columns sum up to the same value, so it is still optimal.
 	
 	This creates a contradiction of our initial assumption that input matrix $I$ produces incorrect input, so $A(I)$ is
 	indeed correct.
