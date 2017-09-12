@@ -8,4 +8,5 @@ script:
   - pdflatex -output-directory=../_build a5.tex
   - cd ..
 after_success:
-  - curl --ftp-create-dirs -T _build/a5.pdf -u $PITT_USER:$PITT_PW sftp://unixs.cis.pitt.edu/$PITT_PATH
+  - export SSHPASS=$PITT_PW
+  - sshpass -e scp _build/a5.pdf $PITT_USER@unixs.cis.pitt.edu/public/html
