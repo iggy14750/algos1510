@@ -8,6 +8,8 @@ before_install:
   - sudo apt-get install sshpass
 script:
   - mkdir _build
-  - pdflatex -include-directory=$PROJECT_DIR -output-directory=_build a5.tex
+  - cd assignment5
+  - pdflatex -output-directory=../_build a5.tex
+  - cd ..
 after_success:
   - curl --ftp-create-dirs -T _build/a5.pdf -u $PITT_USER:$PITT_PW sftp://unixs.cis.pitt.edu/$PITT_PATH
