@@ -65,6 +65,8 @@
     There are strictly more checkers to place in column $k$ than $j$.
     This means there \textbf{must} exist some later row (call it $p$) on which column $j$ is 0, and column $k$ is 1 [Consider $k$'s 1s as buckets and $j$'s 1s as balls, there must be an empty bucket].
     
+    \image{p12mat}
+    
     Now, we can construct Opt'(I), which is exactly like Opt(I), except that the entries $(i, j), (i, k), (p, j), (p, k)$ are inverted (1s to 0s and vice versa).
     Note, row $i$ now agrees with A(I) (recall that we can do this for all differences in this row between A(I) and Opt(I)), which is one more row than Opt(I).
     Further, Opt'(I) is correct.
@@ -72,44 +74,6 @@
     
     So, this construction is a contradiction on the definition of Opt(I).
     And for this reason, $A$ is correct.
-    
-%	$OPT(I)$ = 
-%	$\begin{bmatrix}
-%		\vdots \\
-%		\dots & x_{j}y_{i} & \dots & x_{j+s}y_{i} & \dots \\
-%		\dots & x_{j}y_{i+t} & \dots & x_{j+s}y_{i+t} & \dots \\
-%		\vdots
-%	\end{bmatrix}$
-%	
-%	$A(I)$ = \hspace{12pt}
-%	$\begin{bmatrix}
-%		\vdots \\
-%		\dots & x_{j}y_{i} & \dots & x_{j+s}y_{i} & \dots \\
-%		\dots & x_{j}y_{i+t} & \dots & x_{j+s}y_{i+t} & \dots \\
-%		\vdots
-%	\end{bmatrix} $
-%
-%	Let $x_jy_i$ = the first point of disagreement between $A(I)$ and $OPT(I)$\\
-%	Since the value of $x_jy_i$ differs in both $A(I)$ and $OPT(I)$, they must hold opposite values; this introduces two cases:
-%	\begin{enumerate}
-%		\item $A_{x_{j}y_{i}}$ = 0, $A_{x_{j+s}y_{i}}$ = 1, $A_{x_{j}y_{i+t}}$ = 1, $A_{x_{j+s}y_{i+t}}$ = 0 to ensure $\sum_{a=0}^{n} x_ar_i = r_i$ and $\sum_{a=0}^{n} c_jy_a = c_j$
-%		\item $A_{x_{j}y_{i}}$ = 1, $A_{x_{j+s}y_{i}}$ = 0, $A_{x_{j}y_{i+t}}$ = 0, $A_{x_{j+s}y_{i+t}}$ = 1 to ensure $\sum_{a=0}^{n} x_ar_i = r_i$ and $\sum_{a=0}^{n} c_jy_a = c_j$
-%	\end{enumerate}
-%	
-%	In either case, if $OPT(I)$ disagrees with $A(I)$ at $x_jy_i$, its values must be flipped for all values in $A(I)$ in both cases
-%	above.
-%	
-%	Let $OPT\textsc{\char13}(I)$ = $OPT(I)$ but with the values of $OPT_{x_jy_i}$, $OPT_{x_{j+s}y_i}$ , $OPT_{x_jy_{i+t}}$, and $OPT_{x_{j+s}y_{i+t}}$ flipped
-%		
-%	Due to this flip, we have successfully moved one step closer to $A(I)$. For the first case, the $i$\textsuperscript{th} row of $OPT\textsc{\char13}(I)$
-%	sums to $r_i - 1 + 1 = r_i$, the $(i + t)$\textsuperscript{th} row sums to $r_{i+t} + 1 - 1 = r_{i+t}$, the $j$\textsuperscript{th} column sums to $c_j + 1 - 1 = c_j$ , and the $(j + s)$\textsuperscript{th} column sums to $c_{j+s} - 1 + 1 = c_{j+s}$. As one can see, the rows and columns sum to the same values.
-%	
-%	Clearly, the same sums will hold up in the second case as well; the only difference is the values are flipped.
-%	
-%	Therefore, $OPT\textsc{\char13}(I)$ has moved one step closer to $A(I)$ and the rows and columns sum up to the same value, so it is still optimal.
-%	
-%	This creates a contradiction of our initial assumption that input matrix $I$ produces incorrect input, so $A(I)$ is
-%	indeed correct.
 	\end{proof}
 
 \end{document}
