@@ -21,3 +21,10 @@ We have moved one step closer to A(I).
 Since j_m was located at time p in A(I), it had fewer chances for placement than j_n by definition of algorithm A.  Therefore, j_n 's deadline must be after j_m 's deadline.
 Since we swapped their locations, j_m will now finish earlier in time, which is valid, and j_n will finish later in time, which is valid as well since its deadline is later than j_m 's as shown earlier.
 Because of this, we have moved one step closer to A(I) and each job has the chance to finish before its deadline, so there is a contradiction.
+
+=== Notes on problem 13 b):
+
+Greedy Algorithm: Since we know the release times and deadlines ahead of time, we can calculate at any given how many jobs are "active" (can be run).
+So our algorithm will choose the interval of size k with the largest sum of jobs being run in that interval that has not been used as an interval at the moment.
+If there are ties, they are broken arbitrarily.
+

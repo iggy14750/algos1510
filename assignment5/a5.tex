@@ -76,4 +76,62 @@
     And for this reason, $A$ is correct.
 	\end{proof}
 
+	\prob{13a}
+	INPUT: A list of $n$ jobs and specified times whether a machine is turned out during the time interval $(t, t + 1)$, where each job $j$ has an integer release time $r_j$, and an integer deadline $d_j$, is given. \\
+	OUTPUT: A feasible schedule where each job $j$ must be run for one unit of time, not starting before $r_j$, and not ending after $d_j$. \\
+	
+	Greedy Algorithm: At any time interval $k$, the job with the least number of time intervals remaining with the machine turned on before its deadline is chosen to run next.  If there are ties, they are broken arbitrarily.
+	
+	\begin{thm}
+		This algorithm, A, is indeed correct.
+	\end{thm}
+	
+	\begin{proof}
+		Assume for a contradiction there exists some input $I$ such that $A(I)$ produces incorrect input.
+		
+		Let $A(I)$ = the greedy algorithm's output on input $I$.
+		
+		Let $OPT(I)$ = the optimal solution on input $I$ that agrees
+		with $A(I)$ for the most number of jobs run.\\
+		
+		Let $p$ be the first time of disagreement between $A(I)$ and $OPT(I)$ where two different jobs are run on each algorithm; these jobs are $j_m$ and $j_n$ for each algorithm respectively.  This means there exists some time $u$ such that $j_m$ is run in $OPT(I)$ since $OPT(I)$ must run every job.
+		
+		\image{p13atable}
+		
+		Let $OPT\textsc{\char13}(I)$ = the optimal solution but with $j_m$ run at time $p$ and $j_n$ at time $u$, exchanging the two jobs.\\
+		
+		With $OPT\textsc{\char13}(I)$, we have moved one step closer to $A(I)$.  Now, we must prove that it is still optimal.  Since $j_m$ was located at time $p$ in $A(I)$, it had fewer chances for placement than $j_n$ by definition of algorithm $A$.  Therefore, $j_n$\textsc{\char13}s deadline must be after $j_m$\textsc{\char13}s deadline.  Since we swapped their locations in $OPT\textsc{\char13}(I)$, $j_m$ will now finish earlier in time, which is valid, and $j_n$ will finish later in time, which is valid as well since its deadline is later than $j_m$\textsc{\char13}s as shown earlier.\\
+		
+		As a result, we have obviously moved one step closer to $A(I)$ because of the exchange of $j_m$ and $j_n$.  Also, our new solution, $OPT\textsc{\char13}(I)$, is still optimal because each job has the chance to finish before its deadline.\\
+		
+		Therefore, we have reached a contradiction of our initial assumption which means $A(I)$ must be correct. 
+	\end{proof}
+
+	\prob{13b}
+	INPUT: A list of $n$ jobs and specified times whether a machine is turned out during the time interval $(t, t + 1)$, where each job $j$ has an integer release time $r_j$, and an integer deadline $d_j$, is given. Also, a positive integer $L$ is provided that determines the size of an interval in which the machine can be turned on for any given time.\\
+	OUTPUT: A feasible schedule where each job $j$ must be run for one unit of time, not starting before $r_j$, and not ending after $d_j$, and the number of times the machine is turned on for an interval of length $L$ is minimized. \\
+	
+	Greedy Algorithm: Calculate at every given time $t$ how many jobs are released at that specific time.  Then, choose the maximum of these numbers and active the machine at that maximum (time $p$) for length $L$ so the machine is active for the interval $(p, p+L)$.  Continue this until we have enough intervals such that all jobs are run at some point.
+	
+	\begin{thm}
+		This algorithm, A, is indeed correct.
+	\end{thm}
+	
+	\begin{proof}
+		Assume for a contradiction there exists some input jobs $I$ and interval length $L$ such that $A(I, L)$ produces incorrect input.
+		
+		Let $A(I, L)$ = the greedy algorithm's output on inputs $I$ and $L$.
+		
+		Let $OPT(I, L)$ = the optimal solution on inputs $I$ and $L$ that agrees
+		with $A(I, L)$ for the most number of jobs run.\\
+		
+		Let $p$ be the first time of disagreement between $A(I, L)$ and $OPT(I, L)$ where two intervals of length $L$ began running at different times; these intervals are $i_m$ and $i_n$ for each algorithm respectively.  This means there exists some time $u$ such that $i_m$ is run in $OPT(I)$ since $OPT(I)$ must run every job.\\
+		
+		Let $OPT\textsc{\char13}(I, L)$ = the optimal solution but at time $p$, the next interval to run in $A(I, L)$ is ran and the the interval run at time $p$ in $OPT(I, L)$ is run at the next interval time in $A(I, L)$ (let's call this later time $u$).\\
+		
+		Our team could not figure out the next steps from here but we know the process on how to solve it.  Basically after this swap, we have moved one step closer to the solution in $A(I, L)$.  But, we need to prove the optimality of $OPT\textsc{\char13}(I, L)$ by proving 1) we have removed an interval or stayed at the same number of intervals in the solution, 2) every job is run after its release time and 3) every job is run before its deadline.  We were stuck on this but were hoping you could provide us with partial credit to make up for this lack of understanding the specifics of this one problem.  We know the general concept and techniques to reach the solution but could not reach it in this particular scenario.\\
+		
+		At the point, after proving its optimality, we have discovered that we are one step closer to $A(I, L)$ and it's still optimal, so we have contradicted our initial assumption that inputs $I$ and $L$ would produce incorrect input, so $A(I, L)$ is actually correct.		
+	\end{proof}
+
 \end{document}
