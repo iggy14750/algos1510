@@ -28,3 +28,8 @@ Greedy Algorithm: Since we know the release times and deadlines ahead of time, w
 So our algorithm will choose the interval of size k with the largest sum of jobs being run in that interval that has not been used as an interval at the moment.
 If there are ties, they are broken arbitrarily.
 
+Theorem: A(x) is correct
+Proof: Assume there exists an input I such that A(I) produces incorrect output.
+
+Let A(I) = ...
+Let OPT(I) = ...
