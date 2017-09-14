@@ -7,6 +7,6 @@ script:
   - cd assignment5
   - pdflatex -output-directory=../_build a5.tex
   - cd ..
+after_success:
   - export SSHPASS=$PITT_PW
   - sshpass -e scp -o StrictHostKeyChecking=no _build/a5.pdf "$PITT_USER@unixs.cis.pitt.edu:public/html"
-
