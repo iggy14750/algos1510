@@ -105,7 +105,8 @@ Repeat until G is empty:
 	
 	\begin{enumerate}[label=(\alph*)]
 		\item Show that if you implement this recursion directly in say the C programming language, that the
-		program would use exponentially, in $n$, many arithmetic operations.
+		program would use exponentially, in $n$, many arithmetic operations.
+
 		
 		\begin{proof}
 			Implementing this recursively means that (only needing to consider the last iteration of the sum) $T(n)$ is made of two recursive-call subtrees of 2 different sizes, $T(n-1)$, and $T(n-2)$.
@@ -141,6 +142,22 @@ return T[n].
 		\end{proof}
 		
 		\item Give an algorithm for this problem that only uses $O(n)$ arithmetic operations.
+		
+		\begin{proof}
+			Consider the following code, and its explanation.
+			\begin{lstlisting}
+Let T be an array of size n+1.
+T[0] = T[1] = 2.
+Let sum S be the total sum so far.
+For i = 1, n do:
+	S += T[i-1] * T[i-2].
+	T[i] = T[i-1] * T[i-2].
+return T[n].
+			\end{lstlisting}
+			Consider using a cache to store $T(i)$, $i\in [n]$.
+			Then, to compute $T(n)$, we need only perform a linear amount of work, summing the partial products as defined above.
+			We can use this to compute each partial value up to $n$ requiring only one extra multiplication for every value $i$ that is computed in the summation.  Thus, if we passed in the value $n+1$, we have already computed $T(n)$ and $T(n-1)$ so the value of $T(n+1) = T(n)*T(n-1)$, one more simple multiplication.  Similarly, for $T(n+2)$, the value is one more multiplication of $T(n+1)*T(n)$.  This indicates that for every value $n$ that we increase, our number of arithmetic operations follows linearly and we end up with a runtime of $O(n)$.
+		\end{proof}
 	\end{enumerate}
 	
 	
