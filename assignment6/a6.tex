@@ -119,7 +119,26 @@ Repeat until G is empty:
 		\end{proof}
 	
 		\item Explain how, by not recomputing the same $T(i)$ value twice, one can obtain an algorithm for this
-		problem that only uses $O(n^2)$ arithmetic operations.
+		problem that only uses $O(n^2)$ arithmetic operations.
+		
+		\begin{proof}
+			Consider the following code, and its explanation.
+			\begin{lstlisting}
+Let T be an array of size n+1.
+T[0] = T[1] = 2.
+For i = 2, n do:
+	int partial = 0.
+	For j = 1, i-1 do:
+		partial += T[j-1] * T[j].
+	T[i] = partial.
+return T[n].
+			\end{lstlisting}
+			Consider using a cache to store $T(i)$, $i\in [n]$.
+			Then, to compute $T(n)$, we need only perform a linear amount of work, summing the partial products as defined above.
+			We can use this to compute each partial value up to $n$.
+			So, this linear work grows as we attack bigger problems, but notice that the rate it grows at is itself linear.
+			The closed form of this is that overall, to compute $T(n)$ for some fixed $n$, requires $O(n)$ operations.
+		\end{proof}
 		
 		\item Give an algorithm for this problem that only uses $O(n)$ arithmetic operations.
 	\end{enumerate}
