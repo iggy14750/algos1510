@@ -94,6 +94,30 @@ Repeat until G is empty:
 		$G_k$ is assigned to H at some later time.
 		
 	\end{proof}
+
+
+	\prob{1}
+	Consider the recurrence relation $T(0) = T(1) = 2$ for $n > 1$
+	
+	\[ T(n) = \sum_{i=1}^{n-1} T(i)T(i-1) \]
+	
+	We consider the problem of computing $T(n)$ from $n$.
+	
+	\begin{enumerate}[label=(\alph*)]
+		\item Show that if you implement this recursion directly in say the C programming language, that the
+		program would use exponentially, in $n$, many arithmetic operations.
+		
+		\begin{proof}
+			Implementing this recursively means that (only needing to consider the last iteration of the sum) $T(n)$ is made of two recursive-call subtrees of 2 different sizes
+		\end{proof}
+	
+		\item Explain how, by not recomputing the same $T(i)$ value twice, one can obtain an algorithm for this
+		problem that only uses $O(n^2)$ arithmetic operations.
+		
+		\item Give an algorithm for this problem that only uses $O(n)$ arithmetic operations.
+	\end{enumerate}
+	
+	
 \end{document}
 
 
