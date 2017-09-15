@@ -108,7 +108,14 @@ Repeat until G is empty:
 		program would use exponentially, in $n$, many arithmetic operations.
 		
 		\begin{proof}
-			Implementing this recursively means that (only needing to consider the last iteration of the sum) $T(n)$ is made of two recursive-call subtrees of 2 different sizes
+			Implementing this recursively means that (only needing to consider the last iteration of the sum) $T(n)$ is made of two recursive-call subtrees of 2 different sizes, $T(n-1)$, and $T(n-2)$.
+			$T(n-1)$ must be a larger subtree than $T(n-2)$, because namely $T(n-1)$ contains it.
+			We know that this property is self-similar throughout all of the children.
+
+			So it is that the complexity of $T(n)$ is bounded below by that of $2*T(n-2)$.
+			If this pattern is continued until the base case of 1 or 0, then we would see $2*2*2*\dots*1 = 2^{n/2}$
+			
+			Thus, when only considering the final step of the sum, we find that the recursive-call tree, and therefore time complexity, of $T(n)$ is $O(2^n)$.
 		\end{proof}
 	
 		\item Explain how, by not recomputing the same $T(i)$ value twice, one can obtain an algorithm for this
