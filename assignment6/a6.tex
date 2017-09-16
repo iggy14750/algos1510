@@ -1,0 +1,199 @@
+\documentclass{article}
+\author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
+\title{Assignment 6}
+\date{Friday, September 15, 2017}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+
+%\setlength{\parindent}{0pt}
+\newtheorem{thm}{Claim}
+\providecommand{\prob}[1]{\section*{Problem #1}}
+\providecommand{\image}[1]{
+    \begin{center}
+        \includegraphics{#1}
+    \end{center}
+}
+
+
+\begin{document}
+\maketitle
+
+	\prob{7}
+	Consider the algorithm that selects the page that will NOT be accessed for the longest period of time in the future
+	(this is the classic optimal page-replacement algorithm, requiring foreknowledge--which we here have), which we shall call "Not Used in the Future", or NUF. Suppose that it doesn't evict a page until the last possible moment (i.e. it is \textbf{lazy}).
+
+	\begin{thm}
+		This algorithm, NUF, correctly solves the problem of fast-slow memory page eviction (i.e. it minimizes the total \# of evictions).
+	\end{thm}
+	
+	\begin{proof}
+		Assume, to get a contradiction, that NUF is incorrect, that is, there exists some input $I$ for which NUF produces an output that is not optimal. Call this output N(I).
+		Let Opt(I) be the output of an optimal algorithm which agrees with N(I) for the maximum number of steps.
+		
+		Recall that $k$ is the size (in pages) of fast memory and $n$ is the size (in pages) of slow memory.
+		Note that we will presume that $k$ < $n$ because otherwise fast memory can simply hold a copy of every page and no evictions are necessary, obviating the problem. We also suppose that $k > 1$, since if $k = 1$ every request for a new page would result in an eviction, again obviating the problem. So there are at least 2 page slots in fast memory (and thus at least 3 in slow memory, so at least pages $a$, $b$, $c$ exist, else this problem is moot).
+		
+		Now, let $t$ be the point where Opt(I) and N(I) first disagree, in the sequence of memory access requests. At this point, let $a$ be the page evicted in N(I).  
+		Let $b$ be the page evicted in Opt(I). We know $a \ne b$, else we are done.
+		If $$t_i$$ is the length of time after $t$ where page $i$ is accessed again, then we know $t_a > t_b$ (else NUF would have chosen $b$).
+		
+		Now construct Opt'(I), which is identical to Opt(I), except that at time $t$ Opt'(I) evicts $a$ instead of $b$. Also the change according to cases below.
+		It is clear that Opt'(I) is more similar to N(I) than Opt(I), so it remains to be shown that it is still optimal (i.e. that the \# of evictions has not increased).
+		
+		Because we specified that NUF is lazy, and since Opt(I) and Opt'(I) agree with N(I) up to time $t$, we know that there must be some page requested at time $t$ that is not in the $k$ pages already in fast memory, thus necessitating the eviction. Call this page $c$. Now consider our three outputs at time $t$: all have pages ($a$, $b$) in fast memory, and $c$ is being requested. Opt'(I) and N(I) evict $a$ to make space, so now the cache has ($b$, $c$), whereas Opt(I) evicts $b$ leaving ($a$, $c$). Note here that at this time $t+1$ or later, there must necessarily be another eviction/request of one of these ($a$ or $b$), else NUF and hence Opt' have the same number as Opt and we are done. We show that Opt'(I) is still optimal:
+		
+		\begin{enumerate}[label=\textbf{Case \arabic*.}]
+			\item At time $u$, some eviction must occur and Opt(I) evicts $a$ in favor of $j$. Have Opt'(I) evict $b$, leaving both at ($j$, $c$).
+			
+			\item  At time $u$, a request to $b$ is made (this necessarily happens before a request to $a$ because of NUF). Then Opt(I) evicts $a$ to make room, giving ($b$, $c$). Then Opt'(I) can get from ($b$, $c$) (previous state) to that state in 1 or 0 evictions. Thus, the number of evictions in Opt'(I) $\leq$ the number of evictions in Opt(I) and it is equally optimal.
+			
+		 	\item At time $u$, a request to $b$ is made and Opt(I) chooses to evict $c$ (or whatever other page it has), leaving ($b$,$a$). Then we can do the same with Opt'(I) in 1 eviction.
+		\end{enumerate}
+	
+		Generally, another way to put this scenario (after time $t$) is that Opt'(I) will only be non-optimal if it must evict somewhere Opt(I) doesn't. But the first time that would happen is either a request for $b$ (in which case (Opt'(I) does nothing and Opt(I) must evict, leaving Opt'(I) at least as well off) or a request for $a$ (in which case Opt'(I) would have to evict, but which necessarily comes after a request for $b$, leaving the two even in evictions). Other requests can use the other spot until such time as Opt'(I) is aligned with Opt(I) again.
+	
+		Thus in any case Opt'(I) is at least as optimal as Opt(I) \textbf{and} it agrees with N(I) for one more step. This is a contradiction, therefore N(I) is correct.
+	\end{proof}
+
+	\prob{17}
+	Let $G = \{G_1, G_2, G_3, ..., G_n\}$ be the set of goods, and $G_H$, $G_W$ be the goods assigned to the husband and wife, respectively.
+	
+	Then we consider the algorithm:
+
+	\begin{lstlisting}
+Repeat until G is empty:
+	W and H take turns choosing the good they have valued the highest,
+		which is still part of G.
+	They remove this good from G and place it in their own collections.
+	\end{lstlisting}
+	
+	\begin{thm}
+		This algorithm, A, produces a split which both W and H would find fair, if it exists.
+	\end{thm}
+
+	\begin{proof}
+		Assume, to reach a contradiction, that this is not the case.
+		Then there exists some input I on which some fair arrangement is possible, but A(I) is not fair.
+		Let Opt(I) be a fair output which agrees with A(I) for the maximum number of steps taken by A of any other fair solution.
+		
+		Let $G_i$ be the first assignment on which A(I) and Opt(I) disagree.
+		Say this assignment occurs at time t, and that $G_i$ was assigned to W (WLOG) in A(I), but to H in Opt(I) (not at time t).
+		This means some other good, $G_k$, is assigned to W, where it was chosen by H in A(I).
+		We know that $G_k$ is available at t because A(I) and Opt(I) agree up to t.
+		Let $W(G_x)$ be the priority W assigned to $G_x$ (like n - it's position in W's ordering) (This applies to H as well).
+		
+		Now we construct Opt'(I), which is exactly like Opt(I), except that $G_i$ and $G_k$ have been swapped.
+		Obviously, Opt'(I) agrees with A(I) for one more step than Opt(I).
+		We know that W is happy, since $(G_i) > W(G_k)$ (otherwise, W would have chosen $G_k$ in A(I)).
+		$G_k$ is assigned to H at some later time.
+		
+	\end{proof}
+
+
+	\prob{1}
+	Consider the recurrence relation $T(0) = T(1) = 2$ for $n > 1$
+	
+	\[ T(n) = \sum_{i=1}^{n-1} T(i)T(i-1) \]
+	
+	We consider the problem of computing $T(n)$ from $n$.
+	
+	\begin{enumerate}[label=(\alph*)]
+		\item Show that if you implement this recursion directly in say the C programming language, that the
+		program would use exponentially, in $n$, many arithmetic operations.
+
+		
+		\begin{proof}
+			Implementing this recursively means that (only needing to consider the last iteration of the sum) $T(n)$ is made of two recursive-call subtrees of 2 different sizes, $T(n-1)$, and $T(n-2)$.
+			$T(n-1)$ must be a larger subtree than $T(n-2)$, because namely $T(n-1)$ contains it.
+			We know that this property is self-similar throughout all of the children.
+
+			So it is that the complexity of $T(n)$ is bounded below by that of $2*T(n-2)$.
+			If this pattern is continued until the base case of 1 or 0, then we would see $2*2*2*\dots*1 = 2^{n/2}$
+			
+			Thus, when only considering the final step of the sum, we find that the recursive-call tree, and therefore time complexity, of $T(n)$ is $O(2^n)$.
+		\end{proof}
+	
+		\item Explain how, by not recomputing the same $T(i)$ value twice, one can obtain an algorithm for this
+		problem that only uses $O(n^2)$ arithmetic operations.
+		
+		\begin{proof}
+			Consider the following code, and its explanation.
+			\begin{lstlisting}
+Let T be an array of size n+1.
+T[0] = T[1] = 2.
+For i = 2, n do:
+	int partial = 0.
+	For j = 1, i-1 do:
+		partial += T[j-1] * T[j].
+	T[i] = partial.
+return T[n].
+			\end{lstlisting}
+			Consider using a cache to store $T(i)$, $i\in [n]$.
+			Then, to compute $T(n)$, we need only perform a linear amount of work, summing the partial products as defined above.
+			We can use this to compute each partial value up to $n$.
+			So, this linear work grows as we attack bigger problems, but notice that the rate it grows at is itself linear.
+			The closed form of this is that overall, to compute $T(n)$ for some fixed $n$, requires $O(n^2)$ operations.
+		\end{proof}
+		
+		\item Give an algorithm for this problem that only uses $O(n)$ arithmetic operations.
+		
+		\begin{proof}
+			Consider the following code, and its explanation.
+			\begin{lstlisting}
+Let T be an array of size n+1.
+T[0] = T[1] = 2.
+Let sum S be the total sum so far.
+For i = 1, n do:
+	S += T[i-1] * T[i-2].
+	T[i] = T[i-1] * T[i-2].
+return T[n].
+			\end{lstlisting}
+			Consider using a cache to store $T(i)$, $i\in [n]$.
+			Then, to compute $T(n)$, we need only perform a linear amount of work, summing the partial products as defined above.
+			We can use this to compute each partial value up to $n$ requiring only one extra multiplication for every value $i$ that is computed in the summation.  Thus, if we passed in the value $n+1$, we have already computed $T(n)$ and $T(n-1)$ so the value of $T(n+1) = T(n)*T(n-1)$, one more simple multiplication.  Similarly, for $T(n+2)$, the value is one more multiplication of $T(n+1)*T(n)$.  This indicates that for every value $n$ that we increase, our number of arithmetic operations follows linearly and we end up with a runtime of $O(n)$.
+		\end{proof}
+	\end{enumerate}
+	
+	
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
