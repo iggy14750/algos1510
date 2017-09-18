@@ -27,11 +27,11 @@
 Give a polynomial time algorithm that takes three strings, A, B and C, as input, and returns the longest sequence S that is a subsequence of A, B, and C.
 
 \begin{thm}
-The following algorithm, as described, provides a polynomial time ($O(n^3)$) solution to the LCS problem with 3 strings.
+The following algorithm, as described, provides a polynomial time $(O(n^3))$ solution to the LCS problem with 3 strings.
 \end{thm}
 
 \begin{proof}
-    Very similarly to the Longest Common Subsequence problem we did in class, we can use a three-dimensional array to find the longest common subsequence of three different strings in polynomial time, specifically n^3 time. If strings A, B, and C have lengths a, b, and c respectively, then we make a matrix LCS[a+1][b+1][c+1] and perform the following iterative process by way of a triple for-loop:
+    Very similarly to the Longest Common Subsequence problem we did in class, we can use a three-dimensional array to find the longest common subsequence of three different strings in polynomial time, specifically $n^3$ time. If strings A, B, and C have lengths a, b, and c respectively, then we make a matrix $LCS[a+1][b+1][c+1]$ and perform the following iterative process by way of a triple for-loop:
     
     \begin{lstlisting}
 
