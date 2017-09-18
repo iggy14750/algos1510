@@ -1,12 +1,15 @@
+env:
+  global:
+    A_NUM: 7
 before_install:
   - sudo apt-get update
   - sudo apt-get install texlive-latex-extra
   - sudo apt-get install sshpass
 script:
   - mkdir _build
-  - cd assignment6
-  - pdflatex -output-directory=../_build a6.tex
+  - cd assignment$A_NUM
+  - pdflatex -output-directory=../_build a$A_NUM.tex
   - cd ..
 after_success:
   - export SSHPASS=$PITT_PW
-  - sshpass -e scp -o StrictHostKeyChecking=no _build/a6.pdf "$PITT_USER@unixs.cis.pitt.edu:public/html"
+  - sshpass -e scp -o StrictHostKeyChecking=no _build/a$A_NUM.pdf "$PITT_USER@unixs.cis.pitt.edu:public/html"
