@@ -1,7 +1,7 @@
 \documentclass{article}
 \author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
-\title{}
-\date{}
+\title{Assignment 7}
+\date{Monday, September 18}
 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -31,7 +31,7 @@ The following algorithm, as described, provides a polynomial time ($O(n^3)$) sol
 \end{thm}
 
 \begin{proof}
-    Very similarly to the Longest Common Subsequence problem we did in class, we can use a three-dimensional array to find the longest common subsequence of three different strings in polynomial time, specifically n^3 time. If strings A, B, and C have lengths a, b, and c respectively, then we make a matrix LCS[a+1][b+1][c+1] and perform the following iterative process by way of a triple for-loop:
+    Very similarly to the Longest Common Subsequence problem we did in class, we can use a three-dimensional array to find the longest common subsequence of three different strings in polynomial time, specifically $n^3$ time. If strings A, B, and C have lengths a, b, and c respectively, then we make a matrix LCS[a+1][b+1][c+1] and perform the following iterative process by way of a triple for-loop:
     
     \begin{lstlisting}
 
@@ -54,6 +54,47 @@ The following algorithm, as described, provides a polynomial time ($O(n^3)$) sol
     
     As we can plainly see, the three for-loops run according to the length of the words and provide a nice polynomial time process for finding the LCS. Of course, this process can be generalized to work for arbitrary number of words.
 
+\end{proof}
+
+\prob{16}
+Give an efficient algorithm to find the fastest way to get a group of people across the bridge.
+
+\begin{thm}
+	The following algorithm, G, is correct.  G makes choices beginning with the slowest walker and moves to faster ones.
+\end{thm}
+
+\begin{proof}	
+	There seems to be two ways to move walkers:
+	\begin{enumerate}
+		\item We can move one walker at a time.  In this case, we run someone down with the fastest runner available, then return that runner to get back to work.
+		\item We can move walkers in pairs.  In this case, we first move the fastest two runners out to the far side, bring the fastest back, move the two slowest out together, and bring the second fastest back (it was put out there to  bring the torch back).
+	\end{enumerate}
+
+	$Lemma: $ It is always optimal to send the fastest runner on the far side back with the torch.
+	
+	$Proof.$ If anyone else went, then not only would their time back be longer, but whoever brings the torch back has to eventually cross again (at least one more time).  Choosing a slower runner could leave this time unchanged, or increase it, but in no case does sending the torch back with a slower runner result in a more optimal outcome.  QED\\
+	
+	$Lemma: $ Any optimal move of n walker will result in 2n-3 trips across the bridge.
+	
+	$Proof.$ Consider there are only two walkers on the near side of the bridge.  Then they can just cross.  $2*2 - 3 = 4 - 3 = 1$.\\
+	
+	Now assume the lemma holds for all numbers of walkers less than $n$.  To move a single walker across the bridge, he must cross and someone else must also cross back to return the torch to the others.
+	
+	Then we are left with $n - 1$ walkers, which we know requires $2(n-1) - 3 = 2n - 5$ bridge crossings.  But because we had the two crossings from before, the overall number of the crossings for the company was $2n - 5 + 2 = 2n - 3$ crossings.  QED
+	
+	The algorithm is the following:
+	
+	\begin{lstlisting}
+	
+		Repeat until the near side of the bridge is empty:
+			Choose between pair cross and individual cross.
+			Execute the crossing, but not both individual crossings.
+			$S_2$ might be better in a pair with $S_3$
+	
+	\end{lstlisting}
+	
+	As we can plainly see, after proving the effectiveness of both cases above and handling them in this for loop to always take care of all walkers on the bridge, we can see that the problem expands to more general cases as well, thus solving the above problem.
+	
 \end{proof}
 
 \end{document}
