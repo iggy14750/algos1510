@@ -1,29 +1,106 @@
 \documentclass{article}
 \author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
 \title{Assignment 8}
-\date{}
+\date{Wednesday 20, 2017}
 
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{enumitem}
 \usepackage[margin=0.8in]{geometry}
 \usepackage{graphicx}
-\usepackage{listings}
-\usepackage[usenames,dvipsnames,svgnames]{xcolor}
 
+% ============ USED FOR OUR FORMAT ============
 \newtheorem{thm}{Claim}
 \providecommand{\prob}[1]{\section*{Problem #1}}
+\providecommand{\soln}{\textbf{Solution: }}
 \providecommand{\image}[1]{
     \begin{center}
         \includegraphics{#1}
     \end{center}
+}
+\providecommand{\tightlist}{
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
+
+% ============ USED FOR CODE LISTINGS ============
+\usepackage{listings}
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35}
+\lstset{
+    basicstyle   = \footnotesize,
+    commentstyle = \color{javagreen},
+    frame        = single,
+    language     = C,
+    stringstyle  = \color{orange},
+    numbers      = left,
+    showstringspaces=false,
+    deletekeywords = {len, max, format, min},
+    morekeywords = {yield, function, then, do, to},
+    keywordstyle = \color{blue},
 }
 
 
 \begin{document}
 \maketitle
 
+    \prob{4}
+    Give a dynamic programming algorithm to find the cheapest conversion from one string to another.
+    
+    \soln Given two strings A, B, begin at the final character of each.
+    If these characters agree, then move on to the next one.
+    If they don't, then try each of the following, and choose the option with lowest cost:
+    \begin{enumerate}\tightlist
+        \item Delete the current character from A, and continue on in A, keeping the same position in B.
+        \item Insert the character from B into A, and continue on in B, keeping the same position in A.
+        \item Replace the character from A with the one from B, and move onto the next character in each.
+    \end{enumerate}
 
+    Exhausting A will mean we have to insert all of the remaining characters from B, and reaching the end of B will mean that we have to delete all the remaining characters from A.
+    
+    Or, more succinctly:
+    
+    \begin{lstlisting}
+function CSC(a, b):
+    if a == 0 then return 4b // Insert the rest of B
+    if b == 0 then return 3a // Delete the rest of A
+    if A[a] == B[b] then
+        return CSC(a-1, b-1)
+    else
+        return min(
+            3 + CSC(a-1, b),  // Delete A[a]
+            4 + CSC(a, b-1),  // Insert B[b]
+            5 + CSC(a-1, b-1) // Replace A[a] <- B[b]
+        )
+    \end{lstlisting}
+
+    Then we turn this into an iterative array-based algorithm.
+    Since the input to this are 2 integers, we can use a 2-dimensional array.
+    Consider using this table.
+    A cell's value will depend in its neighbors above, to the left, and up-left.
+    So, this table needs to be filled top-left to bottom-right.
+    We recycle the same base cases from the recursive solution.
+    Let n be the length of A, and m the length of B.
+    
+    \begin{lstlisting}
+int CSC[n+1][m+1]
+for b = 0 to m do
+    CSC[0][b] = 3b
+for a = 0 to n do
+    CSC[a][0] = 4a
+
+for a = 1 to n do
+    for b = 1 to m do
+        if A[a] == B[b] then
+            CSC[a][b] = CSC[a-1][b-1]
+        else
+            CSC[a][b] = min(
+                3 + CSC[a-1][b],
+                4 + CSC[a][b-1],
+                5 + CSC[a-1][b-1]
+            )
+
+return CSC[n][m]
+    \end{lstlisting}
 
 \end{document}
 
