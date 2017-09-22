@@ -1,4 +1,4 @@
-
+#!/usr/bin/env sh
 
 mkdir assignment$1
 sed -r "s/title\{\}/title\{Assignment $1\}/" template.tex > assignment${1}/a${1}.tex
