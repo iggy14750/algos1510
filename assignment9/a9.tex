@@ -84,6 +84,7 @@ for i = 3 to n do
             minCuts[Q] = 0
         else
             minCuts[Q] = (*$\displaystyle\min_{x \in Q}$*)(distance(left(x), right(x)) + minCuts[Q-x])
+return minCuts[P]
     \end{lstlisting}
     
     \pagebreak
