@@ -65,9 +65,13 @@
 function minCuts(P)
     let n = order(P)
     if n == 3 then
+    	// If there's only one triangle left, we're not adding any value to the
+    	// total perimeter sum of the triangles because no more chords can be formed
         return 0
     else
-        return (*$\displaystyle\min_{x \in P}$*)(distance(left(x), right(x)) + minCuts(P - x))
+    	// Find the shortest chord and take the non-chord vertex of the triangle out 
+    	// of the polygon; pass the new polygon into the recursive function
+        return (*$\displaystyle\min_{x \in P}$*)(distance(left(x), right(x)) + minCuts(P - x)) 
     \end{lstlisting}
     
     Then we can transform this into an iterative, bottom-up, \emph{hashmap} based algorithm.
