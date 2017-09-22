@@ -10,6 +10,7 @@
 
 % ============ USED FOR OUR FORMAT ============
 \newtheorem{thm}{Claim}
+\newtheorem{defn}{Definition}
 \providecommand{\prob}[1]{\section*{Problem #1}}
 \providecommand{\soln}{\textbf{Solution: }}
 \providecommand{\image}[1]{
@@ -43,7 +44,43 @@
 \begin{document}
 \maketitle
 
+    \prob{6}
+    Give an efficient algorithm which will find the lowest weight triangulation of some polygon.
+    \begin{defn}
+        A neighbor chord is a chord that, when drawn on a polygon with no chords across it, creates a triangle.
+    \end{defn}
 
+    \begin{thm}
+        Each triangulation can be decomposed into a series of neighbor chords of sub-polygons.
+    \end{thm}
+    \begin{proof}
+        Take some feasible triangulation.
+        It must hold some neighbor chord.
+        Remove the vertex of its triangle not on the chord, and repeat with the new sub-polygon. 
+    \end{proof}
+    
+    So, we can consider all neighbor chords, and the sub-polygons created therefrom, to construct all possible triangulations.
+    
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+function minCuts(P)
+    let n = order(P)
+    if n == 3 then
+        return 0
+    else
+        return (*$\displaystyle\min_{x \in P}$*)(distance(left(x), right(x)) + minCuts(P - x))
+    \end{lstlisting}
+    
+    Then we can transform this into an iterative, bottom-up, \emph{hashmap} based algorithm.
+    
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+Let minCuts be a hashmap from polygons to integers.
+for i = 3 to n do
+    for all i-gons Q in P do
+        if i == 3 then
+            minCuts[Q] = 0
+        else
+            minCuts[Q] = (*$\displaystyle\min_{x \in Q}$*)(distance(left(x), right(x)) + minCuts[Q-x])
+    \end{lstlisting}
 
 \end{document}
 
