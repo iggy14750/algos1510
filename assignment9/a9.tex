@@ -92,8 +92,8 @@ return minCuts[P]
     Give a linear time algorithm which finds the highest weight consecutive subsequence of a sequence of integers.
     
     The naive recursive solution simply returns the weight of the best consecutive subsequence (BCS).
-    The problem is that there is insufficient information to determine if the current integer can be included in the BCS moving forward.
-    Consider the following examples. We are considering the leftmost element of each, and notice that the BCS of each up to not including the leftmost element are the same, but that the first can include the leftmost element, but the second cannot.
+    The problem is that there is insufficient information to determine if the current integer can be included in the BCS moving forward (note: we construct the BCS from right to left).
+    Consider the following examples. We are considering the leftmost element of each, and notice that the BCS of each up to not including the leftmost element are the same, but that the second can include the leftmost element, while the first cannot.
     
     \[5, -10, 22, 15 \]
     \[5, 22, 15, -10 \]
@@ -118,7 +118,7 @@ end
     Then, these function calls can be transformed into array look-ups.
     
     \begin{lstlisting}
-int BSC[n+1]
+int BCS[n+1]
 int BCSlast[n+1]
 BCS[0] = BCSlast[0] = 0
 
