@@ -1,0 +1,153 @@
+\documentclass{article}
+\author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
+\title{Assignment 9}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{graphicx}
+
+% ============ USED FOR OUR FORMAT ============
+\newtheorem{thm}{Claim}
+\newtheorem{defn}{Definition}
+\providecommand{\prob}[1]{\section*{Problem #1}}
+\providecommand{\soln}{\textbf{Solution: }}
+\providecommand{\image}[1]{
+    \begin{center}
+        \includegraphics%[width=0.95\textwidth]
+            {#1}
+    \end{center}
+}
+\providecommand{\tightlist}{
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
+
+% ============ USED FOR CODE LISTINGS ============
+\usepackage{listings}
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35}
+\lstset{
+    basicstyle   = \footnotesize,
+    commentstyle = \color{javagreen},
+    frame        = single,
+    language     = C,
+    stringstyle  = \color{orange},
+    numbers      = left,
+    showstringspaces=false,
+    deletekeywords = {len, max, format, min},
+    morekeywords = {yield, function, then, do, to, let, end},
+    keywordstyle = \color{blue},
+}
+
+
+\begin{document}
+\maketitle
+
+    \prob{6}
+    Give an efficient algorithm which will find the lowest weight triangulation of some polygon.
+    \begin{defn}
+        A neighbor chord is a chord that, when drawn on a polygon with no chords across it, creates a triangle.
+    \end{defn}
+
+    \begin{thm}
+        Each triangulation can be decomposed into a series of neighbor chords of sub-polygons.
+    \end{thm}
+    \begin{proof}
+        Take some feasible triangulation.
+        It must hold some neighbor chord.
+        Remove the vertex of its triangle not on the chord, and repeat with the new sub-polygon. 
+    \end{proof}
+    
+    So, we can consider all neighbor chords, and the sub-polygons created therefrom, to construct all possible triangulations.
+    
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+function minCuts(P)
+    let n = order(P)
+    if n == 3 then
+        return 0
+    else
+        return (*$\displaystyle\min_{x \in P}$*)(distance(left(x), right(x)) + minCuts(P - x))
+    \end{lstlisting}
+    
+    Then we can transform this into an iterative, bottom-up, \emph{hashmap} based algorithm.
+    
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+Let minCuts be a hashmap from polygons to integers.
+for i = 3 to n do
+    for all i-gons Q in P do
+        if i == 3 then
+            minCuts[Q] = 0
+        else
+            minCuts[Q] = (*$\displaystyle\min_{x \in Q}$*)(distance(left(x), right(x)) + minCuts[Q-x])
+    \end{lstlisting}
+    
+    \pagebreak
+    \prob{7}
+    Give a linear time algorithm which finds the highest weight consecutive subsequence of a sequence of integers.
+    
+    The naive recursive solution simply returns the weight of the best consecutive subsequence (BCS).
+    The problem is that there is insufficient information to determine if the current integer can be included in the BCS moving forward.
+    Consider the following examples. We are considering the leftmost element of each, and notice that the BCS of each up to not including the leftmost element are the same, but that the first can include the leftmost element, but the second cannot.
+    
+    \[5, -10, 22, 15 \]
+    \[5, 22, 15, -10 \]
+    
+    So, we need to take account of this by also calculating the BCS including the previous element. Note S is the sequence of integers.
+    
+    \begin{lstlisting}
+function BCSlast(i) // BCS including the last element.
+    if i == 0 then return 0
+    let last = BCSlast(i-1)
+    if last < 0 then   // This is a critical step.
+        last = 0       // This is where we can start over,
+    return S[i] + last // so all subsequences do not start at S[i].
+end
+    
+function BCS(i)
+    if i == 0 then return 0
+    return max(BCS(i-1), BCSlast(i-1) + S[i])
+end
+    \end{lstlisting}
+    
+    Then, these function calls can be transformed into array look-ups.
+    
+    \begin{lstlisting}
+int BSC[n+1]
+int BCSlast[n+1]
+BCS[0] = BCSlast[0] = 0
+
+for i = 1 to n do
+    last = BCSlast[i]
+    if last < 0 then
+        last = 0
+    BCSlast[i] = S[i] + last
+    BCS[i] = max(BCS[i-1], BCSlast[i])
+return BCS[n]
+    \end{lstlisting}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
