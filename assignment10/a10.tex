@@ -85,14 +85,9 @@ We may generally consider this identical to the problem done in class involving 
     for i = 1 to n do:
         root[i][i] = (*$K_i$*);
 
-    \\maybe initialize something else for height if desired?
-
     \\now begin for loops
     for l = n-1 to 1 do:      \\rows
         for r = l to n do:    \\columns
-            \\some stuff
-
-
             for c = l to r do:    \\each possible root
                 tempVal = obj[l][c-1] + obj[c+1][r] + (*$\sum_{i=l}^r p_i$*);
                 \\now check height difference between two subtrees
