@@ -51,14 +51,18 @@ The input to this problem is a tree T with integer weights on the edges. The wei
     
     Consider the following high-level algorithm, akin to the process used to calculate the Prüfer code for a tree (if you're familiar with graph theory). This solution presumes that the tree is represented as any graph would be, by a set of vertices and a set of edges. We'll also suppose the vertices are ordered, or if not that we may label them arbitrarily but uniquely.
     \begin{enumerate}\tightlist
-        \item First initialize two arrays, $A_1$ and $A_2$, each the same size as the vertex set of the tree $T$.
+        \item First initialize two arrays to zeroes, $A_1$ and $A_2$, each the same length as the vertex set of the tree $T$.
         \item Select any leaf $x$, with its accompanying edge $(x,y)$ to neighbor vertex $y$.
         \item Let the intermediate value $len = A_1[x] + w(x,y)$ where $w(u,v)$ is the weight of the edge $(u,v)$.
         \item Now set $A_1$ and $A_2$ to be, respectively, the max and second-max values out of ${A_1[y],A_2[y],len}$.
         \item Remove vertex $x$ and edge $(x,y)$ from the tree T.
         \item If there are still edges in the tree, repeat items 2-5.
+        \item Return $max{A_1[x] + A_2[x]}$ for all $x$ in the vertex set $V$, or $0$ if it is greater than all.
     \end{enumerate}
     
+    It is clear that this is a linear time algorithm, since we iterate over each edge and vertex only once. We think of the arrays as tracking the greatest and second-greatest path leading to (or ending at) any given vertex (we need both in the likely case said vertex is in the middle of the tree, in which case we want the sum of the two greatest paths leading from that point). Each time through, we check if adding the leaf-edge will increase the greatest path from the leaf's neighbor or not; if so we update that entry in the array and remove the leaf, since all necessary information pertaining to that leaf has now been stored, in a sense. Finally simply select the maximum of sums of longest/second-longest paths in the arrays as the greatest profit to be had with a simple path. 
+    
+    NOTE: Actually returning the greatest-profit path, and not just its value, would require a little more work and a more elaborate info storage scheme.
     
 \end{document}
 
