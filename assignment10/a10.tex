@@ -43,8 +43,23 @@
 \begin{document}
 \maketitle
 
+\prob{8}
+The input to this problem is a tree T with integer weights on the edges. The weights may be negative, zero, or positive. A positive edge weight represents a payment that one receives when traveling over the edge. A negative edge weight represents a payment that one much make when traveling over the edge. Give a linear time algorithm to find the most profit that one can make from traversing a simple path in T.
 
-
+\soln
+    It is apparent that a simple recursive algorithm would take far too much time, and would perform the same operations many extra times, leading to wasted work (and in no way a linear time performance). The key then is to store the necessary information for all possible paths as we iterate through the vertices and edges, so that the results (probably in an array) can be used to quickly calculate the objective value.
+    
+    Consider the following high-level algorithm, akin to the process used to calculate the Prüfer code for a tree (if you're familiar with graph theory). This solution presumes that the tree is represented as any graph would be, by a set of vertices and a set of edges. We'll also suppose the vertices are ordered, or if not that we may label them arbitrarily but uniquely.
+    \begin{enumerate}\tightlist
+        \item First initialize two arrays, $A_1$ and $A_2$, each the same size as the vertex set of the tree $T$.
+        \item Select any leaf $x$, with its accompanying edge $(x,y)$ to neighbor vertex $y$.
+        \item Let the intermediate value $len = A_1[x] + w(x,y)$ where $w(u,v)$ is the weight of the edge $(u,v)$.
+        \item Now set $A_1$ and $A_2$ to be, respectively, the max and second-max values out of ${A_1[y],A_2[y],len}$.
+        \item Remove vertex $x$ and edge $(x,y)$ from the tree T.
+        \item If there are still edges in the tree, repeat items 2-5.
+    \end{enumerate}
+    
+    
 \end{document}
 
 
