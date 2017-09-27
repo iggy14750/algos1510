@@ -1,0 +1,110 @@
+\documentclass{article}
+\author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
+\title{Assignment 11}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{graphicx}
+
+% ============ USED FOR OUR FORMAT ============
+\newtheorem{thm}{Claim}
+\providecommand{\prob}[1]{\section*{Problem #1}}
+\providecommand{\soln}{\textbf{Solution: }}
+\providecommand{\image}[1]{
+    \begin{center}
+        \includegraphics[width=0.3\textwidth]
+            {#1}
+    \end{center}
+}
+\providecommand{\tightlist}{
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
+
+% ============ USED FOR CODE LISTINGS ============
+\usepackage{listings}
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35}
+\lstset{
+    basicstyle   = \footnotesize,
+    commentstyle = \color{javagreen},
+    frame        = single,
+    language     = C,
+    stringstyle  = \color{orange},
+    numbers      = left,
+    showstringspaces=false,
+    deletekeywords = {len, max, format, min},
+    morekeywords = {yield, function, then, do, to},
+    keywordstyle = \color{blue},
+}
+
+
+\begin{document}
+\maketitle
+
+    \prob{10}
+    Let us order the intervals by their start time, breaking ties arbitrarily.
+    So, take the naive recursion, in which our recursive function returns the best subset of intervals up to the previous interval.
+    The issue is that if this subset intersects with the interval we are considering, then it is unknown if there is some other subset of intervals which allows the current interval to be added to better effect.
+    
+    Take the following two examples. In the first, it is better to include interval 3 by choosing some other subset of intervals before 3, but in the second, where we are considering the second interval, it is not advantageous to choose a different subset than would be naively returned.
+    
+    \image{a11counter}
+    
+    So, we need not only the best subset of intervals overall up to some interval $k$, but also the best which does not intersect with $k$. Consider the following code. Note $I_k$ is the interval numbered $k$.
+    
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+function MSL(k)
+    if k == 1 then
+        return (*$I_1$*)
+    bo = MSL(k-1)
+    bx = (0,0) // The best which does not overlap k
+    for i = 1 to k-1 do
+        t = MSL(i)
+        if len(t) > len(bx) and (*$ t \cap I_k = \emptyset $*) then
+            t = bx
+    return max(bo, bx + (*$I_k$*))
+    \end{lstlisting}
+
+Therefore, we can rewrite this in an array-based approach.
+
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+subset MSL[n+1]
+MSL[1] = (*$I_1$*)
+for k = 2 to n do
+    bx = (0,0)
+    for i = 1 to k-1 do
+        t = MSL[i]
+        if len(t) > len(bx) and (*$ t \cap I_k = \emptyset $*) then
+            t = bx
+    MSL[k] = max(MSL[k-1], bx + (*$I_k$*))
+return MSL[n]
+    \end{lstlisting}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
