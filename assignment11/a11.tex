@@ -91,7 +91,19 @@ return MSL[n]
         \item We can ignore multiple nodes with the same sum on the same level.
     \end{enumerate}
 
-    Therefore we can 
+    Therefore we can turn these rules into the following code.
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+boolean A[n,L]
+let offset = -L/2
+
+for i = 1 to n do
+    for s = 0 to L do
+        if A[i, s] then
+            A[i+1, s - (*$v_i$*) - offset] = true
+            A[i+1, s + (*$v_i$*) - offset] = true
+return A[n, 0]
+    \end{lstlisting}
+    
 
 \end{document}
 
