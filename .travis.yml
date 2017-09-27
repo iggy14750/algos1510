@@ -1,10 +1,6 @@
 env:
   global:
-<<<<<<< HEAD
     A_NUM: 11
-=======
-    A_NUM: 10
->>>>>>> ac485d67f30ff03a266294710e12024a022f1de9
 before_install:
   - sudo apt-get update
   - sudo apt-get install texlive-latex-extra
