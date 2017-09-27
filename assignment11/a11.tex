@@ -93,18 +93,36 @@ return MSL[n]
 
     Therefore we can turn these rules into the following code.
     \begin{lstlisting}[escapeinside={(*}{*)}]
-boolean A[n,L]
-let offset = -L/2
+boolean A[n, L] // Range of L is -L/2,L/2
+A[0, 0] = true
 
-for i = 1 to n do
-    for s = 0 to L do
+for i = 0 to n do
+    for s = -L/2 to L/2 do
         if A[i, s] then
-            A[i+1, s - (*$v_i$*) - offset] = true
-            A[i+1, s + (*$v_i$*) - offset] = true
+            A[i+1, s - (*$v_i$*)] = true
+            A[i+1, s + (*$v_i$*)] = true
 return A[n, 0]
     \end{lstlisting}
     
 
+    \prob{14}
+    Pruning rules:
+    \begin{enumerate}
+        \item Sum will be in range [0,n].
+        \item Nodes with same sum on same level can be ignored.
+    \end{enumerate}
+
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+boolean A[n, n]
+A[0, 0] = true
+
+for i = 0 to n do
+    for j = 0 to n do
+        if A[i, j] then
+            A[i+1, j] = true
+            A[i+1, (j + (*$v_i$*)) mod n] = true
+
+    \end{lstlisting}
 \end{document}
 
 
