@@ -1,0 +1,109 @@
+\documentclass{article}
+\author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
+\title{Assignment 10}
+\date{Monday, 25 Sept 2017}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{graphicx}
+
+% ============ USED FOR OUR FORMAT ============
+\newtheorem{thm}{Claim}
+\providecommand{\prob}[1]{\section*{Problem #1}}
+\providecommand{\soln}{\textbf{Solution: }}
+\providecommand{\image}[1]{
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]
+            {#1}
+    \end{center}
+}
+\providecommand{\tightlist}{
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
+
+% ============ USED FOR CODE LISTINGS ============
+\usepackage{listings}
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35}
+\lstset{
+    basicstyle   = \footnotesize,
+    commentstyle = \color{javagreen},
+    frame        = single,
+    language     = C,
+    stringstyle  = \color{orange},
+    numbers      = left,
+    showstringspaces=false,
+    deletekeywords = {len, max, format, min},
+    morekeywords = {yield, function, then, do, to},
+    keywordstyle = \color{blue},
+}
+
+
+\begin{document}
+\maketitle
+
+\prob{8}
+The input to this problem is a tree T with integer weights on the edges. The weights may be negative, zero, or positive. A positive edge weight represents a payment that one receives when traveling over the edge. A negative edge weight represents a payment that one much make when traveling over the edge. Give a linear time algorithm to find the most profit that one can make from traversing a simple path in T.
+
+\soln
+It is apparent that a simple recursive algorithm would take far too much time, and would perform the same operations many extra times, leading to wasted work (and in no way a linear time performance). The key then is to store the necessary information for all possible paths as we iterate through the vertices and edges, so that the results (probably in an array) can be used to quickly calculate the objective value.
+
+Consider the following high-level algorithm, akin to the process used to calculate the Prufer code for a tree (if you're familiar with graph theory). This solution presumes that the tree is represented as any graph would be, by a set of vertices and a set of edges. We'll also suppose the vertices are ordered, or if not that we may label them arbitrarily but uniquely.
+\begin{enumerate}\tightlist
+ \item First initialize two arrays to zeroes, $A_1$ and $A_2$, each the same length as the vertex set of the tree $T$.
+ \item Select any leaf $x$, with its accompanying edge $(x,y)$ to neighbor vertex $y$.
+ \item Let the intermediate value $len = A_1[x] + w(x,y)$ where $w(u,v)$ is the weight of the edge $(u,v)$.
+ \item Now set $A_1$ and $A_2$ to be, respectively, the max and second-max values out of $\{A_1[y],A_2[y],len\}$.
+ \item Remove vertex $x$ and edge $(x,y)$ from the tree T.
+ \item If there are still edges in the tree, repeat items 2-5.
+ \item Return $max\{A_1[x] + A_2[x]\}$ for all $x$ in the vertex set $V$, or $0$ if it is greater than all.
+\end{enumerate}
+
+It is clear that this is a linear time algorithm, since we iterate over each edge and vertex only once. We think of the arrays as tracking the greatest and second-greatest path leading to (or ending at) any given vertex (we need both in the likely case said vertex is in the middle of the tree, in which case we want the sum of the two greatest paths leading from that point). Each time through, we check if adding the leaf-edge will increase the greatest path from the leaf's neighbor or not; if so we update that entry in the array and remove the leaf, since all necessary information pertaining to that leaf has now been stored, in a sense. Finally simply select the maximum of sums of longest/second-longest paths in the arrays as the greatest profit to be had with a simple path.
+
+NOTE: Actually returning the greatest-profit path, and not just its value, would require a little more work and a more elaborate info storage scheme.
+
+
+\pagebreak
+
+\prob{9}
+The input for this problem consists of $n$ keys $K_1, \dots , K_n$, with $K_1 < K_2 < \dots , K_n$, and associated probabilities $p_1, \dots , p_n$. The problem is to find the AVL tree for these keys that minimizes the expected depth of a key. An AVL tree is a binary search tree with the property that every node has balance factor −1, 0, or 1. The balance factor or a node is the height of its right subtree minus the height of its left subtree. Give a polynomial time algorithm for this problem.
+
+\soln
+We may generally consider this identical to the problem done in class involving the minimum weight BST, given a similar input and requesting a similar output, except that in this case we need to include a check that verifies the tree is balanced. In this way we can achieve a $O(n^3)$ or $O(n^4)$ solution. An outline of the algorithm follows:
+
+\begin{lstlisting}[escapeinside={(*}{*)}]
+    \\BASE CASE (diagonal)
+    \\initialize the matrix that tracks the objective value (i.e. the weight of each subtree)
+    let obj[n+1][n+1];
+    for i = 1 to n do:
+        obj[i][i] = (*$p_i$*);
+    \\initialize the matrix that tracks the root for each subtree (made of nodes from (*$l$ to $r$*))
+    let root[n+1][n+1];
+    for i = 1 to n do:
+        root[i][i] = (*$K_i$*);
+
+    \\now begin for loops
+    for l = n-1 to 1 do:      \\rows
+        for r = l to n do:    \\columns
+            for c = l to r do:    \\each possible root
+                tempVal = obj[l][c-1] + obj[c+1][r] + (*$\sum_{i=l}^r p_i$*);
+                \\now check height difference between two subtrees
+                if (*$\left|height(l, c-1) - height(c+1, r)\right| > 1$*):
+                    obj[l][r] = (*$\infty$*);
+                if tempVal < obj[l][r]:
+                    obj[l][r] = tempVal;
+                    root[l][r] = c;
+    return obj[1][n];
+\end{lstlisting}
+
+As mentioned, nearly identical to the algorithm discussed in class. Note that the above sequence supposes a function $height(i, j)$ which returns the height of the subtree formed by all the nodes from $K_i$ to $K_j$. This information could easily be (and probably should be for best performance) stored in a third matrix which we may update as we go along with everything else in the inner loop. Regardless, we have above a polynomial time algorithm. The min value will be returned from position obj[1][n], and the AVL tree can be reconstructed using the 'root' matrix, starting in the same position.
+
+
+\image{james}
+\begin{center}
+    This image gives a general idea for the outline of the $obj$ table.
+\end{center}
+\end{document}
