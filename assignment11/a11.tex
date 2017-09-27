@@ -103,6 +103,11 @@ for i = 0 to n do
 return A[n, 0]
     \end{lstlisting}
     
+    As one can see, $i$ performs $n$ iterations and $s$ performs a total of $L$ iterations per $i$.  Because of this, the for loops create a runtime of $nL$ iterations, which is also the number of times the if conditional is executed.  In the worst case, the conditional is true for every iteration of the loop and we perform two assignments in the array.  This would create a runtime of $n * 4L$, or just $4nL$.  \\
+    
+NOTE:     The reason 4 is the constant is because in the inner loop, we perform $L$ iterations, check the conditional $L$ times, and make two assignments $L$ times (actually just $2L$ assignments total), which sums up to $4L$ operations.   \\
+
+Say for example that $n = L$.  If we substitute that into the runtime, we produce a runtime of $4n^2$, which is polynomial in nature in the worst case.
 
     \prob{14}
     Pruning rules:
@@ -122,6 +127,8 @@ for i = 0 to n do
             A[i+1, (j + (*$v_i$*)) mod n] = true
 
     \end{lstlisting}
+    
+    This solution is similar to the previous problem.  We perform $j$ iterations in a for loop for each $i$ iteration; this produces a runtime of $ij$.  However, we must take into account the time spent checking the conditional and for assignments, which is just $4j$ in this scenario ($j$ iterations for the loop, $j$ checks on the conditional, and $2j$ assignments).  In the end, this results in a $4ij$ runtime and in the worst case where $i = j$, the runtime is $4i^2$, which is polynomial.
 \end{document}
 
 
