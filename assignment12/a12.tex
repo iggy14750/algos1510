@@ -53,7 +53,7 @@ for i = 0 to n do
 		if A[i, w] is defined then
 			A[i+1, w] = max(A[i, w], A[i+1, w])
 			A[i+1, w + (*$w_{i+1}$*)] = max(A[i+1, w + (*$w_{i+1}$*)], A[i, w] + (*$v_{i+1}$*)])])
-output (*$max_{0{\leq}w{\leq}}$*)A[n, w]
+output (*$\displaystyle \max_{0{\leq}w{\leq}L}$*)A[n, w]
 	\end{lstlisting}
 
 	This produces the following matrix:
