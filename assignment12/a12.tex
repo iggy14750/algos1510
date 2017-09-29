@@ -79,7 +79,7 @@ output (*$max_{0{\leq}w{\leq}}$*)A[n, w]
 	
 	set = {} // The items in our backpack
 	for i = n down to 1:
-		parent_node = A[i-1, w - (*$w_{i-1}$*)]
+		parent_node = A[i-1, w - (*$w_{i}$*)]
 		// The change in value from parent to child equals this item's value
 		if (A[x, y] - parent_node) == (*$v_i$*) then
 			set.add((*$i$*)) // Add item i to the set (our backpack)
