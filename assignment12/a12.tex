@@ -43,8 +43,8 @@
 \begin{document}
 \maketitle
 	\prob{11}
-	\textbf{Part A} Consider the below code from class as the array-based solution to the Knapsack problem: 
-	
+	\textbf{Part A} Consider the below code from class as the array-based solution to the Knapsack problem:
+
 	\begin{lstlisting}[escapeinside={(*}{*)}]
 A[0, 0] = 0
 for i = 0 to n do
@@ -54,29 +54,29 @@ for i = 0 to n do
 			A[i+1, w + (*$w_{i+1}$*)] = max(A[i+1, w + (*$w_{i+1}$*)], A[i, w] + (*$v_{i+1}$*)])])
 output (*$max_{0{\leq}w{\leq}}$*)A[n, w]
 	\end{lstlisting}
-	
+
 	This produces the following matrix:
-	
+
 	\image{knapsack}
-	
-	The above table represents the output array from the input items where $v$ represents the values of the items and $w$ represents the weights of the items: \\
+
+	The above table represents the output array from the input items where $v$ represents the values of the items and $w$ represents the weights of the items:
 	\begin{enumerate}
 		\item $v_1$ = 5, $w_1$ = 1
 		\item $v_2$ = 7, $w_2$ = 2
 		\item $v_3$ = 12, $w_3$ = 3
 	\end{enumerate}
-	
-	In this image, $n$ is the level of the tree that we're currently at.  As we go down the tree and for each node, we can either add the current item $v_i$ into our backpack, increasing the weight and value of a node's right child, or don't add it, directly translating a node's contents into its left child.  The red arrows indicate this thought; for every node, there are two red arrows that spawn and point to its two child nodes in the tree.  Once we have filled out the tree and created all permutations, or subsets, of the items, we can choose the index in the bottom row of the table with the highest value that doesn't go past our weight limit $L$.  In this scenario, it is item weight of sum 24.  
-	
+
+	In this image, $n$ is the level of the tree that we're currently at.  As we go down the tree and for each node, we can either add the current item $v_i$ into our backpack, increasing the weight and value of a node's right child, or don't add it, directly translating a node's contents into its left child.  The red arrows indicate this thought; for every node, there are two red arrows that spawn and point to its two child nodes in the tree.  Once we have filled out the tree and created all permutations, or subsets, of the items, we can choose the index in the bottom row of the table with the highest value that doesn't go past our weight limit $L$.  In this scenario, it is item weight of sum 24.
+
 	In order to trace this backwards to find the actual set of items, we start from this solution/optimal node and look at its parent.  If the parent contains the same value, we didn't add item $i$'s value, $v_i$, to the backpack.  Otherwise, if the difference between a node's value and its parent node's value is $v_i$, then we know item $i$ was added to the backpack.  In this case, we can add item $i$ to our set of items and keep track of it until we reach the root of the tree.  We continue this process until we reach index $0,0$ of the array, which is the root of the tree.  At this point, we have backtracked from the optimal solution, determining at every level whether we took a specific item and added it to the backpack.
-	
+
 	If we have the output array $A$, the following code will execute the aforementioned strategy:
-	
+
 	\begin{lstlisting}[escapeinside={(*}{*)}]
 	// Store the optimal results index
 	x = index of (*$max_{0{\leq}w{\leq}L}$*)A[n, w] // How far right the solution is in the last row
 	y = n // The optimal solution is in the last row
-	
+
 	set = {} // The items in our backpack
 	for i = n down to 1:
 		parent_node = A[i-1, w - (*$w_{i}$*)]
@@ -88,13 +88,13 @@ output (*$max_{0{\leq}w{\leq}}$*)A[n, w]
 		x = i-1
 		y = w - (*$w_{i-1}$*)
 	\end{lstlisting}
-	
+
 	\textbf{Part B} The problem asks us to complete this problem in $O(L)$ space and $O(nL)$ time.\\
-	
+
 	Consider the above code in $part A$.  This accomplishes the $O(nL)$ time requirement because we have two for loops with $i$ iterating over $n$ and $j$ iterating over $L$.  Obviously, $L$ iterations for every $n$ produces a time of $O(nL)$.  \\
-	
+
 	The interesting part is doing the problem in $O(L)$ space.  In order to accomplish this, since we don't need to find the actual set of items, we can simply use two arrays of size $L$.  If you noticed in $part A$ of the problem, in order to calculate any given level of the tree, or row in the array, we simply needed the preceding row's information.  This is because the "preceding row" contained the total value sum of the items for every node at that level in the tree and we knew the weight of the items by how far right they were in the array because that was our measure of $L$.\\
-	
+
 	So, our solution is to use two arrays of size $L$, which can be completed in the above time and space requirements with the following code:
 	\begin{lstlisting}[escapeinside={(*}{*)}]
 Let A be a one-dimensional array of size L
@@ -115,32 +115,87 @@ for i = 0 to n do // For each level in our tree
 // Depending on whether n is even or odd, we need to know which array, A or B, to check
 if n is even:
 	output (*$max_{0{\leq}w{\leq}L}$*)A[n, w]
-else 
+else
 	output (*$max_{0{\leq}w{\leq}L}$*)B[n, w]
 	\end{lstlisting}
+
+\prob{15}
+
+
+
+
+
+
+
+
+\prob{16}
+Input: positive integers $v_1, \dots , v_n$\\
+Output: A subset $S$ of the integers such that $\sum_{v_i \in S}v_i^3 = \prod_{v_i \in S}v_i$.\par \medskip
+\soln
+Let us consider the typical binary tree for subsets, wherein at each of the $n$ levels the number $v_i$ is either selected to be a part of our subset $S$ or not. Without being pruned, this tree would enumerate all $2^n$ subsets of the set $V = \{v_1,\dots,v_n\}$. However, given the constraint in the problem we can immediately recognize some helpful pruning rules (where $S$ is the subset and $V$ is the total set of integers):\par
+\begin{enumerate}
+    \item If $\prod_{v_i \in S}v_i > \sum_{v_i \in V}v_i^3$, then a solution is impossible, so prune.
+    \item If $\sum_{v_i \in S}v_i^3 > \prod_{v_i \in V}v_i$, then again impossible, so prune.
+    \item If the level, sum, and product of two nodes are the same, then all future choices will result in the same options, so prune one of the two subtrees rooted at those nodes.
+\end{enumerate}
+Now we may realize these rules and iteratively build up a 3-dimensional matrix with the following code:\par
+\begin{lstlisting}[escapeinside={(*}{*)}]
+//we only need consider the sums that don't exceed the total possible product and vice versa
+let M = min(*$\left(\sum_1^n v_i^3, \prod_1^n v_i\right)$*)
+initialize A[n,M,M]
+let A[i,s,p] = existence of a subset of first i ints in V for which (*$\sum_{k=1}^i v_k^3 = s$ \& $\prod_{k=1}^i v_k = p$*)
+
+//now set first entry and begin for loops
+A[0,0,0] = 1
+for i = 0 to n do   // for each level of the tree
+    for s = 0 to M do  // for each possible sum
+        for p = 0 to M do   // for each possible product
+            if A[i,s,p] then    // if some subset has these properties (sum/product)
+                A[i+1,s,p] = 1
+                A[i+1,s+(*$v_i^3$*),p*(*$v_i$*)] = 1
+
+// finally look through values on nth diagonal (where s == p) to see if a solution exists
+output A[n,k,k] if == 1 for any k
+\end{lstlisting}
+
+In this way we have considered every feasible subset and have a resultant matrix that is easy to locate a solution in, if one exists. Clearly this running time is polynomial in $n + L$, since it runs in $O\left(n*M*M\right) \leq O\left(M^3\right) \leq O\left(\left(n+L\right)^3\right) = O\left(L^3\right)$ where L $>$ M $>$ n.
+
+\pagebreak
+\prob{17}
+The input to this problem is a set of $n$ gems. Each gem has a value in dollars and is either a ruby or an emerald. Let the sum of the values of the gems be $L$. The problem is to determine if it is possible to partition of the gems into two parts $P$ and $Q$, such that each part has the same value, the number of rubies in $P$ is equal to the number of rubies in $Q$, and the number of emeralds in $P$ is equal to the number of emeralds in $Q$. Note that a partition means that every gem must be in exactly one of $P$ or $Q$. Your algorithm should run in time polynomial in $n + L$.\par \medskip
+
+\soln Similarly to the last problem, consider each gem as a level in a binary tree, determining whether or not we may include it in partition $P$ ($Q$ will naturally be the leftover gems after we've decided on $P$). Clearly we can ignore any inputs that have a total value that is odd or a total number of rubies/emeralds that is odd, but those are trivial cases. The following pruning rules arise:\par
+\begin{enumerate}
+    \item Value of a node cannot exceed half the overall value (else we won't have enough value to go in $Q$)
+    \item The number of reds/greens in a node cannot exceed half of the total number of each (same reason)
+    \item If two nodes are on the same level and have the same total value \emph{and} the same number of reds and greens, then all future choices will lead to the same options and we may arbitrarily prune one of the nodes.
+\end{enumerate}
+These rules again naturally lead to the following code:\par
+\begin{lstlisting}[escapeinside={(*}{*)}]
+let (*$v_i$*) = value of the (*$i^{th}$*) gem
+let (*$c_i$*) = color of the (*$i^{th}$*) gem
+let L = S = sum of all values
+let R = total number of rubies
+
+//we only need consider the subsets that don't exceed half the total value or # of rubies
+initialize A[n,S/2,R/2]
+let A[i,v,r] = existence of a subset of first i gems with value v, and r rubies
+
+//now set first entries and begin for loops
+A[0,0,r] = 1
+for i = 1 to n do               // for each level of the tree
+    for v = 0 to S/2 do         // for each possible sum of values (up to half)
+        for r = 0 to R/2 do     // for each possible number of rubies (up to half)
+            if A[i,v,r] then    // if some subset has this value and number of rubies
+                A[i+1,v,r] = 1                  // left child
+                if (*$c_i$*) = red then
+                    A[i+1,v+(*$v_i$*),r+1] = 1          // right child
+                else
+                    A[i+1,v+(*$v_i$*),r] = 1            // ...green right child
+
+// finally check the cell at the last corner to see if a solution exists
+output A[n,S/2,R/2]
+\end{lstlisting}
+This algorithm runs in $O\left(n*S/2*R/2\right)$, which is polynomial in $n+L$ for the same reasons as Problem 16.
+
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
