@@ -130,10 +130,37 @@ else
 
 \prob{16}
 Input: positive integers $v_1, \dots , v_n$\\
-Output: A subset S of the integers such that $\sum_{v_i \in S}v_i^3 = \prod_{v_i \in S}v_i$.\par \medskip
+Output: A subset $S$ of the integers such that $\sum_{v_i \in S}v_i^3 = \prod_{v_i \in S}v_i$.\par \medskip
 \soln
-Let us consider the typical binary tree for subsets, wherein at each of the $n$ levels the number $v_i$ is either selected to be a part of our subset S or not. Without being pruned, this tree would enumerate all $2^n$ subsets of the set $V = \{v_1,\dots,v_n\}$. However, given the constraint in the problem we can immediately recognize some helpful pruning rules:\par
+Let us consider the typical binary tree for subsets, wherein at each of the $n$ levels the number $v_i$ is either selected to be a part of our subset $S$ or not. Without being pruned, this tree would enumerate all $2^n$ subsets of the set $V = \{v_1,\dots,v_n\}$. However, given the constraint in the problem we can immediately recognize some helpful pruning rules (where $S$ is the subset and $V$ is the total set of integers):\par
+\begin{enumerate}
+    \item If $\prod_{v_i \in S}v_i > \sum_{v_i \in V}v_i^3$, then a solution is impossible, so prune.
+    \item If $\sum_{v_i \in S}v_i^3 > \prod_{v_i \in V}v_i$, then again impossible, so prune.
+    \item If the level, sum, and product of two nodes are the same, then all future choices will result in the same options, so prune one of the two subtrees rooted at those nodes.
+\end{enumerate}
+Now we may realize these rules and iteratively build up a 3-dimensional matrix with the following code:\par
+\begin{lstlisting}[escapeinside={(*}{*)}]
+    //we only need consider the sums that don't exceed the total possible product and vice versa
+    let M = min(*$\left(\sum_1^n v_i^3, \prod_1^n v_i\right)$*)
+    initialize A[n,M,M]
+    let A[n,s,p] = existence of a subset of first i ints in V for which (*$\sum_{k=1}^i v_k^3 = s$ \& $\prod_{k=1}^i v_k = p$*)
+
+    //now set first entry and begin for loops
+    A[0,0,0] = 1
+    for i = 0 to n do   // for each level of the tree
+        for s = 0 to M do  // for each possible sum
+            for p = 0 to M do   // for each possible product
+                if A[i,s,p] then    // if some subset has these properties (sum/product)
+                    A[i+1,s,p] = 1
+                    A[i+1,s+(*$v_i^3$*),p*(*$v_i$*)] = 1
+
+    // finally look through values on nth diagonal (where s == p) to see if a solution exists
+    output A[n,k,k] if == 1 for any k
+\end{lstlisting}
+
+In this way we have considered every feasible subset and have a resultant matrix that is easy to locate a solution in, if one exists. Clearly this running time is polynomial in $n + L$, since it runs in $O\left(n*M*M\right) \leq O\left(M^3\right) \leq O\left(\left(n+L\right)^3\right) = O\left(L^3\right)$ where L $>$ M $>$ n.
 
 
+\prob{17}
 
 \end{document}
