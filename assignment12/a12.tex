@@ -42,9 +42,52 @@
 
 \begin{document}
 \maketitle
-
-
-
+	\prob{11}
+	a. Consider the below code from class as the array-based solution to the Knapsack problem: 
+	
+	\begin{lstlisting}[escapeinside={(*}{*)}]
+A[0, 0] = 0
+for i = 0 to n do
+	for w = 0 to L do
+	(*$I_1$*)
+		if A[i, w] is defined then
+			A[i+1, w] = max(A[i, w], A[i+1, w])
+			A[i+1, w + (*$w_{i+1}$*)] = max(A[i+1, w + (*$w_{i+1}$*)], A[i, w] + $v_i+1$])])
+output max_w A[n, w]
+	\end{lstlisting}
+	
+	This produces the following matrix:
+	
+	\image{knapsack}
+	
+	The above table represents the output array from the input items where $v$ represents the values of the items and $w$ represents the weights of the items: \\
+	\begin{enumerate}
+		\item $v_1$ = 5, $w_1$ = 1
+		\item $v_2$ = 7, $w_2$ = 2
+		\item $v_3$ = 12, $w_3$ = 3
+	\end{enumerate}
+	
+	In this image, $n$ is the level of the tree that we're currently at.  As we go down the tree and for each node, we can either add the current item $v_i$ into our backpack, increasing the weight and value of a node's right child, or don't add it, directly translating a node's contents into its left child.  The red arrows indicate this thought; for every node, there are two red arrows that spawn and point to its two child nodes in the tree.  Once we have filled out the tree and created all permutations, or subsets, of the items, we can choose the index in the bottom row of the table with the highest value that doesn't go past our weight limit $L$.  In this scenario, it is item weight of sum 24.  
+	
+	In order to trace this backwards to find the actual set of items, we start from this solution/optimal node and look at its parent.  If the parent contains the same value, we didn't add item $i$'s value, $v_i$, to the backpack.  Otherwise, if the difference between a node's value and its parent node's value is $v_i$, then we know item $i$ was added to the backpack.  In this case, we can add item $i$ to our set of items and keep track of it until we reach the root of the tree.  We continue this process until we reach index $0,0$ of the array, which is the root of the tree.  At this point, we have backtracked from the optimal solution, determining at every level whether we took a specific item and added it to the backpack.
+	
+	If we have the output array $A$, the following code will execute the aforementioned strategy:
+	
+	\begin{lstlisting}[escapeinside={(*}{*)}]
+	// Store the optimal results index
+	x = index of (*$max_{0<=w<=L}$*)A[n, w] // How far right the solution is in the last row
+	y = n // The optimal solution is in the last row
+	
+	set = {} // The items in our backpack
+	for i = n down to 1:
+		parent_node = A[i-1, w - (*$w_i-1$*)]
+		if (A[x, y] - parent_node) == (*$w_i$*) do
+			set.add((*$i$*)) // Add item i to the set (our backpack)
+		// Set the new coordinates of the node in the array to the parent node so we
+		// 	can traverse up the tree.
+		x = i-1
+		y = w - (*$w_{i-1}$*)
+	\end{lstlisting}
 \end{document}
 
 
