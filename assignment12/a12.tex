@@ -140,27 +140,62 @@ Let us consider the typical binary tree for subsets, wherein at each of the $n$ 
 \end{enumerate}
 Now we may realize these rules and iteratively build up a 3-dimensional matrix with the following code:\par
 \begin{lstlisting}[escapeinside={(*}{*)}]
-    //we only need consider the sums that don't exceed the total possible product and vice versa
-    let M = min(*$\left(\sum_1^n v_i^3, \prod_1^n v_i\right)$*)
-    initialize A[n,M,M]
-    let A[n,s,p] = existence of a subset of first i ints in V for which (*$\sum_{k=1}^i v_k^3 = s$ \& $\prod_{k=1}^i v_k = p$*)
+//we only need consider the sums that don't exceed the total possible product and vice versa
+let M = min(*$\left(\sum_1^n v_i^3, \prod_1^n v_i\right)$*)
+initialize A[n,M,M]
+let A[i,s,p] = existence of a subset of first i ints in V for which (*$\sum_{k=1}^i v_k^3 = s$ \& $\prod_{k=1}^i v_k = p$*)
 
-    //now set first entry and begin for loops
-    A[0,0,0] = 1
-    for i = 0 to n do   // for each level of the tree
-        for s = 0 to M do  // for each possible sum
-            for p = 0 to M do   // for each possible product
-                if A[i,s,p] then    // if some subset has these properties (sum/product)
-                    A[i+1,s,p] = 1
-                    A[i+1,s+(*$v_i^3$*),p*(*$v_i$*)] = 1
+//now set first entry and begin for loops
+A[0,0,0] = 1
+for i = 0 to n do   // for each level of the tree
+    for s = 0 to M do  // for each possible sum
+        for p = 0 to M do   // for each possible product
+            if A[i,s,p] then    // if some subset has these properties (sum/product)
+                A[i+1,s,p] = 1
+                A[i+1,s+(*$v_i^3$*),p*(*$v_i$*)] = 1
 
-    // finally look through values on nth diagonal (where s == p) to see if a solution exists
-    output A[n,k,k] if == 1 for any k
+// finally look through values on nth diagonal (where s == p) to see if a solution exists
+output A[n,k,k] if == 1 for any k
 \end{lstlisting}
 
 In this way we have considered every feasible subset and have a resultant matrix that is easy to locate a solution in, if one exists. Clearly this running time is polynomial in $n + L$, since it runs in $O\left(n*M*M\right) \leq O\left(M^3\right) \leq O\left(\left(n+L\right)^3\right) = O\left(L^3\right)$ where L $>$ M $>$ n.
 
-
+\pagebreak
 \prob{17}
+The input to this problem is a set of $n$ gems. Each gem has a value in dollars and is either a ruby or an emerald. Let the sum of the values of the gems be $L$. The problem is to determine if it is possible to partition of the gems into two parts $P$ and $Q$, such that each part has the same value, the number of rubies in $P$ is equal to the number of rubies in $Q$, and the number of emeralds in $P$ is equal to the number of emeralds in $Q$. Note that a partition means that every gem must be in exactly one of $P$ or $Q$. Your algorithm should run in time polynomial in $n + L$.\par \medskip
+
+\soln Similarly to the last problem, consider each gem as a level in a binary tree, determining whether or not we may include it in partition $P$ ($Q$ will naturally be the leftover gems after we've decided on $P$). Clearly we can ignore any inputs that have a total value that is odd or a total number of rubies/emeralds that is odd, but those are trivial cases. The following pruning rules arise:\par
+\begin{enumerate}
+    \item Value of a node cannot exceed half the overall value (else we won't have enough value to go in $Q$)
+    \item The number of reds/greens in a node cannot exceed half of the total number of each (same reason)
+    \item If two nodes are on the same level and have the same total value \emph{and} the same number of reds and greens, then all future choices will lead to the same options and we may arbitrarily prune one of the nodes.
+\end{enumerate}
+These rules again naturally lead to the following code:\par
+\begin{lstlisting}[escapeinside={(*}{*)}]
+let (*$v_i$*) = value of the (*$i^{th}$*) gem
+let (*$c_i$*) = color of the (*$i^{th}$*) gem
+let L = S = sum of all values
+let R = total number of rubies
+
+//we only need consider the subsets that don't exceed half the total value or # of rubies
+initialize A[n,S/2,R/2]
+let A[i,v,r] = existence of a subset of first i gems with value v, and r rubies
+
+//now set first entries and begin for loops
+A[0,0,r] = 1
+for i = 1 to n do               // for each level of the tree
+    for v = 0 to S/2 do         // for each possible sum of values (up to half)
+        for r = 0 to R/2 do     // for each possible number of rubies (up to half)
+            if A[i,v,r] then    // if some subset has this value and number of rubies
+                A[i+1,v,r] = 1                  // left child
+                if (*$c_i$*) = red then
+                    A[i+1,v+(*$v_i$*),r+1] = 1          // right child
+                else
+                    A[i+1,v+(*$v_i$*),r] = 1            // ...green right child
+
+// finally check the cell at the last corner to see if a solution exists
+output A[n,S/2,R/2]
+\end{lstlisting}
+This algorithm runs in $O\left(n*S/2*R/2\right)$, which is polynomial in $n+L$ for the same reasons as Problem 16.
 
 \end{document}
