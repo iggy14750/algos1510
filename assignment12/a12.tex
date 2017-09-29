@@ -43,17 +43,16 @@
 \begin{document}
 \maketitle
 	\prob{11}
-	a. Consider the below code from class as the array-based solution to the Knapsack problem: 
+	\textbf{Part A} Consider the below code from class as the array-based solution to the Knapsack problem: 
 	
 	\begin{lstlisting}[escapeinside={(*}{*)}]
 A[0, 0] = 0
 for i = 0 to n do
 	for w = 0 to L do
-	(*$I_1$*)
 		if A[i, w] is defined then
 			A[i+1, w] = max(A[i, w], A[i+1, w])
-			A[i+1, w + (*$w_{i+1}$*)] = max(A[i+1, w + (*$w_{i+1}$*)], A[i, w] + $v_i+1$])])
-output max_w A[n, w]
+			A[i+1, w + (*$w_{i+1}$*)] = max(A[i+1, w + (*$w_{i+1}$*)], A[i, w] + (*$v_{i+1}$*)])])
+output (*$max_{0{\leq}w{\leq}}$*)A[n, w]
 	\end{lstlisting}
 	
 	This produces the following matrix:
@@ -75,18 +74,49 @@ output max_w A[n, w]
 	
 	\begin{lstlisting}[escapeinside={(*}{*)}]
 	// Store the optimal results index
-	x = index of (*$max_{0<=w<=L}$*)A[n, w] // How far right the solution is in the last row
+	x = index of (*$max_{0{\leq}w{\leq}L}$*)A[n, w] // How far right the solution is in the last row
 	y = n // The optimal solution is in the last row
 	
 	set = {} // The items in our backpack
 	for i = n down to 1:
-		parent_node = A[i-1, w - (*$w_i-1$*)]
-		if (A[x, y] - parent_node) == (*$w_i$*) do
+		parent_node = A[i-1, w - (*$w_{i-1}$*)]
+		// The change in value from parent to child equals this item's value
+		if (A[x, y] - parent_node) == (*$v_i$*) then
 			set.add((*$i$*)) // Add item i to the set (our backpack)
 		// Set the new coordinates of the node in the array to the parent node so we
 		// 	can traverse up the tree.
 		x = i-1
 		y = w - (*$w_{i-1}$*)
+	\end{lstlisting}
+	
+	\textbf{Part B} The problem asks us to complete this problem in $O(L)$ space and $O(nL)$ time.\\
+	
+	Consider the above code in $part A$.  This accomplishes the $O(nL)$ time requirement because we have two for loops with $i$ iterating over $n$ and $j$ iterating over $L$.  Obviously, $L$ iterations for every $n$ produces a time of $O(nL)$.  \\
+	
+	The interesting part is doing the problem in $O(L)$ space.  In order to accomplish this, since we don't need to find the actual set of items, we can simply use two arrays of size $L$.  If you noticed in $part A$ of the problem, in order to calculate any given level of the tree, or row in the array, we simply needed the preceding row's information.  This is because the "preceding row" contained the total value sum of the items for every node at that level in the tree and we knew the weight of the items by how far right they were in the array because that was our measure of $L$.\\
+	
+	So, our solution is to use two arrays of size $L$, which can be completed in the above time and space requirements with the following code:
+	\begin{lstlisting}[escapeinside={(*}{*)}]
+Let A be a one-dimensional array of size L
+Let B be a one-dimensional array of size L
+// Base case, no items, so 0 value and 0 weight
+A[0] = 0
+
+for i = 0 to n do // For each level in our tree
+	for w = 0 to L do // For each node in that level (*$i$*)
+		if i % 2 == 0 then // On even numbered levels, write to B
+			if A[w] is defined then
+				B[w] = max(A[w], B[w])
+				B[w + (*$w_{i+1}$*)] = max(B[w + (*$w_{i+1}$*)], A[w] + (*$v_{i+1}$*)])])
+		else // On odd numbered levels, write to A
+			if B[w] is defined then
+				A[w] = max(B[w], A[w])
+				A[w + (*$w_{i+1}$*)] = max(A[w + (*$w_{i+1}$*)], B[w] + (*$v_{i+1}$*)])])
+// Depending on whether n is even or odd, we need to know which array, A or B, to check
+if n is even:
+	output (*$max_{0{\leq}w{\leq}L}$*)A[n, w]
+else 
+	output (*$max_{0{\leq}w{\leq}L}$*)B[n, w]
 	\end{lstlisting}
 \end{document}
 
