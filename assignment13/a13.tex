@@ -46,11 +46,24 @@
     \prob{19}
     \begin{enumerate}[label=(\alph*)]
         \item Create a recursive solution to the problem.
+            Let $i$ be an index into the $T$ sequence, and likewise for $j$ and $P$.
+            \begin{lstlisting}[escapeinside={(*}{*)}]
+function MAWS(i, j)
+    if j == 0 then return 0 // End of P; success!
+    if i == 0 then return failure // Reached the end of T without covering all of P
 
+    if (*$t_i$*) == (*$p_j$*) then
+        return max(
+            MAWS(i - 1, j), // Exclude (*$t_i$*)
+            MAWS(i - 1, j - 1) + (*$c_i$*)) // Include (*$t_i$*)
+    else
+        return MAWS(i - 1, j) // Exclude by default.
+            \end{lstlisting}
         \item Give a dynamic programming algorithm based on enumerating the subsequences of $T$ and using pruning.
 
         \item Give a dynamic programming algorithm based on enumerating the subsequences of $P$ and using pruning.
     \end{enumerate}
+
     \prob{22}
 
 
