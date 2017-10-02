@@ -68,12 +68,12 @@ function MAWS(i, j)
 
             With this, we get the following code.
             \begin{lstlisting}[escapeinside={(*}{*)}]
-let A[i, j] = an n(*$\times$*)k matrix which represents the most
+let A[i, j] = an n+1(*$\times$*)k+1 matrix which represents the most
     high-valued subsequence of (*$t_1,\dots,t_i$*) with length j.
 A[0, 0] = 0
 
 for i = 1 to n do
-    for j = 1 to n do
+    for j = 1 to k do
         if A[i-1, j] is defined then
             A[i, j] = max(A[i-1, j], A[i, j]) // Leave out (*$t_i$*)
             if (*$t_i$*) == (*$p_j$*) then
