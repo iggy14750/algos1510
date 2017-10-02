@@ -114,7 +114,7 @@ for i = 1 to n do
             else
                 A[i, j] = min(A[i, j], A[i-1, j] + (*$f_i$*)) // Not buying a new Bahn card
                 A[i, i] = min(A[i, j], A[i-1, j] + B + (*$\frac{1}{2}f_i$*)) // Here we are buying a new one.
-output (*$\displaystyle\max_{0 \leq j \leq n}$*) A[n, j]
+output (*$\displaystyle\min_{0 \leq j \leq n}$*) A[n, j]
     \end{lstlisting}
 
 \end{document}
