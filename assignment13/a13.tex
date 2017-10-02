@@ -81,13 +81,14 @@ for i = 1 to n do
 
 output A[n, k] // If no such sequence exists, then output is undefined, as per problem.
             \end{lstlisting}
+            \pagebreak
 
         \item Give a dynamic programming algorithm based on enumerating the subsequences of $P$ and using pruning.
             In enumerating the subsequences of $P$, we have to recognize that a valid solution only occurs if all elements are present. So at each level we simply need to consider possible subsequences of $T$ that continue matching with the next element of $P$. This results in the following outline:
-            
+
             \begin{lstlisting}[escapeinside={(*}{*)}]
 let A[i, j] = a k+1(*$\times$*)n+1 matrix which represents the cost of
-    the matching subsequence of (*$T$ \emphasis{ending} at $t_j$*) which
+    the matching subsequence of (*$T$ \textit{ending} at $t_j$*) which
     matches from (*$p_1\dots p_i$*), if such subsequence exists
 
 // first initialize the top row for any values in T that match (*$p_1$*)
@@ -95,7 +96,7 @@ for r = 1 to n do
     if (*$p_1 == t_r$*) then
         A[1][r] = (*$c_r$*) //each 1-item sequence that matches (*$p_1$*)
 
-// now fill in the rest if (or as) they continue matching 
+// now fill in the rest if (or as) they continue matching
 for i = 2 to k do
     for j = p to n do
         if (*$p_i == t_j$) then
@@ -104,11 +105,10 @@ for i = 2 to k do
 
 output (*$\displaystyle\max_{1 \leq l \leq n}$*) A[k, l]
             \end{lstlisting}
-    
+
     As you can see, our pruning rule is to get rid of any node that has ceased matching with the set $P$ and retain only those subsequences at any given level which have matched for all previous levels and items in $T$.
     \end{enumerate}
 
-    \pagebreak
     \prob{22}
     Given a tree which at each node, branches to buy a Bahn card for each trip or not, we can develop the following pruning rules.
     \begin{enumerate}
@@ -143,5 +143,3 @@ output (*$\displaystyle\min_{0 \leq j \leq n}$*) A[n, j]
 This algorithm runs in $O(n^2)$ time since the array is n x n, independent of $B$ or $L$.
 
 \end{document}
-
-
