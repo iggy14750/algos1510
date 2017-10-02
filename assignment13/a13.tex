@@ -60,6 +60,27 @@ function MAWS(i, j)
         return MAWS(i - 1, j) // Exclude by default.
             \end{lstlisting}
         \item Give a dynamic programming algorithm based on enumerating the subsequences of $T$ and using pruning.
+            Consider the typical subset enumeration tree over the elements of $T$.
+            For this tree, we have the following pruning rule:
+            \begin{enumerate}[label=\arabic*.]
+                \item When considering two nodes on the same level with the same length subsequence, choose the more expensive one.
+            \end{enumerate}
+
+            With this, we get the following code.
+            \begin{lstlisting}[escapeinside={(*}{*)}]
+let A[i, j] = an n(*$\times$*)k matrix which represents the most
+    high-valued subsequence of (*$t_1,\dots,t_i$*) with length j.
+A[0, 0] = 0
+
+for i = 1 to n do
+    for j = 1 to n do
+        if A[i-1, j] is defined then
+            A[i, j] = max(A[i-1, j], A[i, j]) // Leave out (*$t_i$*)
+            if (*$t_i$*) == (*$p_j$*) then
+                A[i, j+1] = max(A[i, j+1], A[i-1, j] + (*$c_i$*)) // Include (*$t_i$*)
+
+output A[n, k] // If no such sequence exists, then output is undefined, as per problem.
+            \end{lstlisting}
 
         \item Give a dynamic programming algorithm based on enumerating the subsequences of $P$ and using pruning.
     \end{enumerate}
