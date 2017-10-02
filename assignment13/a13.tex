@@ -85,8 +85,37 @@ output A[n, k] // If no such sequence exists, then output is undefined, as per p
         \item Give a dynamic programming algorithm based on enumerating the subsequences of $P$ and using pruning.
     \end{enumerate}
 
+    \pagebreak
     \prob{22}
+    Given a tree which at each node, branches to buy a Bahn card for each trip or not, we can develop the following pruning rules.
+    \begin{enumerate}
+        \item If there is a Bahn card active at a particular node, then we don't need to buy a new one.
+        \item Only the last Bahn card purchased needs to be taken into account when making this decision.
+        \item We can buy at most $n$ Bahn cards, one for each trip.
+        \item Given two nodes on the same level which have the same number of discounted days left, then choose the one with the least overall cost.
+    \end{enumerate}
 
+    \begin{lstlisting}[escapeinside={(*}{*)}]
+let A[i, j] = an n+1(*$\times$*)n+1 matrix with the cost of the least expensive
+    way to travel to locations (*$T_1,\dots,T_i$*) given that the last Bahn card
+    was purchased for trip j.
+A[0, 0] = 0
+
+function activeBahnCard(i, j)
+    if j == 0 then return False
+    return (*$d_i$*) - (*$d_j \leq $*) L
+
+for i = 1 to n do
+    for j = 0 to n do
+        if A[i-1, j] is defined then
+            if activeBahnCard(i, j) then
+                // Not considering buying a new Bahn card.
+                A[i, j] = min(A[i, j], A[i-1, j] + (*$\frac{1}{2}f_i$*))
+            else
+                A[i, j] = min(A[i, j], A[i-1, j] + (*$f_i$*)) // Not buying a new Bahn card
+                A[i, i] = min(A[i, j], A[i-1, j] + B + (*$\frac{1}{2}f_i$*)) // Here we are buying a new one.
+output (*$\displaystyle\max_{0 \leq j \leq n}$*) A[n, j]
+    \end{lstlisting}
 
 \end{document}
 
