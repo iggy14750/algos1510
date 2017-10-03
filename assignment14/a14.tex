@@ -1,6 +1,7 @@
 \documentclass{article}
 \author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
 \title{Assignment 14}
+\date{Wed, 4 Oct 2017}
 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -42,32 +43,15 @@
 
 \begin{document}
 \maketitle
+\prob{20}
+The input to this problem is a sequence of n points $p_1, \dots p_n$ in the Euclidean plane. You are to find the shortest routes for two taxis to service these requests in order. Let us be more specific. The two taxis start at the origin. If a taxi visits a point $p_i$ before $p_j$ then it must be the case that $i < j$. (Stop and think about what this last sentence means.) Each point must be visited by at least one of the two taxis. The cost of a routing is just the total distance traveled by the first taxi plus the total distance traveled by the second taxi. Design an $O\left(n^2\right)$ time algorithm to find the minimum cost routing.
+
+\soln
 
 
+\prob{21}
+The input to this problem is n points $x_1, \dots , x_n$ on a line. A good path P has the property that one endpoint of P is the origin and every xi is covered by P. Note that P need not be simple, that is, it can backtrack over territory that it has already covered. Assume a vehicle moves along this path from the origin at unit speed. The response time $r_i$ for each $x_i$ is the time until the vehicle first reaches $x_i$. The problem is to find the good path that minimizes $\sum_{i=1}^n r_i/n$, the average response time.
+For example, if the points are $x_1 = 1$ $x_2 = 8$ and $x_3 = −2$ and the path visited the points in the order $x_1$, $x_3$, $x_2$, the average response time for this path would be 1/3 + (1 + 3)/3 + (1 + 3 + 10)/3. Give a polynomial time algorithm for this problem.
 
+\soln
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
