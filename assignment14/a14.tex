@@ -123,6 +123,6 @@ for i = 1 to n do
 output (*$\displaystyle \min_{1 \leq i \leq n}$*)A[n, i] / n    // original objective function was average.
 \end{lstlisting}
 
-The above algorithm relies on tracking (in the array S) the set of points remaining to be seen, given that we've visited $i$ points and have ended at point $j$. Obviously not all such combinations will be possible (i.e. not all entries will be defined), which is why we include that check in the pseudocode. Simultaneously we track the minimum time of a path to point $p_j$ given that we've taken $i$ steps (again, not always possible, so existence is enforced). The final result, the minimum-weight path that moves all $n$ steps, will be on the final row.
+The above algorithm relies on tracking (in the array S) the set of points remaining to be seen, given that we've visited $i$ points and have ended at point $j$. Obviously not all such combinations will be possible (i.e. not all entries will be defined), which is why we include that check in the pseudocode. We also track the minimum time of a path to point $p_j$ given that we've taken $i$ steps. The min-weight path that moves all $n$ steps will be on the final row.
 
 \end{document}
