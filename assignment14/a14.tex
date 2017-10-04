@@ -28,7 +28,7 @@
 \usepackage[usenames,dvipsnames,svgnames]{xcolor}
 \definecolor{javagreen}{rgb}{0.25,0.5,0.35}
 \lstset{
-    basicstyle   = \footnotesize,
+    basicstyle   = \normalsize,
     commentstyle = \color{javagreen},
     frame        = single,
     language     = C,
@@ -66,12 +66,18 @@ for i = 1 to n do
     for j = 0 to n do
         for k = 0 to n do
             if A[i-1, j, k] is defined then
-                A[i, i, k] = min(A[i, i, k], A[i-1, j, k] + dist(i, j)) // 1 going to i
-                A[i, j, i] = min(A[i, j, i], A[i-1, j, k] + dist(i, k)) // 2 going to i
+                A[i, i, k] = min( 
+                    A[i, i, k], 
+                    A[i-1, j, k] + dist(i, j) // 1 going to i
+                )
+                A[i, j, i] = min( 
+                    A[i, j, i], 
+                    A[i-1, j, k] + dist(i, k) // 2 going to i
+                )
 output (*$\displaystyle \min_{0 \leq i \leq n} \{$*)min(A[n, i, n], A[n, n, i])(*$\displaystyle \}$*)
 \end{lstlisting}
 
-
+\pagebreak
 \prob{21}
 The input to this problem is n points $x_1, \dots , x_n$ on a line. A good path P has the property that one endpoint of P is the origin and every $x_i$ is covered by $P$. Note that $P$ need not be simple, that is, it can backtrack over territory that it has already covered. Assume a vehicle moves along this path from the origin at unit speed. The response time $r_i$ for each $x_i$ is the time until the vehicle first reaches $x_i$. The problem is to find the good path that minimizes $\sum_{i=1}^n r_i/n$, the average response time.
 For example, if the points are $x_1 = 1$ $x_2 = 8$ and $x_3 = −2$ and the path visited the points in the order $x_1$, $x_3$, $x_2$, the average response time for this path would be 1/3 + (1 + 3)/3 + (1 + 3 + 10)/3. Give a polynomial time algorithm for this problem.
