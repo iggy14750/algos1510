@@ -38,6 +38,7 @@
     deletekeywords = {len, max, format, min},
     morekeywords = {yield, function, then, do, to},
     keywordstyle = \color{blue},
+    escapeinside={(*}{*)}
 }
 
 
@@ -46,11 +47,33 @@
 \prob{20}
 The input to this problem is a sequence of n points $p_1, \dots p_n$ in the Euclidean plane. You are to find the shortest routes for two taxis to service these requests in order. Let us be more specific. The two taxis start at the origin. If a taxi visits a point $p_i$ before $p_j$ then it must be the case that $i < j$. (Stop and think about what this last sentence means.) Each point must be visited by at least one of the two taxis. The cost of a routing is just the total distance traveled by the first taxi plus the total distance traveled by the second taxi. Design an $O\left(n^2\right)$ time algorithm to find the minimum cost routing.
 
-\soln
+\soln Imagine a tree in which the levels are numbered 1 to $n$, where each at each level $i$, we are deciding whether to assign $p_i$ to taxi 1 (left) or taxi 2 (right).
+This tree enumerates all assignments of the taxis to the points.
+Let's establish the following pruning rule then:
+\begin{enumerate}
+    \item If two nodes are at the same level, and the taxis last visited the same points, then choose the cheaper overall branch.
+\end{enumerate}
+
+Why can we do this? This rule refers to a situation in which our taxis, after having picked up the first $i$ passengers, and are now at the same position.
+In this case, if the more expensive assignment is some optimal solution, then any part of it following $i$ can be given to the less expensive one to create another optimal solution.
+
+\begin{lstlisting}
+int A[n+1 (*$\times$*) k+1] // A[i, j, k] is the minimum-cost assignment of (*$p_1,\dots,p_i$*)
+    // to our taxis, where taxi 1 last visited (*$p_j$*), and taxi 2 last visited (*$p_k$*)
+A[0,0,0] = 0
+
+for i = 1 to n do 
+    for j = 0 to n do
+        for k = 0 to n do
+            if A[i-1, j, k] is defined then
+                A[i, i, k] = min(A[i, i, k], A[i-1, j, k] + dist(i, j)) // 1 going to i
+                A[i, j, i] = min(A[i, j, i], A[i-1, j, k] + dist(i, k)) // 2 going to i
+output (*$\displaystyle \min_{0 \leq i \leq n} \{$*)min(A[n, i, n], A[n, n, i])(*$\displaystyle \}$*)
+\end{lstlisting}
 
 
 \prob{21}
-The input to this problem is n points $x_1, \dots , x_n$ on a line. A good path P has the property that one endpoint of P is the origin and every xi is covered by P. Note that P need not be simple, that is, it can backtrack over territory that it has already covered. Assume a vehicle moves along this path from the origin at unit speed. The response time $r_i$ for each $x_i$ is the time until the vehicle first reaches $x_i$. The problem is to find the good path that minimizes $\sum_{i=1}^n r_i/n$, the average response time.
+The input to this problem is n points $x_1, \dots , x_n$ on a line. A good path P has the property that one endpoint of P is the origin and every $x_i$ is covered by $P$. Note that $P$ need not be simple, that is, it can backtrack over territory that it has already covered. Assume a vehicle moves along this path from the origin at unit speed. The response time $r_i$ for each $x_i$ is the time until the vehicle first reaches $x_i$. The problem is to find the good path that minimizes $\sum_{i=1}^n r_i/n$, the average response time.
 For example, if the points are $x_1 = 1$ $x_2 = 8$ and $x_3 = −2$ and the path visited the points in the order $x_1$, $x_3$, $x_2$, the average response time for this path would be 1/3 + (1 + 3)/3 + (1 + 3 + 10)/3. Give a polynomial time algorithm for this problem.
 
 \soln
