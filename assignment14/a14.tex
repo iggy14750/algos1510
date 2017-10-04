@@ -58,7 +58,7 @@ Why can we do this? This rule refers to a situation in which our taxis, after ha
 In this case, if the more expensive assignment is some optimal solution, then any part of it following $i$ can be given to the less expensive one to create another optimal solution.
 
 \begin{lstlisting}
-int A[n+1 (*$\times$*) k+1] // A[i, j, k] is the minimum-cost assignment of (*$p_1,\dots,p_i$*)
+int A[n+1 (*$\times$*) n+1 (*$\times$*) n+1] // A[i, j, k] is the minimum-cost assignment of (*$p_1,\dots,p_i$*)
     // to our taxis, where taxi 1 last visited (*$p_j$*), and taxi 2 last visited (*$p_k$*)
 A[0,0,0] = 0
 
@@ -82,5 +82,37 @@ output (*$\displaystyle \min_{0 \leq i \leq n} \{$*)min(A[n, i, n], A[n, n, i])(
 The input to this problem is n points $x_1, \dots , x_n$ on a line. A good path P has the property that one endpoint of P is the origin and every $x_i$ is covered by $P$. Note that $P$ need not be simple, that is, it can backtrack over territory that it has already covered. Assume a vehicle moves along this path from the origin at unit speed. The response time $r_i$ for each $x_i$ is the time until the vehicle first reaches $x_i$. The problem is to find the good path that minimizes $\sum_{i=1}^n r_i/n$, the average response time.
 For example, if the points are $x_1 = 1$ $x_2 = 8$ and $x_3 = −2$ and the path visited the points in the order $x_1$, $x_3$, $x_2$, the average response time for this path would be 1/3 + (1 + 3)/3 + (1 + 3 + 10)/3. Give a polynomial time algorithm for this problem.
 
-\soln
+\soln Our tree is a sequence of moves, represented by moves left or right, where each move left or right is to the closest point in that direction to which we haven't travelled yet.
+This adequately enumerates all feasible solutions because a trip form any point to any other will include visiting all points between them, and can be encoded as a string of consecutive moves left or right.
+Please note that the objective function of this problem, average response time, is the same at total response time, in that the same optimal solutions will exist.
+Let's enumerate the following pruning rules.
+
+\begin{enumerate}
+    \item A move left cannot be completed if there are no more unseen left points.
+    \item If two nodes are at the same level (have taken the same number of moves), and are at the same final point, we can choose the branch which takes the least time.
+\end{enumerate}
+
+An important fact is that if these two nodes end at the same point, then all points between this and origin are explored.
+Say were $j$ points between $p_i$ and origin. Then, there are $i - j$ points on the otherside of the origin which must have been explored as well -- the closest ones.
+Thus, any two branches which have travelled the to same number of points, and end on the same one, have both seen all of the same points.
+For this reason, any optimal solution built off of one of them can be built off the other.
+
+\begin{lstlisting}
+int A[n+1 (*$\times$*) n+1] // A[i, j] is the minimum-weight path to (*$p_j$*) taking j steps.
+set<point> S[n+1 (*$\times$*) n+1] // S[i, j](*$\subseteq \{p_1,\dots,p_n\}$*) are the points yet to be visited
+                        // after seeing i points, and ending at point j.
+S[0, 0] = (*$\{p_1,\dots,p_n\}$*)
+A[0, 0] = 0 // We'll use the convention that point 0 is the origin.
+
+for i = 1 to n do
+    for j = 0 to n do
+        if A[i-1, j] is defined then
+            S = S[i-1, j]
+            (*$p_l$*) = left nighbor of (*$p_{i-1}$*) in S
+            (*$p_r$*) = right nighbor of (*$p_{i-1}$*) in S
+            
+
+output (*$\displaystyle \min_{0 \leq i \leq n}$*)A[n, i] / n // original objective function was average.
+\end{lstlisting}
+
 \end{document}
