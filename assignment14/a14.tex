@@ -62,16 +62,16 @@ int A[n+1 (*$\times$*) n+1 (*$\times$*) n+1] // A[i, j, k] is the minimum-cost a
     // to our taxis, where taxi 1 last visited (*$p_j$*), and taxi 2 last visited (*$p_k$*)
 A[0,0,0] = 0
 
-for i = 1 to n do 
+for i = 1 to n do
     for j = 0 to n do
         for k = 0 to n do
             if A[i-1, j, k] is defined then
-                A[i, i, k] = min( 
-                    A[i, i, k], 
+                A[i, i, k] = min(
+                    A[i, i, k],
                     A[i-1, j, k] + dist(i, j) // 1 going to i
                 )
-                A[i, j, i] = min( 
-                    A[i, j, i], 
+                A[i, j, i] = min(
+                    A[i, j, i],
                     A[i-1, j, k] + dist(i, k) // 2 going to i
                 )
 output (*$\displaystyle \min_{0 \leq i \leq n} \{$*)min(A[n, i, n], A[n, n, i])(*$\displaystyle \}$*)
@@ -83,8 +83,8 @@ The input to this problem is n points $x_1, \dots , x_n$ on a line. A good path 
 For example, if the points are $x_1 = 1$ $x_2 = 8$ and $x_3 = −2$ and the path visited the points in the order $x_1$, $x_3$, $x_2$, the average response time for this path would be 1/3 + (1 + 3)/3 + (1 + 3 + 10)/3. Give a polynomial time algorithm for this problem.
 
 \soln Our tree is a sequence of moves, represented by moves left or right, where each move left or right is to the closest point in that direction to which we haven't travelled yet.
-This adequately enumerates all feasible solutions because a trip form any point to any other will include visiting all points between them, and can be encoded as a string of consecutive moves left or right.
-Please note that the objective function of this problem, average response time, is the same as total response time, in that the same optimal solutions will exist.
+This adequately enumerates all feasible solutions because a trip from any point to any other will include visiting all points between them, and can be encoded as a string of consecutive moves left or right.
+Please note that the objective function of this problem, average response time (rt), is the same as total response time, in that the same optimal solutions will exist.
 Let's enumerate the following pruning rules.
 
 \begin{enumerate}
@@ -93,34 +93,36 @@ Let's enumerate the following pruning rules.
 \end{enumerate}
 
 An important fact is that if these two paths end at the same point, then all points between this and origin are explored.
-Say were $j$ points between $p_i$ and origin. Then, there are $i - j$ points on the other side of the origin which must have been explored as well: the closest ones.
+Say there were $j$ points between $p_i$ and origin. Then, there are $i - j$ points on the other side of the origin which must have been explored as well: the closest ones.
 Thus, any two branches which have travelled the to same number of points, and end on the same one, have both seen all of the same points.
 For this reason, any optimal solution built off of one of them can be built off the other.
 
 \begin{lstlisting}
 int A[n+1 (*$\times$*) n+1] // A[i, j] is the minimum-weight path to (*$p_j$*) taking i steps.
 set<point> S[n+1 (*$\times$*) n+1] // S[i, j](*$\subseteq \{p_1,\dots,p_n\}$*) are the points yet to be visited
-                        // after seeing i points, and ending at point j.
+                        // after seeing i points, and with path ending at point j.
 S[0, 0] = (*$\{p_1,\dots,p_n\}$*)
 A[0, 0] = 0 // We'll use the convention that point 0 is the origin.
 
 procedure move(i, j, dir) // where dir is "left" or "right"
-    S = S[i-1, j]
-    (*$p_d$*) = dir neighbor of (*$p_{j}$*) in S
+    T = S[i-1, j]
+    (*$p_d$*) = dir neighbor of (*$p_{j}$*) in the set T
     if (*$p_d$*) is defined then
-        val = 2*A[i-1, j] + dist((*$p_{j}$*), (*$p_d$*))
+        val = 2*A[i-1, j] + dist((*$p_{j}$*), (*$p_d$*))  // previous rt plus this point's rt
         if A[i, d] > val then
             A[i, d] = val
-            S[i, d] = S - (*$p_j$*)
+            S[i, d] = T - (*$p_j$*)
 
 for i = 1 to n do
     for j = 0 to n do
         if A[i-1, j] is defined then
             move(i, j, "left")
             move(i, j, "right")
-            
 
-output (*$\displaystyle \min_{1 \leq i \leq n}$*)A[n, i] / n // original objective function was average.
+
+output (*$\displaystyle \min_{1 \leq i \leq n}$*)A[n, i] / n    // original objective function was average.
 \end{lstlisting}
+
+The above algorithm relies on tracking (in the array S) the set of points remaining to be seen, given that we've visited $i$ points and have ended at point $j$. Obviously not all such combinations will be possible (i.e. not all entries will be defined), which is why we include that check in the pseudocode. Simultaneously we track the minimum time of a path to point $p_j$ given that we've taken $i$ steps (again, not always possible, so existence is enforced). The final result, the minimum-weight path that moves all $n$ steps, will be on the final row.
 
 \end{document}
