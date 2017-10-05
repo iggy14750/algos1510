@@ -14,7 +14,7 @@
 \providecommand{\soln}{\textbf{Solution: }}
 \providecommand{\image}[1]{
     \begin{center}
-        \includegraphics%[width=0.95\textwidth]
+        \includegraphics[width=0.5\textwidth]
             {#1}
     \end{center}
 }
@@ -45,43 +45,35 @@
 \maketitle
 
 \begin{prob} {23}
-	Give a polynomial time algorithm for the following problem. The input consists of a sequence
-	$R$ = $R_0$, \dots , $R_n$ of non-negative integers, and an integer $k$. The number $R_i$ represents the number
-	of users requesting some particular piece of information at time $i$ ( say from a www server. If the
-	server broadcasts this information at some time $t$, the the requests of all the users who requested the
-	information strictly before time $t$ are satisfied. The server can broadcast this information at most
-	$k$ times. The goal is to pick the $k$ times to broadcast in order to minimize the total time (over all
-	requests) that requests/users have to wait in order to have their requests satisfied.\\
-	
-	Let's use the binary tree that we utilize for in-class examples to show our thought process for this problem.
-	
-	\image{treeOfSets}
-	
-	At every level in this tree, we can either choose to add time $t$ to our set of times that we send out the piece of information (indicated by the right child of each node), or we can not add time $t$ to the set (indicated by the left child).\\
-	
-	To prune this tree, we have created two simple rules:
-	\begin{enumerate}
-		\item If the size of a set at a given node is greater than $k$, prune that subtree.  This is because we can't use more than $k$ times anyway, so it'd be a waste of our time to explore that subtree.
-		\item If two sets at the same level have the same total waiting time, prune the set with more times in it.  Basically, if they both have the same waiting time, then they'll both have identical subtrees and permutations of times added to either in the future.  The reason we want to prune the set with more times in it at the moment is because we'll have more freedom with the smaller set to allocate times in the future, thus more availability to limit the waiting time.
-	\end{enumerate}
+    Give a polynomial time algorithm for the following problem. The input consists of a sequence
+    $R$ = $R_0$, \dots , $R_n$ of non-negative integers, and an integer $k$. The number $R_i$ represents the number
+    of users requesting some particular piece of information at time $i$ ( say from a www server. If the
+    server broadcasts this information at some time $t$, the the requests of all the users who requested the
+    information strictly before time $t$ are satisfied. The server can broadcast this information at most
+    $k$ times. The goal is to pick the $k$ times to broadcast in order to minimize the total time (over all
+    requests) that requests/users have to wait in order to have their requests satisfied.\\
+    
+    Let's use the binary tree that we utilize for in-class examples to show our thought process for this problem.
+    
+    \image{treeOfSets}
+    
+    At every level in this tree, we can either choose to add time $t$ to our set of times that we send out the piece of information (indicated by the right child of each node), or we can not add time $t$ to the set (indicated by the left child).
+    
+    To prune this tree, we have created two simple rules:
+    \begin{enumerate}
+        \item If, at any node, we have already broadcast $k$ times, then we may prune the right child of this node.
+        \item If two sets at the same level have broadcast the same number of times, then we can choose the one with the least total wait time
+        (Notice that total wait time is an equivalent problem to average wait time).
+    \end{enumerate}
 
-	As a result, our code looks like this:
-	
-	\begin{lstlisting}
-A[0, (*$\emptyset$*)] = 0 // Haven't started timing requests set, so our wait time is 0
-// A[n, k] = minimum total waiting time of all persons at times in set k 
-for (*$i$*) = 0 to (*$n$*) do // Go down the levels of our tree
-	addToWaitTime = 0
-	for (*$j$*) = (*$i$*) to (*$n$*) do // Traverse each child node
-		
-	if A[n, k] is defined then
-		A[n+1, k] = min(A[n, k], A[n+1, k] + ) //MODIFY THIS LINE TO ADD SOME NEW VALUE
-		if length(k) < k then // We haven't exceeded our allotted # of times
-			A[n+1, k (*$\cup$*) (*$R_i$*)] = min(A[n+1, k (*$\cup$*) (*$R_i$*)], A[n, k])
-output min A[n, *]
-	\end{lstlisting}
-	
-	As one can see, our program incorporates two for loops with $k$ iterations for every $n$ to produce a runtime of $O(nk)$.  In the worst case, $n = k$, so the runtime is effectively $O(n^2)$.  This is indeed a polynomial runtime and solves our problem.
+    \pagebreak
+    \begin{lstlisting}
+int A[i][j] = minium-total-response time of some stragey from time 1 to time i,
+    having broadcast j times. Dimensions n+2 (*$\times$*) k+1.
+    
+    \end{lstlisting}
+    
+    As one can see, our program incorporates two for loops with $k$ iterations for every $n$ to produce a runtime of $O(nk)$.  In the worst case, $n = k$, so the runtime is effectively $O(n^2)$.  This is indeed a polynomial runtime and solves our problem.
 \end{prob}
 
 
