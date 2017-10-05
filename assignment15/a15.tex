@@ -68,9 +68,14 @@
 
     \pagebreak
     \begin{lstlisting}
-int A[i][j] = minium-total-response time of some stragey from time 1 to time i,
+int A[i, j] = minium-total-response time of some stragey from time 1 to time i,
     having broadcast j times. Dimensions n+2 (*$\times$*) k+1.
-    
+int L[i, j] = last-broadcast-time corresponding to the same node as in A. Same dimentions.
+A[0, 0] = L[0, 0] = 0
+
+for i = 0 to n do
+    for j = 0 to n do
+
     \end{lstlisting}
     
     As one can see, our program incorporates two for loops with $k$ iterations for every $n$ to produce a runtime of $O(nk)$.  In the worst case, $n = k$, so the runtime is effectively $O(n^2)$.  This is indeed a polynomial runtime and solves our problem.
