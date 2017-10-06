@@ -62,7 +62,7 @@
 
     \pagebreak
     \begin{lstlisting}
-int A[i, j] = minium-total-response time of some stragey from time 1 to time i,
+int A[i, j] = minium-total-response time of some strategy from time 1 to time i,
     having broadcast j times. Dimensions n+2 (*$\times$*) k+1.
 int L[i, j] = last-broadcast-time corresponding to the same node as in A. Same dimensions.
 A[0, 0] = L[0, 0] = 0
@@ -83,43 +83,43 @@ output (*$\displaystyle \min_{0 \leq i \leq k}$*) A[n+1, i]
     As one can see, our program incorporates two for loops with $n$ iterations for every $n$ to produce a runtime of $O(n^2)$.  This is indeed a polynomial runtime and solves our problem.
 \end{prob}
 \begin{prob} {26}
-	Give a polynomial time dynamic programming algorithm for the following problem. The	input consists of a two dimensional array $R$ of non-negative integers, and an integer $k$. The value $R_{t,p}$ gives the number of users requesting page $p$ at time $t$ ( say from a www server). At each integer time, the server can broadcast an arbitrary collection of pages. If the server broadcasts the $j$ pages $p_1$,\dots, $p_j$ at time $t$, then the requests of all the users who requested pages $p_1$,\dots, $p_j$ strictly before time $t$ are satisfied. This counts at $j$ broadcasts. The server can make at most $k$ broadcasts in total over all times. The goal is to pick the times to broadcast, and the pages to broadcast at those times, in order to minimize the total time (over all requests) that requests/users have to wait in order to have their requests satisfied, subject to the constraint that there are at most $k$ broadcasts.\par\medskip
-	
+	Give a polynomial time dynamic programming algorithm for the following problem. The	input consists of a two dimensional array $R$ of non-negative integers, and an integer $k$. The value $R_{t,p}$ gives the number of users requesting page $p$ at time $t$ ( say from a www server). At each integer time, the server can broadcast an arbitrary collection of pages. If the server broadcasts the $j$ pages $p_1$,\dots, $p_j$ at time $t$, then the requests of all the users who requested pages $p_1$,\dots, $p_j$ strictly before time $t$ are satisfied. This counts as $j$ broadcasts. The server can make at most $k$ broadcasts in total over all times. The goal is to pick the times to broadcast, and the pages to broadcast at those times, in order to minimize the total time (over all requests) that requests/users have to wait in order to have their requests satisfied, subject to the constraint that there are at most $k$ broadcasts.\par\medskip
+
 	Let's use the binary tree that we utilize for in-class examples to show our thought process for this problem.
-	
+
 	\image{treeOfSetsPart2}
-	
+
 	At every level in this tree, we can either choose to add time $t$ to our set of times (left set of every node) that we send out the piece of information (indicated by the right child of each node), or we can not add time $t$ to the set (indicated by the left child).  At the same time, we can choose to send out a given page $p$ at time $t$ or we can choose not to (represented by right set of every node).\par
-	
+
 	To prune this tree, we have created two simple rules:
 	\begin{enumerate}
 		\item If, at any node, we have already broadcast $k$ times, then we may prune the right child of this node.
 		\item If two sets at the same level have broadcast the same number of times, then we can choose the one with the least total wait time
 		(Notice that total wait time is an equivalent problem to average wait time).
 	\end{enumerate}
-	
+
 	\pagebreak
 	\begin{lstlisting}
 int A[t, l, b, p] is the min-response-time solution at time t for page p given that we
-    have broadcast b times and the last one was at time l
+    have broadcast b times and the last one was at time l. Dim n+2 (*$\times$*) n+1 (*$\times$*) k+1 (*$\times$*) p+1.
 int L[t, l, b, p] = last-broadcast-time corresponding to the same node as in A. Same dimensions.
 A[0, 0, 0, 0] = L[0, 0, 0, 0] = 0
 
 for i = 0 to n do // Traverse down our tree
     for j = 0 to n do // Traverse all the times
-        for k = 0 to n do // Traverse all the times we've broadcast
+        for b = 0 to k do // Traverse all the times we've broadcast
             for l = 0 to n do // Traverse all the pages we've broadcast
-                if A[i, j, k, l] is defined then
-                    wt = (*$\sum_{l = L[i, j]}^{i} \sum_{r = L[i, j]}^{j} R_{l,r}$*) + A[i, j, k, l] // Total wait time.
-                    if wt < A[i+1, j, k, l] then // Do not broadcast.
-                        A[i+1, j, k, l] = wt
-                        L[i+1, j, k, l] = L[i, j, k, l]
-                    if wt < A[i+1, j+1, k, l] then // Broadcast.
-                        A[i+1, j+1, k+1, l] = wt // We have broadcast 1 more times at time i+1
-                        L[i+1, j+1, k+1, l] = i + 1
-output (*$\displaystyle \min_{0 \leq i \leq k}$*) A[n+1, i, i-1, n+1]
+                if A[i, j, b, l] is defined then
+                    wt = (*$\sum_{l = L[i, j]}^{i} \sum_{r = L[i, j]}^{j} R_{l,r}$*) + A[i, j, b, l] // Total wait time.
+                    if wt < A[i+1, j, b, l] then // Do not broadcast.
+                        A[i+1, j, b, l] = wt
+                        L[i+1, j, b, l] = L[i, j, b, l]
+                    if wt < A[i+1, j+1, b, l] then // Broadcast.
+                        A[i+1, j+1, b+1, l] = wt // We have broadcast 1 more times at time i+1
+                        L[i+1, j+1, b+1, l] = i + 1
+output (*$\displaystyle \min_{0 \leq i \leq b}$*) A[n+1, i, i-1, n+1]
 	\end{lstlisting}
-	
+
 	As one can see, our program incorporates four for loops with $n$ iterations for every $n$ iterations ($l$ and $k$).  However, these are both run $n$ iterations for every $n$ ($i$ and $j$) once again to produce a runtime of $O(n^2)$ (this is pretty clear).  This is indeed a polynomial runtime and solves our problem.
 \end{prob}
 \end{document}
