@@ -62,6 +62,7 @@ Show that if there is an $O\left(n^2\right)$ time algorithm for multiplying two 
     then E = multLower(C,D) = (*$\begin{smallmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ AB & 0 & 0 \\  \end{smallmatrix}$*)
 
     output lowerLeft(E)   // i.e. row 3, col 1
-
 \end{lstlisting}
+
+It is clear that since the conversion from matrices A and B is just writing out two new $3n * 3n$ block matrices, this step can be completed in $O\left(n^2\right)$ time. Then our assumed function 'multLower(C,D)' also takes $O\left(n^2\right)$ time, and finally the conversion back to the solution is simply writing out a new $n * n$ matrix, so we have an overall $O\left(n^2\right)$ runtime for multiplying arbitrary matrices.
 \end{document}
