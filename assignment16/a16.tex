@@ -1,6 +1,7 @@
 \documentclass{article}
 \author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
 \title{Assignment 16}
+\date{Tues, 10 Oct 2017}
 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -46,29 +47,21 @@
 
 
 
+
+
+\prob{1}
+Show that if there is an $O\left(n^2\right)$ time algorithm for multiplying two n by n lower triangular matrices then there is an $O\left(n^2\right)$ time algorithm for multiplying two arbitrary n by n matrices.
+
+\soln Similarly to the problem about matrix squaring (done in class), we can reduce the problem of arbitrary matrix multiplication to the problem of multiplying lower triangular matrices quite easily, demonstrated by using a function 'multLower(A,B)' to give code for a 'multArb(A,B)' function. Such code follows:
+
+\begin{lstlisting}
+  function multArb(A,B):
+    let C = (*$\begin{smallmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & A & 0 \\  \end{smallmatrix}$*)
+    let D = (*$\begin{smallmatrix} 0 & 0 & 0 \\ B & 0 & 0 \\ 0 & 0 & 0 \\  \end{smallmatrix}$*)
+
+    then E = multLower(C,D) = (*$\begin{smallmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ AB & 0 & 0 \\  \end{smallmatrix}$*)
+
+    output lowerLeft(E)   // i.e. row 3, col 1
+
+\end{lstlisting}
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
