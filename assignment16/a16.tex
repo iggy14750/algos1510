@@ -96,8 +96,67 @@ for i = 0 to n do
                     A[i+1, k] = A[i, j]
                 if A[i+1, k] == A[i, j] or (*$\{B_1,\dots,B_{i+1}\}$*) - A[i+1, k] == A[i, j] then
                     break
+output True if A[n, 0] is defined else False
     \end{lstlisting}
 As we can see, we're looking at something like $O(n(nL)^2) = O(n^3L^2)$
+
+\pagebreak
+\prob{27}
+Imagine the tree for this problem to be putting the current chapter which we are considering into either 
+the volume which we are currently considering, or closing this volume and putting this chapter into a new volume.
+The base state is having chapter 1 in volume 1.
+Consider the following pruning rules:
+\begin{enumerate}
+    \item We cannot move onto to more than $k$ volumes.
+    \item If two feasible solutions are on the same level, 
+    and are working on the same volume, 
+    then choose the one with the better objective function \textbf{not including the current volume}.
+\end{enumerate}
+The reason the second can be chosen is that if some 
+optimal solution exists building from the worse partial solution (measured as noted),
+then we can build a similarly optimal solution from the better one.
+We leave out the final volume because that one is in some sense ``in progress'', and more importantly, causes contradictions if it's included.
+But of completed volumes, we have that any solution built off one cannot beat the existing one.
+That is, in some partial solution, we have a greatest and least volume.
+The objective function is defined by these volumes.
+Any future solution built off of this one will have other volumes which may be:
+\begin{enumerate}
+    \item Shorter than the least from before, in which case we have a worse objective function.
+    \item Between the least and greatest volumes from before, which does not affect the objective function, or
+    \item Longer than the greatest from before, which again increases the objective function.
+\end{enumerate}
+
+Since the rest of such an optimal solution beats or matches the worst partial's objective function, 
+we can safely say that building another solution from the better partial will also be optimal.
+
+\begin{lstlisting}
+list<int> A[n (*$\times$*) k] // A[i, j] = a sequence of volume lengths made from the first i chapters
+    // of length j (having j volumes), minimizing the objective func of the first j-1 elements.
+A[1, 1] = {(*$x_1$*)}
+
+function obj(s):
+    x = infinity
+    n = -infinity
+    for item in s[excluding last element] do
+        x = max(x, item)
+        n = min(n, item)
+    return x - n
+
+for i = 1 to n do
+    for j = 1 to n do
+        if A[i, j] is defined then
+            // Don't open a new volume
+            new = A[i, j] (*$\cup$*) {(*$x_{i+1}$*)}
+            old = A[i+1, j]
+            if obj(new) < obj(old) then
+                A[i+1, j] = new
+            // Open a new volume.
+            old = A[i+1, j+1]
+            if obj(new) < obj(old) then
+                A[i+1, j+1] = new
+output A[n, k]
+\end{lstlisting}
+
 \end{document}
 
 
