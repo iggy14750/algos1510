@@ -157,6 +157,21 @@ for i = 1 to n do
 output A[n, k]
 \end{lstlisting}
 
+\pagebreak
+\prob{Reduction 1}
+Let us propose the following implementation of matrix multiplication.
+\begin{lstlisting}
+function matrixMult(A, B):
+    C = [[0, 0, 0],
+         [0, 0, 0],
+         [0, A, 0]]
+    D = [[0, 0, 0],
+         [B, 0, 0],
+         [0, 0, 0]]
+    E = lowerTriangeMult(C, D)
+    return lower left(E)
+\end{lstlisting}
+
 \end{document}
 
 
