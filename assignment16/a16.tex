@@ -1,0 +1,124 @@
+\documentclass{article}
+\author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
+\title{Assignment 16}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{graphicx}
+
+% ============ USED FOR OUR FORMAT ============
+\newtheorem{thm}{Claim}
+\providecommand{\prob}[1]{\section*{Problem #1}}
+\providecommand{\soln}{\textbf{Solution: }}
+\providecommand{\image}[1]{
+    \begin{center}
+        \includegraphics%[width=0.95\textwidth]
+            {#1}
+    \end{center}
+}
+\providecommand{\tightlist}{
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
+
+% ============ USED FOR CODE LISTINGS ============
+\usepackage{listings}
+\usepackage[usenames,dvipsnames,svgnames]{xcolor}
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35}
+\lstset{
+    basicstyle   = \footnotesize,
+    commentstyle = \color{javagreen},
+    frame        = single,
+    language     = C,
+    stringstyle  = \color{orange},
+    numbers      = left,
+    showstringspaces=false,
+    deletekeywords = {len, max, format, min},
+    morekeywords = {yield, function, then, do, to},
+    keywordstyle = \color{blue},
+    escapeinside={(*}{*)}
+}
+
+\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+
+\begin{document}
+\maketitle
+
+    \prob{24}
+    Consider the tree: at each level we are deciding whether to include some element.
+    As this tree is $n$ levels deep, it has $2^n$ leaves.
+    This tree represents the decision of what to include on some side of the scale, say the left side for discussion.
+    We can infer the content of the right side to be $\{B_1, \dots, B_i\} - L$ at some level $i$ if $L$ is the subset on the left side of the scale.
+
+    We can drastically reduce the size of this tree by observing the following rule:
+    \begin{enumerate}
+        \item If two feasible solutions are on the same level, 
+        and if the weight of the left side of one is the same as either side of the other, 
+        then one can prune one of them arbitrarily.
+    \end{enumerate}
+    We can include this rule because:
+    \begin{enumerate}[label=\roman*)]
+        \item Given the level, and weight of one side, we can calculate the weight of the other.
+        \item If both solutions have the same pair of weights, and a global solution can be built off of one of them,
+            then one can also be built off of the other. 
+            [The rest of the solution is disjoint from these two partial solutions].
+    \end{enumerate}
+    Please note that this can be done with two uses of the scale.
+    The other solution can be reconstructed from some stored information, 
+    and the scale can be used to tell us if these two subsets are of equal weight.
+    %Now we're going to consider the following code
+
+    \begin{lstlisting}
+subset A[n (*$\times$*) nL] // A[i, *] holds a list of subsets of the first i boxes which are feasible
+    // solutions.  This list has a length of nL because at maximum, n elements can be on
+    // one side of the scale, each with L weight. Although we do not know the weight of 
+    // a collection of boxes directly, there will be at most nL distinct weights,
+    // so this can store them all.
+A[0, 0] = (*$\emptyset$*)
+for i = 0 to n do
+    for j = 0 to nL do
+        if A[i, j] is defined then
+            // include (*$B_{i+1}$*) on the left scale.
+            t = A[i, j] (*$\cup$*) (*$\{B_{i+1}\}$*)
+            for k = 0 to nL do
+                if A[i+1, k] is undefined then
+                    A[i+1, k] = t // This solution shape has not been seen.
+                if A[i+1, k] == t then // Weigh against left side of existing solution.
+                    break // There is already a solution of this shape.
+                if (*$\{B_1,\dots,B_{i+1}\}$*) - A[i+1, k] == t then // Weigh against right side.
+                    break
+            // Do not include (*$B_{i+1}$*), put it on the right side.
+            for k = 0 to nL do
+                if A[i+1, k] is undefined then
+                    A[i+1, k] = A[i, j]
+                if A[i+1, k] == A[i, j] or (*$\{B_1,\dots,B_{i+1}\}$*) - A[i+1, k] == A[i, j] then
+                    break
+    \end{lstlisting}
+As we can see, we're looking at something like $O(n(nL)^2) = O(n^3L^2)$
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
