@@ -1,6 +1,7 @@
 \documentclass{article}
 \author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
 \title{Assignment 17}
+\date{October 11, 2017}
 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -44,31 +45,30 @@
 \begin{document}
 \maketitle
 
+\prob{2}
+Here we wish to show that arbitrary matrix multiplication between matrices $A$ and $B$ is reducible to inverting an arbitrary nonsingular matrix $C$ (nonsingular of course meaning that such a matrix is in fact invertible). We can demonstrate this by way of the code given below, which you should consider in conjunction with the following:\par
+\begin{itemize}
+  \item The process of converting the two input matrices $A$ and $B$ to the input $C$ for 'matrixInverse' is polynomial, simply requiring the writing of a $3n*3n$ matrix with $9n^2$ entries, thus taking $O\left(n^2\right)$ time.
+  \item The process of converting the output of 'matrixInverse' to the final output $AB$ is also polynomial, requiring only the retrieval of the top right $n*n$ entries of our $3n*3n$ result matrix; hence also $O\left(n^2\right)$ time.
+  \item Since both of the above are $O\left(n^2\right)$ time operations, and our assumed 'matrixInverse' function takes at $least$ that much time, being in $O\left(n^k\right), k \geq 2$, then the overall algorithm for 'matrixMult' will be in $O\left(n^k\right)$ time, that being the greatest term in our runtime.
+\end{itemize}
+
+
+\begin{lstlisting}
+function matrixMult(A, B):
+    C = [[I, A, 0],
+         [0, I, B],
+         [0, 0, I]]
+    /**
+     * Note now that C' = C-inverse is
+     * D = [[I, -A, AB],
+     *      [0,  I, -B],
+     *      [0,  0,  I]]
+     * This will be the output of our function matrixInverse(C)
+     */
+    D = matrixInverse(C)
+    return upper right(D)
+\end{lstlisting}
 
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
