@@ -49,7 +49,12 @@
 
 
 \prob{10}
-Psh. Child's play. We can reduce the clique optimization problem to clique decision by simply checking every value of $k$, beginning at $n = \|G\|$ and decrementing. In this way we find the order $m$ of the largest clique in linear ($O\left(n\right)$) time (times whatever the decision algorithm takes). Then our task is simply to iterate over subgraphs of order $m$ (maximum of $n*\left(n-1\right)*\dots*\left(m+1\right)*m$) to find which contains the correct set of vertices. See the following code:\par
+Psh. Child's play.
+We can reduce the clique optimization problem to clique decision by simply checking every value of $k$, 
+beginning at $n = |G|$ and decrementing. 
+In this way we find the order $m$ of the largest clique in linear ($O(n)$) time (times whatever the decision algorithm takes). 
+Then our task is simply to iterate over subgraphs of order $m$ (maximum of $n*(n-1)*\dots*(m+1)*m$) \
+to find which contains the correct set of vertices. See the following code:
 \begin{lstlisting}
 alg cliqueOpt(Graph G)
   let n = |G|
@@ -61,7 +66,10 @@ alg cliqueOpt(Graph G)
     if cliqueDecision(H, k) then                    // we found it!
       return H                                      // so return the clique (subgraph)
 \end{lstlisting}
-If the assumed polynomial 'cliqueDecision' algorithm runs in $O\left(n^j\right)$ time for some j, then obviously our 'cliqueOpt' algorithm takes $n*O\left(n^j\right) = O\left(n^{j+1}\right)$ time for the first 'for' loop, plus up to $O\left(n^j\right) * O\left(n^{n-m}\right)$ time for the second. Still polynomial, still good. Boom.
+If the assumed polynomial `cliqueDecision' algorithm runs in $O(n^j)$ time for some j, 
+then obviously our `cliqueOpt' algorithm takes $n*O(n^j) = O(n^{j+1})$ time for the first `for' loop, 
+plus up to $O(n^j) * O(n^{n-m})$ time for the second. 
+Still polynomial, still good. Boom.
 
 \prob{12}
 
