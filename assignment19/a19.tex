@@ -82,8 +82,15 @@ Then, overall, we are looking at $O(n^2 + n^{j+1})$, polynomial time.
 
 \prob{12}
 Laughable.
-
-
+We can show that 2Clique is NP-hard by reducing another known NP-hard problem (here cliqueDecision) to it.
+That is, we must show that cliqueDecision $\leq$ 2Clique in polynomial time.
+We do this by giving an algorithm for cliqueDecision that uses 2Clique:
+\begin{lstlisting}
+alg cliqueDecision(H,j)   // simply create a new graph which is two copies of the original
+  let G = H + H           // if this new graph has two cliques of the desired size, then
+  return 2Clique(G,j)     // clearly the original has one
+\end{lstlisting}
+Obviously, creating a new graph that is just two copies of the original graph H takes $O(n)$ time, which when added to our cliqueDecision algorithm results in a total runtime of $O(n + f(n))$, where $f(n)$ is the runtime of cliqueDecision.
 \prob{15}
 
 
