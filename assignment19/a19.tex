@@ -49,10 +49,15 @@
 
 
 \prob{10}
+<<<<<<< HEAD
+=======
+Psh. Child's play.
+>>>>>>> 80407ed37ba57999b780beeb5e78ffc1f191db9c
 We can reduce the clique optimization problem to clique decision by simply checking every value of $k$,
 beginning at $n = |G|$ and decrementing.
-Follow this by a closure operation which removes all vertices with degree less than k-1,
-so that only the clique is left.
+In this way we find the order $m$ of the largest clique in linear ($O(n)$) time (times whatever the decision algorithm takes).
+Then our task is simply to iterate over subgraphs of order $m$ (maximum of $n*(n-1)*\dots*(m+1)*m$) \
+to find which contains the correct set of vertices. See the following code:
 \begin{lstlisting}
 alg cliqueOpt(Graph G)
   let n = |G|
@@ -60,17 +65,12 @@ alg cliqueOpt(Graph G)
     if cliqueDecision(G, k) then                    // we found the largest clique size
       break                                         // so break and find the members
 
-  let H = G
-  do
-    G = H
-    for vertex v in H:
-      if degree(v) < k-1 then
-        delete v from H
-  until H == G
-
-  output H
+  for subgraph H (*$\in$*) G where |H| = k do
+    if cliqueDecision(H, k) then                    // we found it!
+      return H                                      // so return the clique (subgraph)
 \end{lstlisting}
 If the assumed polynomial `cliqueDecision' algorithm runs in $O(n^j)$ time for some j,
+<<<<<<< HEAD
 then obviously our `cliqueOpt' algorithm takes $n*O(n^j) = O(n^{j+1})$ time for the first `for' loop.
 Then, consider the closure operation.
 At each iteration, it must remove at least one vertex (otherwise the loop would terminate).
@@ -82,6 +82,16 @@ Then, overall, we are looking at $O(n^2 + n^{j+1})$, polynomial time.
 
 \prob{12}
 Laughable.
+=======
+then obviously our `cliqueOpt' algorithm takes $n*O(n^j) = O(n^{j+1})$ time for the first `for' loop,
+plus up to $O(n^j) * O(n^{n-m})$ time for the second.
+Still polynomial, still good. Boom.
+
+\prob{12}
+Laughable.
+We can show that 2Clique is NP-hard by reducing a known NP-hard problem (in this case cliqueDecision) to it. That is, by showing
+cliqueDecision $\leq$ 2Clique. This is easily done with the following code:
+>>>>>>> 80407ed37ba57999b780beeb5e78ffc1f191db9c
 
 
 \prob{15}
