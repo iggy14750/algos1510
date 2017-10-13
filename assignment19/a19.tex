@@ -53,7 +53,7 @@ Psh. Child's play.
 We can reduce the clique optimization problem to clique decision by simply checking every value of $k$, 
 beginning at $n = |G|$ and decrementing. 
 In this way we find the order $m$ of the largest clique in linear ($O(n)$) time (times whatever the decision algorithm takes). 
-Then our task is simply to iterate over subgraphs of order $m$ (maximum of $n*(n-1)*\dots*(m+1)*m$) \
+Then our task is simply to iterate over subgraphs of order $m$ (maximum of $n*(n-1)*\dots*(m+1)*m$)
 to find which contains the correct set of vertices. See the following code:
 \begin{lstlisting}
 alg cliqueOpt(Graph G)
