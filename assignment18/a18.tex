@@ -61,13 +61,15 @@ Thus, if \texttt{PolynomialSquare} is $\Theta(f(n))$, then our algorithm is $\Th
 
 
 \prob{4}
-Even easier. Just like what we did in class with reducing "The Traveling Salesman" to sorting. Simply create a coordinate for each number $i$ to be sorted in the form $\left(i,i\right)$, giving you an adjacency list input that looks like $\left(a,a\right),\left(b,b\right), \dots, \left(n,n\right)$. Then you'll get a graph that has a line (fun fact, it's $y=x$) which will contain, in order from the origin, the sorted doubles of the numbers we want. Then just extract the x-coordinate of every pair and you're golden. Boom.
+Just like what we did in class with reducing "The Traveling Salesman" to sorting. 
+Simply create a coordinate for each number $i$ to be sorted in the form $(i,i)$, 
+giving you an adjacency list input that looks like $(a,a),(b,b), \dots, (n,n)$.
+Then you'll get a graph that has a line (fun fact, it's $y=x$) which will contain, 
+in order from the origin, the sorted doubles of the numbers we want.
+Then just extract the x-coordinate of every pair and you're golden.
 
 
 \prob{5}
-Stuff about graphs.\par
-\soln
-Possibly the easiest yet. Watch me.
 \begin{enumerate}
   \item $Directed \leq Mixed$\\
         The easiest of the three. A directed graph is already technically a mixed graph, so in your algorithm for directed graphs simply feed the assumed mixed graph algorithm your input. Return the output. Boom.
