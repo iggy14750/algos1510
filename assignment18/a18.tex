@@ -72,18 +72,25 @@ Then just extract the x-coordinate of every pair and you're golden.
 \prob{5}
 \begin{enumerate}
   \item $Directed \leq Mixed$\\
-        The easiest of the three. A directed graph is already technically a mixed graph, so in your algorithm for directed graphs simply feed the assumed mixed graph algorithm your input. Return the output. Boom.
+        A directed graph is already technically a mixed graph, 
+        so in your algorithm for directed graphs simply feed the assumed mixed graph algorithm your input. 
+        Return the output.
   \item $Undirected \leq Directed$\\
-        Still super easy. Given an undirected graph, simply make a copy of it with all edges replaced by directed edge pairs to/from the endpoints of each (originally) undirected edge. Feed this new directed graph to the assumed directed graph alg, then return the output. Boom.
+        Given an undirected graph, simply make a copy of it with all edges replaced by
+        directed edge pairs to/from the endpoints of each (originally) undirected edge. 
+        Feed this new directed graph to the assumed directed graph alg, 
+        then return the output.
   \item $Mixed \leq Undirected$\\
-        Could be hard but it's not since we're awesome. In this one we've assumed an alg that checks isomorphisms of undirected graphs, so the task is to convert a mixed graph into some number of undirected graphs that contain the same information. This is easily achieved as follows:
+        In this one we've assumed an algo that checks isomorphisms of undirected graphs,
+        so the task is to convert a mixed graph into some number of undirected graphs that contain the same information. 
+        This is easily achieved as follows:
         \begin{itemize}
           \item First label the vertices in order, i.e. number them from $1,\dots,n$.
           \item Make one copy of the mixed graph with only edges where there were originally undirected edges in the mixed graph as well.
           \item Make another copy of the mixed graph with only edges where, in the original mixed graph, the lower-numbered endpoint had a directed edge $towards$ the higher-numbered endpoint.
           \item As above, but reversed (so the only edges here were originally directed edges from the higher endpoint to the lower endpoint).
         \end{itemize}
-        Like I said, easy. Now do this process for both of the mixed graphs in question, say $F$ and $G$, and then feed the corresponding outputs into the assumed undirected algorithm. If they all check out, then $F$ and $G$ are isomorphic.
+        Now do this process for both of the mixed graphs in question, say $F$ and $G$, and then feed the corresponding outputs into the assumed undirected algorithm. If they all check out, then $F$ and $G$ are isomorphic.
 \end{enumerate}
 Boom. Done.
 
