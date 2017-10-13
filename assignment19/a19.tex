@@ -49,7 +49,7 @@
 
 
 \prob{10}
-We can reduce the clique optimization problem to clique decision by simply checking every value of $k$, 
+We can reduce the clique optimization problem to clique decision by simply checking every value of $k$,
 beginning at $n = |G|$ and decrementing.
 Follow this by a closure operation which removes all vertices with degree less than k-1,
 so that only the clique is left.
@@ -70,18 +70,18 @@ alg cliqueOpt(Graph G)
 
   output H
 \end{lstlisting}
-If the assumed polynomial `cliqueDecision' algorithm runs in $O(n^j)$ time for some j, 
+If the assumed polynomial `cliqueDecision' algorithm runs in $O(n^j)$ time for some j,
 then obviously our `cliqueOpt' algorithm takes $n*O(n^j) = O(n^{j+1})$ time for the first `for' loop.
 Then, consider the closure operation.
 At each iteration, it must remove at least one vertex (otherwise the loop would terminate).
 The worst case is where each iteration, exactly one vertex is deleted, until the clique is reached.
-Then, as we need to scan through all of the vertices, 
+Then, as we need to scan through all of the vertices,
 we are looking at a summation of scanning time like $n + (n-1) + (n-2) + \dots + k = O(n^2)$.
 Then, overall, we are looking at $O(n^2 + n^{j+1})$, polynomial time.
 
 
 \prob{12}
-
+Laughable.
 
 
 \prob{15}
