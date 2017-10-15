@@ -21,6 +21,9 @@
 \providecommand{\tightlist}{
     \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
 }
+\providecommand{\reducible}[2]{
+  \textbf{#1} $\leq$ \textbf{#2}
+}
 
 % ============ USED FOR CODE LISTINGS ============
 \usepackage{listings}
@@ -43,8 +46,29 @@
 
 \begin{document}
 \maketitle
+
 \prob{6}
 
+\begin{enumerate}
+  \item \reducible{Indepenent Set}{Clique}, and \reducible{Clique}{Indepenent Set} \\
+  We define the complement of some graph $G$, labelled $G^C$ to be a graph such that
+  \begin{enumerate}
+    \item $V(G) = V(G^C)$
+    \item $uv \in E(G^C)$ iff $u,v \in V(G^C)$ and $uv \not\in E(G)$.
+  \end{enumerate}
+  An independent set of vertices are a subset of vertices which are all pairwise non-adjacent.
+  Likewise, a clique is a subset of vertices which are all pairwise adjacent.
+  In the complement of some graph, all independent sets become cliques, and vice versa.
+  Thus we have the following reductions:
+  \begin{lstlisting}
+function IndepenentSet(G, i)
+  return Clique((*$G^C$*), i)
+  \end{lstlisting}
+  \begin{lstlisting}
+function Clique(G, i)
+  return IndepenentSet((*$G^C$*), i)
+  \end{lstlisting}
+\end{enumerate}
 
 
 
