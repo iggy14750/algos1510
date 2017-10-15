@@ -132,9 +132,50 @@ alg cliqueDecision(H,j)   // simply create a new graph which is two copies of th
 \end{lstlisting}
 Obviously, creating a new graph that is just two copies of the original graph H takes $O(n)$ time, which when added to our cliqueDecision algorithm results in a total runtime of $O(n + f(n))$, where $f(n)$ is the runtime of cliqueDecision.
 
+\pagebreak
 \prob{15}
+If some vertex $v$ can be any one of 3 colors, say, R, G, or B, then we can use 2 boolean variables to represent the color.
+This leaves us with one ``illegal'' encoding, which should never be given to our vertex, and this illegal state will be revisited later.
 
+We can say that some vertex can be a specific color, R, iff its neighbors are not.
+We can represent this relationship in the following way (where $v_0$ and $v_1$ represent together the color of $v$, and $v_{i, 1}$ is bit 1 of the $i^{th}$ neighbor of $v$):
+\[
+  (v_0 \land v_1) \lor 
+  \overline{(v_{1,0} \land v_{1,1})} \lor \dots \lor
+  \overline{(v_{k,0} \land v_{k,1})} 
+\]
+Thus, of all colors available to $v$, we can choose any one.
+\begin{align*}
+  [
+    (v_0 \land v_1) \lor 
+    \overline{(v_{1,0} \land v_{1,1})} \lor \dots \lor
+    \overline{(v_{k,0} \land v_{k,1})}
+  ] &\lor\\ [
+    (\overline{v_0} \land v_1) \lor 
+    \overline{(\overline{v_{1,0}} \land v_{1,1})} \lor \dots \lor
+    \overline{(\overline{v_{k,0}} \land v_{k,1})}
+  ] &\lor\\ [
+    (v_0 \land \overline{v_1}) \lor 
+    \overline{(v_{1,0} \land \overline{v_{1,1}})} \lor \dots \lor
+    \overline{(v_{k,0} \land \overline{v_{k,1}})}
+  ]
+\end{align*}
 
+This fully specifies the valid colorings of $v$.
+Note that if the illegal encoding were to be assigned (here, $v_0 = v_1 = 0$), then each of the terms of $v_0$ and $v_1$ will be false, therefore each subexpression on their own line will be false, and therefore the entire expression will be false.
 
+So, in order to color an entire graph, each vertex must have an expression like this one for $v$, and all of these expressions must be found simultaneously true.
+
+Now, this function is not yet in CNF.
+But it can be made so by applying DeMorgan's Law until we are left only with literals and non-inverted functions, followed by repeatedly distributing the or's over the and's.
+
+I expect this operation to be linear with respect to the length of the formula, which in turn grows by the number of edges in the graph.
+
+Thus, we have the following reduction:
+\begin{lstlisting}
+function 3ColorDecision(G)
+  F = a CNF Boolean formula made from G as described above.
+  return CNF-Decision(F)
+\end{lstlisting}
 
 \end{document}
