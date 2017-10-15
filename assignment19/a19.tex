@@ -68,9 +68,17 @@ function IndepenentSet(G, i)
 function Clique(G, i)
   return IndepenentSet((*$G^C$*), i)
   \end{lstlisting}
+  \item \reducible{Indepenent Set}{Vertex Cover} and \reducible{Vertex Cover}{Indepenent Set} \\
+  We can define a similar relationship between these two problems, by noting the following:
+  \begin{itemize}
+    \item Define graph $G$ by it's set of vertices and edges, as $G = (V,E)$.
+    \item Note that if $L \subset V$ is an independent set, then for any two neighboring vertices $u$ and $v$, at most one of them is in $L$ or else it wouldn't be an independent set. So then at $least$ one of every pair of neighbors is in $M = V - L$. Thus every edge in $E$ has an endpoint in $M$, so $M$ is a vertex cover.
+    \item Conversely, if $M \subset V$ is a vertex cover, then consider any two points $x$ and $y$ in $L = V - M$. These two points can't be neighbors, else $M$ wouldn't be a cover. Thus no two points in $L$ are adjacent, so it must be an independent set.
+  \end{itemize}
+  Now we [write the code for both algorithms exactly as above but with V - L/M instead of $G^C$]
 \end{enumerate}
 
-
+\pagebreak
 
 \prob{10}
 We can reduce the clique optimization problem to clique decision by simply checking every value of $k$,
