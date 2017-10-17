@@ -58,14 +58,14 @@ HamiltonianCycle(Graph G)
     return DoubleFixedHamiltonianPath(G, v, v)
   \end{lstlisting}
 
-  \item \reducible{DoubleFixedHamiltonianPath}{HamiltonianCycle} \\
+  \item \reducible{DoubleFixedHamiltonianPath}{HamiltonianCycle}
   \begin{lstlisting}
 DoubleFixedHamiltonianPath(G, s, t)
     let H = G + (s,t)             // add edge (s,t) to graph
     return HamiltonianCycle(H)    // see if that makes a cycle
   \end{lstlisting}
 
-  \item \reducible{SingleFixedHamiltonianPath}{DoubleFixedHamiltonianPath} \\
+  \item \reducible{SingleFixedHamiltonianPath}{DoubleFixedHamiltonianPath}
   \begin{lstlisting}
 SingleFixedHamiltonianPath(G, s)
     for vertex v (*$\in$*) G do
@@ -79,7 +79,7 @@ SingleFixedHamiltonianPath(G, s)
 \prob{9}
 SHOW ME WHAT YOU GOT.\\
 This self-reduction is a matter of constructing a Hamiltonian Cycle from graph G using the information given by the decision algorithm.
-So, to show \reducible{HamCycleOpt}{HamCycleDecision}, see the following code:\\
+So, to show \reducible{HamCycleOpt}{HamCycleDecision}, see the following code:
 \begin{lstlisting}
 HamCycleOpt(Graph G)
     C = G
