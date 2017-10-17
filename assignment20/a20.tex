@@ -52,25 +52,28 @@ Psh, trivial.
 \begin{enumerate}
   \item \reducible{HamiltonianCycle}{DoubleFixedHamiltonianPath} \\
         This is straightforward.
-        \begin{lstlisting}
+  \begin{lstlisting}
 HamiltonianCycle(Graph G)
     choose any v (*$\in$*) G
     return DoubleFixedHamiltonianPath(G, v, v)
-        \end{lstlisting}
+  \end{lstlisting}
+
   \item \reducible{DoubleFixedHamiltonianPath}{HamiltonianCycle} \\
-        \begin{lstlisting}
+  \begin{lstlisting}
 DoubleFixedHamiltonianPath(G, s, t)
     let H = G + (s,t)             // add edge (s,t) to graph
     return HamiltonianCycle(H)    // see if that makes a cycle
-        \end{lstlisting}
+  \end{lstlisting}
+
   \item \reducible{SingleFixedHamiltonianPath}{DoubleFixedHamiltonianPath} \\
-        \begin{lstlisting}
+  \begin{lstlisting}
 SingleFixedHamiltonianPath(G, s)
     for vertex v (*$\in$*) G do
         if DoubleFixedHamiltonianPath(G, s, v) then
             return true
     return false
-        \end{lstlisting}
+  \end{lstlisting}
+    
 \end{enumerate}
 
 \end{document}
