@@ -73,7 +73,21 @@ SingleFixedHamiltonianPath(G, s)
             return true
     return false
   \end{lstlisting}
-    
+
 \end{enumerate}
+
+\prob{9}
+SHOW ME WHAT YOU GOT.\\
+This self-reduction is a matter of constructing a Hamiltonian Cycle from graph G using the information given by the decision algorithm.
+So, to show \reducible{HamCycleOpt}{HamCycleDecision}, see the following code:\\
+\begin{lstlisting}
+HamCycleOpt(Graph G)
+    C = G
+    for edge uv (*$\in$*) E(G) do
+        if HamCycleDecision(C - uv) then    // this means there's still a HamCycle in the graph
+            C = C - uv                      // so get rid of the unnecessary edge
+    return C                                // what's left is the Hamiltonian Cycle
+\end{lstlisting}
+Clearly this is a poly time algorithm, since it simply runs in time linear to the number of edges, i.e. size(G). So if HamCycleDecision takes $O(f(n))$ time, then HamCycleOpt as given above takes $O(f(n) + m)$ time, where m = size(G).
 
 \end{document}
