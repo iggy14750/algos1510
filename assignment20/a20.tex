@@ -74,6 +74,21 @@ SingleFixedHamiltonianPath(G, s)
     return false
   \end{lstlisting}
 
+  \item \reducible{DoubleFixedHamiltonianPath}{SingleFixedHamiltonianPath}
+  \begin{lstlisting}
+DoubleFixedHamiltonianPath(G, s, t)
+    if not (SFHP(G, s) or SFHP(G, t)) then
+        return false
+    C = G
+    for edge e (*$\in$*) E(G) do
+        if SFHP(C - e, s) and SFHP(C - e, t) then
+            C = C - e
+    if degree(*$_C$*)(s) == degree(*$_C$*)(s) == 1 then
+        return true
+    else return false
+
+  \end{lstlisting}
+
 \end{enumerate}
 
 \prob{9}
