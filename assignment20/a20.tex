@@ -49,9 +49,8 @@
 \maketitle
 \prob{7}
 \begin{enumerate}
-  \item \reducible{HamiltonianCycle}{DoubleFixedHamiltonianPath} \\
-        This is straightforward.
-  \begin{lstlisting}
+  \item \reducible{HamiltonianCycle}{DoubleFixedHamiltonianPath} \\
+  \begin{lstlisting}
 HamiltonianCycle(Graph G)
     choose any v (*$\in$*) G
     return DoubleFixedHamiltonianPath(G, v, v)
@@ -86,10 +85,8 @@ DoubleFixedHamiltonianPath(G, s, t)
         return true
     else return false
   \end{lstlisting}
-  At the end of this process it is clear that we can't have two degree one vertices and
-  a Hamiltonian path that doesn't start at one and end at the other. Conversely if we've
-  removed all unnecessary edges whilst ensuring that paths starting at each endpoint are
-  intact, then neither one will be left with more than one incident edge. 
+  At the end of this process if we've removed all unnecessary edges whilst ensuring that paths starting at each endpoint are
+  intact, then neither will be left with more than one incident edge. 
 \end{enumerate}
 
 \prob{9}
