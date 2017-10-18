@@ -77,7 +77,7 @@ SingleFixedHamiltonianPath(G, s)
   \item \reducible{DoubleFixedHamiltonianPath}{SingleFixedHamiltonianPath}
   \begin{lstlisting}
 DoubleFixedHamiltonianPath(G, s, t)
-    if not (SFHP(G, s) or SFHP(G, t)) then
+    if not (SFHP(G, s) and SFHP(G, t)) then
         return false
     C = G
     for edge e (*$\in$*) E(G) do
