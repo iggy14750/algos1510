@@ -85,9 +85,11 @@ DoubleFixedHamiltonianPath(G, s, t)
     if degree(*$_C$*)(s) == degree(*$_C$*)(s) == 1 then
         return true
     else return false
-
-  \end{lstlisting}
-
+  \end{lstlisting}
+  At the end of this process it is clear that we can't have two degree one vertices and
+  a Hamiltonian path that doesn't start at one and end at the other. Conversely if we've
+  removed all unnecessary edges whilst ensuring that paths starting at each endpoint are
+  intact, then neither one will be left with more than one incident edge. 
 \end{enumerate}
 
 \prob{9}
@@ -106,7 +108,7 @@ Clearly this is a poly time algorithm, since it simply runs in time linear to th
 \prob{16}
 In the dominating set problem the input is an undirected graph $G$, the problem is to find the smallest dominating set in $G$. A dominating set is a collection $S$ of vertices with the property that every vertex $v$ in $G$ is either in $S$, or there is an edge between a vertex in $S$ and $v$. Show that the dominating set problem is NP-hard using a reduction from the vertex cover problem.\\
 
-By definition, a vertex cover is always a dominating set.  If the graph is corrected, there are at least $v + 1$ edges, thus the vertex cover problem must include more vertices in its set than dominating set (simply because this problem only cares about vertices rather than edges).  However, a dominating set is not always a vertex cover.\\
+By definition, a vertex cover is always a dominating set.  If the graph is connected, there are at least $v + 1$ edges, thus the vertex cover problem must include more vertices in its set than dominating set (simply because this problem only cares about vertices rather than edges).  However, a dominating set is not always a vertex cover.\\
 	We can fix this with a relatively simple solution.  For every edge we find between vertices in the graph (use $i$ and $j$ as naming conventions for every edge's vertices), we can add another vertex $k$ that connects to both $i$ and $j$.  An example is shown below:
 	\image{dominating_set}
 With this newly formed triangle, we only need to pick one of these vertices to "touch", or share an edge, with every vertex in the triangle.  So for every one of these triangles created, which there are $e$ (number of edges) of, we can solve the dominating set problem; you simply choose one of the vertices.  To expand this further into the vertex cover problem, each one of these triangles can represent an edge in the graph; for every edge, there's a triangle, and vice versa.  If we can satisfy the dominating set problem for each triangle, then we have technically solved the dominating set problem for every edge, which means every edge must be covered at some point, and thus eventually solving the vertex cover problem.
@@ -114,7 +116,7 @@ With this newly formed triangle, we only need to pick one of these vertices to "
 So, to show \reducible{VertexCover}{DominatingSet}, see the following code:
 \begin{lstlisting}
 VertexCover(Graph G)
-	(*$G'$*) = G
+	(*$G'$*) = G + the modifications described above
 	return DominatingSet((*$G'$*)) 
 \end{lstlisting}
 Clearly, our above conversion can be run in polynomial time since we iterate over all the edges to create a triangle for each one, so DominatingSet must be NP-Hard since it now directly solves VertexCover.  In conclusion, VertexCover is reducible to DominatingSet, so DominatingSet must be NP-Hard.
