@@ -49,8 +49,8 @@
 \maketitle
 \prob{7}
 \begin{enumerate}
-  \item \reducible{HamiltonianCycle}{DoubleFixedHamiltonianPath} \\
-  \begin{lstlisting}
+  \item \reducible{HamiltonianCycle}{DoubleFixedHamiltonianPath} \\
+  \begin{lstlisting}
 HamiltonianCycle(Graph G)
     choose any v (*$\in$*) G
     return DoubleFixedHamiltonianPath(G, v, v)
@@ -84,8 +84,8 @@ DoubleFixedHamiltonianPath(G, s, t)
     if degree(*$_C$*)(s) == degree(*$_C$*)(s) == 1 then
         return true
     else return false
-  \end{lstlisting}
-  At the end of this process if we've removed all unnecessary edges whilst ensuring that paths starting at each endpoint are
+  \end{lstlisting}
+  At the end of this process if we've removed all unnecessary edges whilst ensuring that paths starting at each endpoint are
   intact, then neither will be left with more than one incident edge. 
 \end{enumerate}
 
