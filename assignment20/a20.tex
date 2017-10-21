@@ -105,4 +105,15 @@ HamCycleOpt(Graph G)
 \end{lstlisting}
 Clearly this is a poly time algorithm, since it simply runs in time linear to the number of edges, i.e. size(G). So if HamCycleDecision takes $O(f(n))$ time, then HamCycleOpt as given above takes $O(f(n) + m)$ time, where m = size(G).
 
+\prob{16}
+This is so easy you should fucking kill yourself, Pruhs.
+\begin{lstlisting}
+DominatingSet(G)
+    C = VertexCover(G)
+    for vertex v in C do
+        for vertex u adjacent to v do
+            if u is NOT adjacent to any other vertex in C then
+                skip v
+        C = C - v
+\end{lstlisting}
 \end{document}
