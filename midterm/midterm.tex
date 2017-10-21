@@ -53,7 +53,7 @@ A = Assign as many as possible to 1st room (via the 'smallest rightpoint first' 
 $Interval Coloring Problem, pt 2$
 Find an assignment of classes to rooms that uses the fewest number of rooms.\\
 Process in increasing order of start times. Take class $C$. If $\exists$ room $R$ \st $C$ can be assigned to $R$ without overlapping previously assigned classes, then assign $C$ to $R$. Otherwise, put $C$ in a new room.
-\begin{itemize}
+\begin{itemize}\tightlist
   \item Lemma: In any collection of intervals, there exist points which have the maximum number of intervals, say $n$, intersecting at the same time. This means that there is no way to fit these classes with any fewer than n rooms.
   \item Now consider a course. Each room is chosen by start time, so all previous rooms are already placed.
 	This course overlaps with some ($n$) already placed, and some ($m$) not yet placed.
@@ -92,7 +92,7 @@ Now DP:
 \begin{itemize}
   \item Max Val (profit) independent set -- array for rooted here/including here, and array for rooted here/excluding here
   \item Min Weight Binsary Search Tree -- bottom-right to top-left, $$MWBST[l][r] = min_{l\leq c\leq r}\{MWBST[l][c-1] + MWBST[c+1][r]\} + \sum_{i=l}^r w_i$$
-  \item Longest Increasing Subsequence -- 
+  \item Longest Increasing Subsequence --
 \end{itemize}
 
 
