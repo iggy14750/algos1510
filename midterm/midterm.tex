@@ -1,0 +1,39 @@
+\documentclass[12pt]{article}
+\special{papersize=3in,5in}
+
+\usepackage{amssymb,amsmath}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\providecommand{\st}{\ \text{s.t.}\ }
+\providecommand{\tightlist}{
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
+
+\pagestyle{empty}
+\setlength{\parindent}{0in}
+\begin{document}
+
+$Max Num Non-overlapping Intervals$
+\begin{itemize}
+  \item Exchange at the interval where Opt(I) and A(I) first disagree.
+  \item Then Opt'(I) doesn't overlap on the left, since they agree to that point.
+  \item Nor on the right, since the A(I) interval ends first.
+  \item Opt'(I) has just as many intervals, so still optimal.
+\end{itemize}
+
+$Earliest Deadline First$\\
+EDF = pick as the next job the one whose deadline is earliest
+\begin{itemize}\tightlist
+  \item At some point Opt runs job $j$ and EDF runs job $i$.
+  \item Opt' = Opt except running $i$ at that point.
+  \item 3 things:
+  \item \begin{itemize}\tightlist
+    \item Length of time (obviously fine)
+    \item Release time -- EDF ran $i$ at that time (so fine)
+    \item Deadlines -- $j$ is not past deadline in Opt' since (by EDF) $i$ ends first, and (by Opt) that is at least 1 unit after when Opt runs $i$
+  \end{itemize}
+\end{itemize}
+
+
+
+\end{document}
