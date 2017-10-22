@@ -13,21 +13,22 @@
 \setlength{\parindent}{0in}
 \begin{document}
 
-\textbf{GREEDY ALGORITHMS}
-$Max Num Non-overlapping Intervals$
-\begin{itemize}
+\section{GREEDY ALGORITHMS}
+\subsection{Max Num Non-Overlapping Intervals pt 1}
+\begin{itemize}\tightlist
   \item Exchange at the interval where Opt(I) and A(I) first disagree.
   \item Then Opt'(I) doesn't overlap on the left, since they agree to that point.
   \item Nor on the right, since the A(I) interval ends first.
   \item Opt'(I) has just as many intervals, so still optimal.
 \end{itemize}
 
-$Max Num Non-overlapping Intervals$\\
+
+\subsection{Max Num Non-overlapping Intervals pt 2}
 A = pick the interval that overlaps the least number of other intervals\\
 (this is wrong, see pic for counterexample)
 
 
-$Earliest Deadline First$\\
+\subsection{Earliest Deadline First}
 EDF = pick as the next job the one whose deadline is earliest
 \begin{itemize}\tightlist
   \item At some point Opt runs job $j$ and EDF runs job $i$.
@@ -41,19 +42,22 @@ EDF = pick as the next job the one whose deadline is earliest
 \end{itemize}
 
 
-$Kruskal's (MST)$
-
-$Huffman's Algorithm$
+\subsection{Kruskal's (MST)}
 
 
-$Interval Coloring Problem, pt 1$
+\subsection{Huffman's Algorithm}
+
+
+
+\subsection{Interval Coloring Problem, pt 1}
 Find an assignment of classes to rooms that uses the fewest number of rooms.\\
 A = Assign as many as possible to 1st room (via the 'smallest rightpoint first' algorithm), then as many as possible to 2nd room, etc.
 
-$Interval Coloring Problem, pt 2$
+
+\subsection{Interval Coloring Problem, pt 2}
 Find an assignment of classes to rooms that uses the fewest number of rooms.\\
 Process in increasing order of start times. Take class $C$. If $\exists$ room $R$ \st $C$ can be assigned to $R$ without overlapping previously assigned classes, then assign $C$ to $R$. Otherwise, put $C$ in a new room.
-\begin{itemize}
+\begin{itemize}\tightlist
   \item Lemma: In any collection of intervals, there exist points which have the maximum number of intervals, say $n$, intersecting at the same time. This means that there is no way to fit these classes with any fewer than n rooms.
   \item Now consider a course. Each room is chosen by start time, so all previous rooms are already placed.
 	This course overlaps with some ($n$) already placed, and some ($m$) not yet placed.
@@ -62,9 +66,30 @@ Process in increasing order of start times. Take class $C$. If $\exists$ room $R
 \end{itemize}
 
 
-$Skiers and Skis$
-a) Consider 4s, 8s, 7p, 12p
-b) Persons and skis are ordered. In Opt the skis are swapped for some person $i$ and some person $m$. Then we show Opt is no better than Opt'. 4 elements to order, 6 cases (absolute value).
+\subsection{Gas Station pt 1}
+Minimize time stopped for gas.\\
+A = stop at each station and fill just enough to get to the next station.
+\begin{itemize}
+  \item At some point Opt must fill more than A does.
+  \item In Opt', fill the same as A at this point, and fill the extra at the next stop.
+  \item Opt' has the same total fuel as Opt and is more similar to A.
+\end{itemize}
+
+\subsection{Gas Station pt 2}
+Minimize time stopped for gas.\\
+A =  Stop iff you don't have enough gas to make it to the next station; if you stop fill up all the way.\\
+This is wrong. Consider $x_1 = 0, x_2 = 5, x_3 = 6$, with a gas tank that lasts 5km. Then you have extra fuel at the end compared to the other algorithm (FAYG).
+
+\subsection{Placing Words on Lines pt 1}
+Minimize total penalty.\\
+A = Place the next word on the current line if it fits, else place on a new line.
+
+
+\subsection{Skiers and Skis}
+\begin{itemize}
+  \item a) Consider 4s, 8s, 7p, 12p
+  \item b) Persons and skis are ordered. In Opt the skis are swapped for some person $i$ and some person $m$. Then we show Opt is no better than Opt'. 4 elements to order, 6 cases (absolute value).
+\end{itemize}
 
 
 
@@ -72,7 +97,7 @@ Other Greedy:
 \begin{itemize}
   \item 1 max cardinality non-overlapping intervals   x
   \item 2 interval coloring                           x
-  \item 4 gas station
+  \item 4 gas station                                 x
           FAYG vs. Fill all the way
   \item 6 words and line length
   \item 7 Make your own page replacement (Not Used in the Future)
@@ -92,8 +117,13 @@ Now DP:
 \begin{itemize}
   \item Max Val (profit) independent set -- array for rooted here/including here, and array for rooted here/excluding here
   \item Min Weight Binsary Search Tree -- bottom-right to top-left, $$MWBST[l][r] = min_{l\leq c\leq r}\{MWBST[l][c-1] + MWBST[c+1][r]\} + \sum_{i=l}^r w_i$$
-  \item Longest Increasing Subsequence -- 
+  \item Longest Increasing Subsequence --
 \end{itemize}
 
 
 \end{document}
+
+
+
+
+\begin{centering}\textbf{Gas Station pt 1}\par\end{centering}
