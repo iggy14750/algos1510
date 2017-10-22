@@ -1,6 +1,6 @@
 \documentclass{article}
 \author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
-\title{Assignment 4: Greedy Algorithms}
+\title{Assignment 5: Greedy Algorithms}
 \date{Wednesday, September 13, 2017}
 
 \usepackage{amsmath}
@@ -31,47 +31,47 @@
 	by row. Assume that the first $i - 1$ rows have been constructed. Let $a_j$ be the number of 1\textsc{\char13}s in the $j$\textsuperscript{th} column in
 	the first $i - 1$ rows. Now the $r_i$ columns with the maximum $c_j - a_j$ are assigned 1\textsc{\char13}s in row $i$, and the rest of the columns
 	are assigned 0\textsc{\char13}s. That is, the columns that still needs the most 1\textsc{\char13}s are given 1\textsc{\char13}s.
-	
+
     \begin{thm}
         This algorithm, A, is indeed correct.
     \end{thm}
-    
+
 	\begin{proof}
 	Assume for a contradiction there exists some input matrix $I$ such that $A(I)$ produces incorrect input.
-	
+
 	Let $A(I)$ = the greedy algorithm's output on input $I$.
 	Let $OPT(I)$ = the optimal solution on input $I$ that agrees
 	with $A(I)$ for the most number of steps (rows from the top).
- 	
+
     Let $i$ be the first row which differs in Opt(I) from A(I).
     In this row will be some pair of entries which differ from A(I), such that one of them is 1 in Opt(I), but 0 in A(I) (call its column $j$), and one which is 0 in Opt(I), and 1 in A(I) (call its column $k$).
     This occurs in such pairs so that the row value doesn't change.
     Now, we are going to operate on this pair, but notice that one can perform the same on all points of difference between row $i$ in A(I) and Opt(I).
-    
+
     Let $m_x = c_x - a_x \forall x \in [n]$. That is, $m_x$ represents the checkers which remain to be placed in column $x$ from row $i$ on down.
     Now, we have that $m_j \leq m_k$, since $k$ was picked by A and $j$ was not.
-    
+
     Then let's consider what remains to be placed \textit{after} row $i$ in Opt(I).
     $m'_x = m_x - Opt(I)_{i, x}$.
     Notice now that $m'_j = m_j - 1$, and $m'_k = m_k - 0$. So,
-    
+
     \begin{align*}
     m_j &\leq m_k\\
     m_j - 1 &< m_k\\
     m'_j &< m'_k
     \end{align*}
-    
+
     Then to consider the rest of these columns.
     There are strictly more checkers remaining to place in column $k$ than $j$.
     This means there \textbf{must} exist some later row (call it $p$) on which column $j$ is 0, and column $k$ is 1 [Consider $k$'s 1s as buckets and $j$'s 1s as balls, there must be an empty bucket].
-    
+
     \image{p12mat}
-    
+
     Now, we can construct Opt'(I), which is exactly like Opt(I), except that the entries $(i, j), (i, k), (p, j), (p, k)$ are inverted (1s to 0s and vice versa).
     Note, row $i$ now agrees with A(I) (recall that we can do this for all differences in this row between A(I) and Opt(I)), which is one more row than Opt(I).
     Further, Opt'(I) is correct.
     In each row and column, a 0 has been replaced with a 1, and vice versa, so that the rows and columns each sum to the same values in Opt(I).
-    
+
     So, this construction is a contradiction on the definition of Opt(I).
     And for this reason, $A$ is correct.
 	\end{proof}
@@ -79,59 +79,59 @@
 	\prob{13a}
 	INPUT: A list of $n$ jobs and specified times whether a machine is turned out during the time interval $(t, t + 1)$, where each job $j$ has an integer release time $r_j$, and an integer deadline $d_j$, is given. \\
 	OUTPUT: A feasible schedule where each job $j$ must be run for one unit of time, not starting before $r_j$, and not ending after $d_j$. \\
-	
+
 	Greedy Algorithm: At any time interval $k$, the job with the least number of time intervals remaining with the machine turned on before its deadline is chosen to run next.  If there are ties, they are broken arbitrarily.
-	
+
 	\begin{thm}
 		This algorithm, A, is indeed correct.
 	\end{thm}
-	
+
 	\begin{proof}
 		Assume for a contradiction there exists some input $I$ such that $A(I)$ produces incorrect input.
-		
+
 		Let $A(I)$ = the greedy algorithm's output on input $I$.
-		
+
 		Let $OPT(I)$ = the optimal solution on input $I$ that agrees
 		with $A(I)$ for the most number of jobs run.\\
-		
+
 		Let $p$ be the first time of disagreement between $A(I)$ and $OPT(I)$ where two different jobs are run on each algorithm; these jobs are $j_m$ and $j_n$ for each algorithm respectively.  This means there exists some time $u$ such that $j_m$ is run in $OPT(I)$ since $OPT(I)$ must run every job.
-		
+
 		\image{p13atable}
-		
+
 		Let $OPT\textsc{\char13}(I)$ = the optimal solution but with $j_m$ run at time $p$ and $j_n$ at time $u$, exchanging the two jobs.\\
-		
+
 		With $OPT\textsc{\char13}(I)$, we have moved one step closer to $A(I)$.  Now, we must prove that it is still optimal.  Since $j_m$ was located at time $p$ in $A(I)$, it had fewer chances for placement than $j_n$ by definition of algorithm $A$.  Therefore, $j_n$\textsc{\char13}s deadline must be after $j_m$\textsc{\char13}s deadline.  Since we swapped their locations in $OPT\textsc{\char13}(I)$, $j_m$ will now finish earlier in time, which is valid, and $j_n$ will finish later in time, which is valid as well since its deadline is later than $j_m$\textsc{\char13}s as shown earlier.\\
-		
+
 		As a result, we have obviously moved one step closer to $A(I)$ because of the exchange of $j_m$ and $j_n$.  Also, our new solution, $OPT\textsc{\char13}(I)$, is still optimal because each job has the chance to finish before its deadline.\\
-		
-		Therefore, we have reached a contradiction of our initial assumption which means $A(I)$ must be correct. 
+
+		Therefore, we have reached a contradiction of our initial assumption which means $A(I)$ must be correct.
 	\end{proof}
 
 	\prob{13b}
 	INPUT: A list of $n$ jobs and specified times whether a machine is turned out during the time interval $(t, t + 1)$, where each job $j$ has an integer release time $r_j$, and an integer deadline $d_j$, is given. Also, a positive integer $L$ is provided that determines the size of an interval in which the machine can be turned on for any given time.\\
 	OUTPUT: A feasible schedule where each job $j$ must be run for one unit of time, not starting before $r_j$, and not ending after $d_j$, and the number of times the machine is turned on for an interval of length $L$ is minimized. \\
-	
+
 	Greedy Algorithm: Calculate at every given time $t$ how many jobs are released at that specific time.  Then, choose the maximum of these numbers and active the machine at that maximum (time $p$) for length $L$ so the machine is active for the interval $(p, p+L)$.  Continue this until we have enough intervals such that all jobs are run at some point.
-	
+
 	\begin{thm}
 		This algorithm, A, is indeed correct.
 	\end{thm}
-	
+
 	\begin{proof}
 		Assume for a contradiction there exists some input jobs $I$ and interval length $L$ such that $A(I, L)$ produces incorrect input.
-		
+
 		Let $A(I, L)$ = the greedy algorithm's output on inputs $I$ and $L$.
-		
+
 		Let $OPT(I, L)$ = the optimal solution on inputs $I$ and $L$ that agrees
 		with $A(I, L)$ for the most number of jobs run.\\
-		
+
 		Let $p$ be the first time of disagreement between $A(I, L)$ and $OPT(I, L)$ where two intervals of length $L$ began running at different times; these intervals are $i_m$ and $i_n$ for each algorithm respectively.  This means there exists some time $u$ such that $i_m$ is run in $OPT(I)$ since $OPT(I)$ must run every job.\\
-		
+
 		Let $OPT\textsc{\char13}(I, L)$ = the optimal solution but at time $p$, the next interval to run in $A(I, L)$ is ran and the the interval run at time $p$ in $OPT(I, L)$ is run at the next interval time in $A(I, L)$ (let's call this later time $u$).\\
-		
+
 		Our team could not figure out the next steps from here but we know the process on how to solve it.  Basically after this swap, we have moved one step closer to the solution in $A(I, L)$.  But, we need to prove the optimality of $OPT\textsc{\char13}(I, L)$ by proving 1) we have removed an interval or stayed at the same number of intervals in the solution, 2) every job is run after its release time and 3) every job is run before its deadline.  We were stuck on this but were hoping you could provide us with partial credit to make up for this lack of understanding the specifics of this one problem.  We know the general concept and techniques to reach the solution but could not reach it in this particular scenario.\\
-		
-		At the point, after proving its optimality, we have discovered that we are one step closer to $A(I, L)$ and it's still optimal, so we have contradicted our initial assumption that inputs $I$ and $L$ would produce incorrect input, so $A(I, L)$ is actually correct.		
+
+		At the point, after proving its optimality, we have discovered that we are one step closer to $A(I, L)$ and it's still optimal, so we have contradicted our initial assumption that inputs $I$ and $L$ would produce incorrect input, so $A(I, L)$ is actually correct.
 	\end{proof}
 
 \end{document}

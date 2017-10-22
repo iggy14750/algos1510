@@ -1,0 +1,99 @@
+\documentclass[12pt]{article}
+\special{papersize=3in,5in}
+
+\usepackage{amssymb,amsmath}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\providecommand{\st}{\ \text{s.t.}\ }
+\providecommand{\tightlist}{
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
+
+\pagestyle{empty}
+\setlength{\parindent}{0in}
+\begin{document}
+
+\textbf{GREEDY ALGORITHMS}
+$Max Num Non-overlapping Intervals$
+\begin{itemize}
+  \item Exchange at the interval where Opt(I) and A(I) first disagree.
+  \item Then Opt'(I) doesn't overlap on the left, since they agree to that point.
+  \item Nor on the right, since the A(I) interval ends first.
+  \item Opt'(I) has just as many intervals, so still optimal.
+\end{itemize}
+
+$Max Num Non-overlapping Intervals$\\
+A = pick the interval that overlaps the least number of other intervals\\
+(this is wrong, see pic for counterexample)
+
+
+$Earliest Deadline First$\\
+EDF = pick as the next job the one whose deadline is earliest
+\begin{itemize}\tightlist
+  \item At some point Opt runs job $j$ and EDF runs job $i$.
+  \item Opt' = Opt except running $i$ at that point.
+  \item 3 things:
+  \item \begin{itemize}\tightlist
+    \item Length of time (obviously fine)
+    \item Release time -- EDF ran $i$ at that time (so fine)
+    \item Deadlines -- $j$ is not past deadline in Opt' since (by EDF) $i$ ends first, and (by Opt) that is at least 1 unit after when Opt runs $i$
+  \end{itemize}
+\end{itemize}
+
+
+$Kruskal's (MST)$
+
+$Huffman's Algorithm$
+
+
+$Interval Coloring Problem, pt 1$
+Find an assignment of classes to rooms that uses the fewest number of rooms.\\
+A = Assign as many as possible to 1st room (via the 'smallest rightpoint first' algorithm), then as many as possible to 2nd room, etc.
+
+$Interval Coloring Problem, pt 2$
+Find an assignment of classes to rooms that uses the fewest number of rooms.\\
+Process in increasing order of start times. Take class $C$. If $\exists$ room $R$ \st $C$ can be assigned to $R$ without overlapping previously assigned classes, then assign $C$ to $R$. Otherwise, put $C$ in a new room.
+\begin{itemize}
+  \item Lemma: In any collection of intervals, there exist points which have the maximum number of intervals, say $n$, intersecting at the same time. This means that there is no way to fit these classes with any fewer than n rooms.
+  \item Now consider a course. Each room is chosen by start time, so all previous rooms are already placed.
+	This course overlaps with some ($n$) already placed, and some ($m$) not yet placed.
+	\item Placing this course will require $n+1$ rooms to be optimal, by the lemma above.
+	\item Now, because the other n have been placed, this course conflicts with them all, and thus requires exactly $n+1$ rooms. This process repeats for each course.
+\end{itemize}
+
+
+$Skiers and Skis$
+a) Consider 4s, 8s, 7p, 12p
+b) Persons and skis are ordered. In Opt the skis are swapped for some person $i$ and some person $m$. Then we show Opt is no better than Opt'. 4 elements to order, 6 cases (absolute value).
+
+
+
+Other Greedy:
+\begin{itemize}
+  \item 1 max cardinality non-overlapping intervals   x
+  \item 2 interval coloring                           x
+  \item 4 gas station
+          FAYG vs. Fill all the way
+  \item 6 words and line length
+  \item 7 Make your own page replacement (Not Used in the Future)
+  \item 9 skiers and skis
+          Minimize difference vs. shortest w/ shortest ... tallest w/ tallest
+  \item 10 SJF and SRPT
+  \item 12 Matrix of 1's and 0's
+  \item 13 Jobs w/ machine, release time, deadline
+  \item 16 Torch and Bridge (hard)
+  \item 17 Husband and wife
+\end{itemize}
+
+
+\pagebreak
+
+Now DP:
+\begin{itemize}
+  \item Max Val (profit) independent set -- array for rooted here/including here, and array for rooted here/excluding here
+  \item Min Weight Binsary Search Tree -- bottom-right to top-left, $$MWBST[l][r] = min_{l\leq c\leq r}\{MWBST[l][c-1] + MWBST[c+1][r]\} + \sum_{i=l}^r w_i$$
+  \item Longest Increasing Subsequence -- 
+\end{itemize}
+
+
+\end{document}
