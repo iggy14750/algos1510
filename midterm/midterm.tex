@@ -8,6 +8,12 @@
 \providecommand{\tightlist}{
     \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
 }
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+
 
 \pagestyle{empty}
 \setlength{\parindent}{0in}
@@ -45,8 +51,15 @@ EDF = pick as the next job the one whose deadline is earliest
 \subsection{Kruskal's (MST)}
 
 
-\subsection{Huffman's Algorithm}
 
+\subsection{Huffman's Algorithm}
+Given input set of numbers, build a tree to minimize $sum(depth * weight)$\\
+\begin{itemize}\tightlist
+  \item First point of disagreement is some pair of neighbors $A$ and $B$ in H(I), where in Opt(I) $A$ is with $X$ and $B$ is with $Y$ (all subtrees).
+  \item Opt' = Opt but switch $Y$ and $A$. It is more similar ($X$ and $Y$ haven't already paired in H(I), being of greater weight)
+  \item $\Delta(Objective) = (+A*h) - (Y*h) \leq 0 \iff A \leq Y$
+  \item Consider state of H when pairing $A$ and $B$: Opt $\rightarrow$ Opt' $\Delta(Objective) \leq 0$ $\implies$ just as optimal
+\end{itemize}
 
 
 \subsection{Interval Coloring Problem, pt 1}
@@ -83,13 +96,66 @@ This is wrong. Consider $x_1 = 0, x_2 = 5, x_3 = 6$, with a gas tank that lasts 
 \subsection{Placing Words on Lines pt 1}
 Minimize total penalty.\\
 A = Place the next word on the current line if it fits, else place on a new line.
-
-
-\subsection{Skiers and Skis}
 \begin{itemize}
-  \item a) Consider 4s, 8s, 7p, 12p
-  \item b) Persons and skis are ordered. In Opt the skis are swapped for some person $i$ and some person $m$. Then we show Opt is no better than Opt'. 4 elements to order, 6 cases (absolute value).
+  \item Opt must put a word $w_i$ that would have fit on line $l$ onto $l+1$.
+  \item Opt' has $w_i$ on $l$, and the penalty on $l+1$ has increased by at most $|w_i|$.
 \end{itemize}
+
+\subsection{Placing Words on Lines pt 2}
+Minimize max line penalty.\\
+A = Place the next word on the current line if it fits, else place on a new line.
+\begin{itemize}
+  \item Let $L = 5$, and our input be words of the following length $(2,3,1)$.
+\end{itemize}
+\begin{center}
+\begin{tabular}{l | l}
+  A(I) & Opt(I)\\
+  \hline
+  5-(2+3)=0 & 5-2 = 3\\
+  5-1=4     & 5-(3+1)=1\\
+\end{tabular}
+\end{center}
+
+
+\subsection{Skiers and Skis pt 1}
+Minimize total difference between heights of skiers and skis.\\
+\begin{verbatim}
+Repeat this process until every skier has a ski:
+    Find the skier and ski whose height difference is minimized.
+    Assign the skier this ski.
+\end{verbatim}
+Consider skis = (4,8) and people = (7,12)
+
+
+\subsection{Skiers and Skis pt 2}
+Minimize total difference between heights of skiers and skis.\\
+\begin{verbatim}
+Sort the people and skies in order of increasing height.
+Assign to each person the ski in the same position in the ordering.
+\end{verbatim}
+ \begin{itemize}
+  \item Persons and skis are ordered. In Opt the skis are swapped for some person $i$ and some person $m$. Then we show Opt is no better than Opt'. 4 elements to order, 6 cases (absolute value).
+\end{itemize}
+
+
+\subsection{Job Scheduling pt 1}
+Schedule a job-unit at each time $t$ to minimize total completion time.\\
+A = Pick $J_m$ to be the job with minimal size $x_i$.
+(Counterexample)
+
+\subsection{Job Scheduling pt 2}
+Schedule a job-unit at each time $t$ to minimize total completion time.\\
+A = Pick $J_m$ to be a job which has minimal remaining processing time.
+\begin{itemize}\tightlist
+  \item A runs job $i$ at time $t$, Opt runs job $j$.
+  \item T = \{time slots after $t$ where $i$ or $j$ is run in Opt\}
+  \item Opt' = Opt but run $i$ through then $j$ (during T)
+  \item Since $i$ has no more remaining time than $j$, running shorter first is optimal for two jobs.
+\end{itemize}
+
+
+\subsection{Page Replacement}
+Do 'Not Used in the Future' (NUF).
 
 
 
@@ -99,11 +165,12 @@ Other Greedy:
   \item 2 interval coloring                           x
   \item 4 gas station                                 x
           FAYG vs. Fill all the way
-  \item 6 words and line length
-  \item 7 Make your own page replacement (Not Used in the Future)
-  \item 9 skiers and skis
+  \item 6 words and line length                       x
+  \item 7 Make your own page replacement              x
+          (Not Used in the Future)
+  \item 9 skiers and skis                             x
           Minimize difference vs. shortest w/ shortest ... tallest w/ tallest
-  \item 10 SJF and SRPT
+  \item 10 SJF and SRPT                               x
   \item 12 Matrix of 1's and 0's
   \item 13 Jobs w/ machine, release time, deadline
   \item 16 Torch and Bridge (hard)
@@ -114,15 +181,344 @@ Other Greedy:
 \pagebreak
 
 Now DP:
+
+
+\subsection{Fibonacci}
+Write a DP alg to calculate the $n^{th}$ Fibonacci number.\\
+\begin{verbatim}
+Fib[0] = Fib [1] = 1
+for i=2 to n
+  Fib[i] = Fib[i-1] + Fib[i-2]
+\end{verbatim}
+
+\subsection{Max Value Independent Set}
+\begin{itemize}\tightlist
+  \item For any considered node x need to know whether children (y and z) are in the set or not.
+  \item Profit[x] = max profit (overall) from subtree rooted at x
+  \item ProfitNR[x] = max profit from subtree rooted at x that excludes x
+\end{itemize}
+\begin{verbatim}
+Start anywhere then recurse on subtrees:
+  ProfitNR[x] = Profit[y] + Profit[z]
+  Profit[x] = max{ProfitNR[x], ProfitNR[y] + ProfitNR[z] + Px}
+\end{verbatim}
+
+
+\subsection{MinWeight BST}
+Given keys $K_i$ with weights $w_i$, output BST that minimizes $sum_{i=1}^n w_i * (depth at K_i)$\\
 \begin{itemize}
-  \item Max Val (profit) independent set -- array for rooted here/including here, and array for rooted here/excluding here
-  \item Min Weight Binsary Search Tree -- bottom-right to top-left, $$MWBST[l][r] = min_{l\leq c\leq r}\{MWBST[l][c-1] + MWBST[c+1][r]\} + \sum_{i=l}^r w_i$$
-  \item Longest Increasing Subsequence --
+  \item Bottom-right to top-left
+  \item $$MWBST[l][r] = min_{l\leq c\leq r}\{MWBST[l][c-1] + MWBST[c+1][r]\} + \sum_{i=l}^r w_i$$
+  \item Diag = base case = $w_i$
+  \item Over each possible root $c$, split into the two subtrees
 \end{itemize}
 
 
-\end{document}
 
+\subsection{LIS}
+Input: sequence of numbers; Output: LIS\\
+\begin{itemize}
+  \item Naive recursion doesn't give enough info
+  \item LIS[i][k] = smallest last num of incr. subsequence of first i nums of length k
+\end{itemize}
+\begin{verbatim}
+for i = 1 to n
+  for k = 1 to i
+    if x[i] < LIS[i-1][k-1]
+      LIS[i][k] = LIS[i-1][k]
+    else
+      LIS[i][k] = min{LIS[i-1][k], x[i]}
+return max{LIS[n][all]} s.t. it is defined
+\end{verbatim}
+
+
+\subsection{Subset Sum (change-making)}
+Input: positive ints (coin values)\\
+Output: 1 if $\exists$ subset that sums to L, otherwise 0\\
+\begin{itemize}
+  \item Prune subtrees with sum > L
+  \item If 2 nodes w/ same sum on same level, prune \textbf{either one}
+  \item Index by level, then sum $\rightarrow$ A[k][s] = 1 $\iff \exists$ a subset from $x_1 - x_k$ w/sum = s
+\end{itemize}
+\begin{lstlisting}
+for k=0 to n-1
+  for s=0 to L
+    if A[k][s] = 1
+      A[k+1][s] = 1  //left child
+      A[k+1][s + $x_{k+1}$] = 1   //right child
+\end{lstlisting}
+
+
+\subsection{Knapsack}
+Input: Pos. weights $w_i$ w/ values $v_i$, and weight limit L\\
+Output: Max \textbf{value} from a subset w/ weight $\leq$ L\\
+\begin{itemize}
+  \item If total weight $>$ L then prune
+  \item If $\exists$ two nodes @ same level with same weight, prune lower value
+  \item A[i][w] = max val of subset of first i elements of total weight w
+\end{itemize}
+\begin{lstlisting}
+for i=0 to n
+  for w=0 to L
+    if A[i][w] defined
+      A[i+1][w] max= A[i][w]    //left child
+      A[i+1][w+$w_{i+1}$] max= A[i][w] + $v_{i+1}$  //right child
+output max{A[n][all]} s.t. it is defined
+\end{lstlisting}
+
+
+\subsection{LIS (method 2)}
+Input: sequence of numbers; Output: LIS\\
+\begin{itemize}
+  \item Prune nonincreasing subsequences
+  \item If 2 subsequences @ same level end on \textbf{same last num}, prune shorter
+  \item A[i][k] = length of longest inc. subsequence of $x_1 \dots x_i$ that ends in $x_k$
+\end{itemize}
+\begin{lstlisting}
+for i=1 to n    //levels
+  for k=1 to i  //possible endings
+    if A[i-1][k] is defined
+      A[i][k] max= A[i-1][k]    //left child
+      if $x_i > x_k$
+        A[i][i] max= A[i-1][k] + 1    //right child
+output max{A[n][all]}
+\end{lstlisting}
+
+
+
+
+
+
+
+\subsection{Chapters into Volumes}
+Input: Number of pages in each of $n$ chapters $x_1 \dots x_n$ and desired \# volumes $k$\\
+Output: Which chapters go in each vol to minimize difference between max/min pages in any volumes
+\begin{itemize}\tightlist
+  \item Let A[i][j][p][q] denote the optimal method (store a solution, not a simple value, in every cell) to divide the first j chapters into i volumes, w/ vol of the largest \# of pages starts from chapter p and ends at chapter q.
+  \item For each cell you have, you may write two other cells: putting a new chapter in the last volumn, or putting a new chapter in a new volumn.
+  \item In the end, find the best solution in matrix A[k][n], which will be the output.
+\end{itemize}
+
+\subsection{Pan Balance}
+Input: Set of boxes $B_1, \dots, B_n$ and pan balance (and $\exists$ max boxweight L)\\
+Output: Determine if you can partition them into two sets of equal weight\\
+\begin{itemize}\tightlist
+  \item If any subcollection outweighs what is left (using balance) delete that node
+  \item If two nodes @ same level have equal weight (using balance) prune one
+  \item Now at most $\dfrac{1}{2}nL$ nodes in each level (max sum is $nL$)
+  \item Tricky part is second pruning rule (see code): use two working queues, with $Q(i)$ = ordered queue by weight of all subcollections in level $i$, then: 1) put every $C \cup \{B_i\}$ from FirstQ into SecondQ if less than half (check for equality/solution), this orders FirstQ and SecondQ by weight; 2) merge two queues and get rid of queues of equal weight, which creates $Q(i)$ as an ordered queue
+\end{itemize}
+\begin{lstlisting}
+Test $B_1$ and $B_1^C$, if $>$ then return False (or $=$ return True)
+
+Q(1) = $\{B_1\}$
+for i=2 to n
+  FirstQ = Q(i-1)
+  SecondQ = ()
+
+  //Get elements from FirstQ from light to heavy
+  for C = Dequeue(FirstQ)
+    compare $C \cup \{B_i\}$ with its complement
+    if $<$ then Enqueue(SecondQ,$C \cup \{B_i\}$)
+    if $=$ then return True
+
+  //now we should have FirstQ and SecondQ ordered by weight
+  //merge them and get rid of duplicates
+  $C_1$ = Dequeue(FirstQ)
+  $C_2$ = Dequeue(SecondQ)
+  while FirstQ not empty
+    compare $C_1$ and $C_2$
+    if $<$ then
+      Enqueue(Q(i),$C_1$)
+      $C_1$ = Dequeue(FirstQ)
+    else if $>$ then
+      Enqueue(Q(i),$C_2$)
+      $C_2$ = Dequeue(SecondQ)
+    else    //must be equal
+    Enqueue(Q(i),$C_1$)
+    $C_1$ = Dequeue(FirstQ)
+    $C_2$ = Dequeue(SecondQ)
+
+  //at this point Q(i) is ordered queue by weight of all subsets in level $i$
+
+return False
+\end{lstlisting}
+
+
+
+
+
+\subsection{Requests and Broadcasts}
+Input: Sequence $R_1 \dots R_n$ of requests at time $i$, and $k$ max broadcasts\\
+Output: Optimal broadcast schedule to minimize total wait time
+\begin{itemize}\tightlist
+  \item A[i][j] = min total wait time from requests $R_1 \dots R_i$ and $j$ broadcasts
+\end{itemize}
+\begin{lstlisting}
+for i=1 to n    // levels (num requests)
+  for j=1 to k  // broadcasts (up to limit k)
+    if j==1   // for single-broadcast must be at end, sum up all
+      A[i][j] = 0
+      for m=1 to i
+        A[i][j] += $R_m$ * (i - (m - 1))
+    else      // else calculate best broadcast time for subprob
+      A[i][j] = $\infty$
+      for b=j-1 to i
+        temp = A[b][j-1]
+        for m=b+1 to i  // sum wait time
+          temp += $R_m$ * (i - (m - 1))
+        if temp $<$ A[i][j]    // if this is better than what is there, reassign
+          A[i][j] = temp
+\end{lstlisting}
+
+
+
+\subsection{Requests and Broadcasts, hard}
+Input: Array $R$ of requests $R_{t,p}$ for page $p$ at time $t$, and $k$ max broadcasts\\
+Output: Optimal broadcast schedule to minimize total wait time
+\begin{itemize}
+  \item Suppose $R$ is $n$ by $m$, so \# pages is $m < k$ and ending time is $n$
+  \item Let $W(p,l_p)$ be min wait time for page $p$ with at most $l_p$ broadcasts of $p$ under requests $R_{1,p}, \dots, R_{n,p}$. We solved this subproblem in problem 23. Just need to assign each $l_i$.
+  \item Prune any assignment of $l_i,\dots,l_i$ with sum $> k$
+  \item If two subsets at same depth $i$ with same sum, eliminate the one with higher total wait time
+  \item Let $T(p,j)$ be min total wait time from $l_1 + \dots + l_p = j$ (with $p \leq j$)
+\end{itemize}
+\begin{lstlisting}
+for p=1 to m
+  for j=p to k
+    T(p,j) = $\infty$
+    for l=1 to j-(p-1)
+      compute W(p,l) by calling prob 23 on page p
+      if T(p,j) > T(p-1,j-l) + W(p,l)
+        T(p,j) = T(p-1,j-1) + W(p,l)    // get min time
+output T(n,k)
+\end{lstlisting}
+
+
+\subsection{Bahncards}
+Input: Set of $n$ train trips, dates $d_i$ of each trip, regular fare $f_i$ of each trip, $L$ days of Bahncard bonus\\
+Output: When to buy a Bahncard to minimize cost of travel
+\begin{itemize}
+  \item Order by date, then A[i][j] = min possible total cost of taking first $i$ trips when last Bahncard was purchased before trip $j$
+\end{itemize}
+\begin{lstlisting}
+for i=1 to n
+  A[i][0] = A[i-1][0] + $f_i$  //consider if no card is bought
+  for j=1 to i
+    if i==j  //buy card
+      A[i][j] = $\infty$
+      for k=0 to i
+        if (A[i-1][k] + $f_i$) / 2 + CARD_COST < A[i][j]
+          A[i][j] = (above)
+    else if (i > j && $d_i - d_j < L$)  // check if card is still active
+      A[i][j] = A[i-1][j] + $f_i$ / 2
+    else    // use full fare
+      A[i][j] = A[i-1][j] + $f_i$
+\end{lstlisting}
+
+
+\subsection{LCS}
+Input: two or three strings A,B,C\\
+Output: LCS
+\begin{itemize}
+  \item Recursive:
+  \begin{lstlisting}
+  if A[m] == B[n]
+    return LCS(m-1,n-1) + 1
+  else
+    return max{
+      LCS(m-1,n),   //take A[m]
+      LCS(m,n-1)   //take B[n]
+    }
+  \end{lstlisting}
+  \item Iterative:
+  \begin{lstlisting}
+  for i=1 to m
+    for j=1 to n
+      if X[i] == Y[j]
+        LCS[i][j] = LCS[i-1][j-1]+1
+      else
+        LCS[i][j] = max{LCS[i-1][j], LCS[i][j-1]}
+  return LCS[m][n]
+  \end{lstlisting}
+\end{itemize}
+
+
+
+\subsection{Path Backtracker}
+Input: n points on a line\\
+Output: path P that covers every point and minimizes total response time
+\begin{itemize}
+  \item Number from left to right
+  \item Tree where each level $l$ contains all solutions for visiting exactly $l$ points
+  \item Prune two solns @ same level with same last visited point -- must have already visited same set -- keep one with min total resp time plus (n-l)*length of path
+  \item Iterate over levels, then points -- Cost array and Length array [l,k] visits l points, ends at $p_k$, minimizes total time
+\end{itemize}
+
+
+
+\subsection{Cheapest String Conversion}
+Given two strings A, B, begin at the final character of each.
+If these characters agree, then move on to the next one.
+If they don't, then try each of the following, and choose the option with lowest cost:
+\begin{itemize}\tightlist
+    \item Delete the current character from A, and continue on in A, keeping the same position in B.
+    \item Insert the character from B into A, and continue on in B, keeping the same position in A.
+    \item Replace the character from A with the one from B, and move onto the next character in each.
+\end{itemize}
+Recursive:
+\begin{lstlisting}
+function CSC(a, b):
+if a == 0 then return 4b // Insert the rest of B
+if b == 0 then return 3a // Delete the rest of A
+if A[a] == B[b] then
+    return CSC(a-1, b-1)
+else
+    return min(
+        3 + CSC(a-1, b),  // Delete A[a]
+        4 + CSC(a, b-1),  // Insert B[b]
+        5 + CSC(a-1, b-1) // Replace A[a] <- B[b]
+    )
+\end{lstlisting}
+
+Iterative:
+\begin{lstlisting}
+int CSC[n+1][m+1]
+for b = 0 to m do
+  CSC[0][b] = 3b
+for a = 0 to n do
+  CSC[a][0] = 4a
+
+for a = 1 to n do
+for b = 1 to m do
+  if A[a] == B[b] then
+    CSC[a][b] = CSC[a-1][b-1]
+  else
+    CSC[a][b] = min(
+      3 + CSC[a-1][b],
+      4 + CSC[a][b-1],
+      5 + CSC[a-1][b-1]
+      )
+
+return CSC[n][m]
+\end{lstlisting}
+
+
+
+\subsection{Max Consec Sum}
+\begin{itemize}\tightlist
+  \item MCS(i) = Max Consecutive Sum of the first i ints
+  \item MSS(i) = Max Consecutive Sum of first i ints that uses $x_i$
+\end{itemize}
+\begin{lstlisting}
+for i=1 to n
+  MSS[i] = max{0,MSS[i-1]+$x_i$}
+  MCS[i] = max{MCS[i-1],MSS[i-1]+$x_i$}
+\end{lstlisting}
+
+
+
+\end{document}
 
 
 
