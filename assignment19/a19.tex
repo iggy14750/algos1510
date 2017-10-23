@@ -50,7 +50,7 @@
 \prob{6}
 
 \begin{enumerate}
-  \item \reducible{Indepenent Set}{Clique}, and \reducible{Clique}{Indepenent Set} \\
+  \item \reducible{Independent Set}{Clique}, and \reducible{Clique}{Independent Set} \\
   We define the complement of some graph $G$, labelled $G^C$ to be a graph such that
   \begin{enumerate}
     \item $V(G) = V(G^C)$
@@ -61,14 +61,14 @@
   In the complement of some graph, all independent sets become cliques, and vice versa.
   Thus we have the following reductions:
   \begin{lstlisting}
-function IndepenentSet(G, i)
+function IndependentSet(G, i)
   return Clique((*$G^C$*), i)
   \end{lstlisting}
   \begin{lstlisting}
 function Clique(G, i)
   return IndepenentSet((*$G^C$*), i)
   \end{lstlisting}
-  \item \reducible{Indepenent Set}{Vertex Cover} and \reducible{Vertex Cover}{Indepenent Set} \\
+  \item \reducible{Independent Set}{Vertex Cover} and \reducible{Vertex Cover}{Independent Set} \\
   We can define a similar relationship between these two problems, by noting the following:
   \begin{itemize}
     \item Define graph $G$ by it's set of vertices and edges, as $G = (V,E)$.
@@ -140,9 +140,9 @@ This leaves us with one ``illegal'' encoding, which should never be given to our
 We can say that some vertex can be a specific color, R, iff its neighbors are not.
 We can represent this relationship in the following way (where $v_0$ and $v_1$ represent together the color of $v$, and $v_{i, 1}$ is bit 1 of the $i^{th}$ neighbor of $v$):
 \[
-  (v_0 \land v_1) \land 
+  (v_0 \land v_1) \land
   \overline{(v_{1,0} \land v_{1,1})} \land \dots \land
-  \overline{(v_{k,0} \land v_{k,1})} 
+  \overline{(v_{k,0} \land v_{k,1})}
 \]
 Thus, of all colors available to $v$, we can choose any one.
 \begin{align*}
@@ -172,44 +172,44 @@ Then we generate the following Boolean expression.
 \begin{align*}
   \{&
     [
-      (a_0 \land a_1) \land 
-      \overline{(b_0 \land b_1)} \land 
+      (a_0 \land a_1) \land
+      \overline{(b_0 \land b_1)} \land
       \overline{(c_0 \land c_1)}
     ] \lor [
-      (\overline{a_0} \land a_1) \land 
-      \overline{(\overline{b_0} \land b_1)} \land 
+      (\overline{a_0} \land a_1) \land
+      \overline{(\overline{b_0} \land b_1)} \land
       \overline{(\overline{c_0} \land c_1)}
     ] \lor [
-      (a_0 \land \overline{a_1}) \land 
-      \overline{(b_0 \land \overline{b_1})} \land 
+      (a_0 \land \overline{a_1}) \land
+      \overline{(b_0 \land \overline{b_1})} \land
       \overline{(c_0 \land \overline{c_1})}
     ]
   \} \land\\ \{&
     [
-      (b_0 \land b_1) \land 
-      \overline{(a_0 \land a_1)} \land 
+      (b_0 \land b_1) \land
+      \overline{(a_0 \land a_1)} \land
       \overline{(c_0 \land c_1)}
     ] \lor [
-      (\overline{b_0} \land b_1) \land 
-      \overline{(\overline{a_0} \land a_1)} \land 
+      (\overline{b_0} \land b_1) \land
+      \overline{(\overline{a_0} \land a_1)} \land
       \overline{(\overline{c_0} \land c_1)}
     ] \lor [
-      (b_0 \land \overline{b_1}) \land 
-      \overline{(a_0 \land \overline{a_1})} \land 
+      (b_0 \land \overline{b_1}) \land
+      \overline{(a_0 \land \overline{a_1})} \land
       \overline{(c_0 \land \overline{c_1})}
     ]
   \} \land\\ \{&
     [
-      (c_0 \land c_1) \land 
-      \overline{(a_0 \land a_1)} \land 
+      (c_0 \land c_1) \land
+      \overline{(a_0 \land a_1)} \land
       \overline{(b_0 \land b_1)}
     ] \lor [
-      (\overline{c_0} \land c_1) \land 
-      \overline{(\overline{a_0} \land a_1)} \land 
+      (\overline{c_0} \land c_1) \land
+      \overline{(\overline{a_0} \land a_1)} \land
       \overline{(\overline{b_0} \land b_1)}
     ] \lor [
-      (c_0 \land \overline{c_1}) \land 
-      \overline{(a_0 \land \overline{a_1})} \land 
+      (c_0 \land \overline{c_1}) \land
+      \overline{(a_0 \land \overline{a_1})} \land
       \overline{(b_0 \land \overline{b_1})}
     ]
   \}
