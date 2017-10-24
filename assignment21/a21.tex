@@ -54,35 +54,38 @@
   \item This is NP-hard. We will show \reducible{Clique}{$\dfrac{3}{4}$IndependentSet}.
   \begin{lstlisting}
 function Clique(Graph G, int k)
-  //want $\dfrac{3}{4}n$ to be at least k, since all k-cliques contain (k-1)-cliques, etc.
-  while k $> \dfrac{3}{4}n$
-    add some leaf vertex anywhere in G
-  return 34Clique(G, k)
+    //want $\dfrac{3}{4}n$ to be at least k, since all k-cliques contain (k-1)-cliques, etc.
+    while k $> \dfrac{3}{4}n$
+        add some leaf vertex anywhere in G
+    return 34Clique(G, k)
   \end{lstlisting}
 
   \item This is NP-hard. We will show \reducible{$\dfrac{3}{4}$Clique}{$\dfrac{3}{4}$IndependentSet}. This is identical to the \reducible{Clique}{IndependentSet} that we did previously.
   \begin{lstlisting}
 function 34Clique(Graph G, int k)
-  return 34IndependentSet(G$^C$, k)
+    return 34IndependentSet(G$^C$, k)
   \end{lstlisting}
 
   \item This is NP-hard. We will show \reducible{Clique}{CliqueAndInd}
   \begin{lstlisting}
 function Clique(Graph G, int k)
-  let H = new independent set of k vertices
-  if CliqueAndInd(G+H,k)  //if the known independent set plus G passes the AND test, then G$\ni$(k-clique)
-    return 1
+    let H = new independent set of k vertices
+    if CliqueAndInd(G+H,k)  //if the known independent 
+        //set plus G passes the AND test, then G$\ni$(k-clique)
+        return 1
   \end{lstlisting}
 
   \item This is NP-hard. We will show \reducible{IndependentSet}{CliqueOrInd}
 
-  \item This is NP-hard. We will show \reducible{$\dfrc{3}{4}$Clique}{$\dfrac{3}{4}$CliqueAndInd}.
+  \item This is NP-hard. We will show \reducible{$\dfrac{3}{4}$Clique}{$\dfrac{3}{4}$CliqueAndInd}.
 
   \item This is too hard. I'm done.
 \end{enumerate}
 
 
 \prob{14}
+Each linear inequality can be viewed as a clause in a CNF Boolean formula, 
+in the sense that \textbf{all} inequalities must be satisfied, just as \textbf{all} clauses in a CNF forumla must be.
 
 
 \end{document}
