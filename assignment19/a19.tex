@@ -66,22 +66,22 @@ function IndependentSet(G, i)
   \end{lstlisting}
   \begin{lstlisting}
 function Clique(G, i)
-  return IndepenentSet((*$G^C$*), i)
+  return IndependentSet((*$G^C$*), i)
   \end{lstlisting}
   \item \reducible{Independent Set}{Vertex Cover} and \reducible{Vertex Cover}{Independent Set} \\
   We can define a similar relationship between these two problems, by noting the following:
   \begin{itemize}
-    \item Define graph $G$ by it's set of vertices and edges, as $G = (V,E)$.
+    \item Define graph $G$ by its set of vertices and edges, as $G = (V,E)$.
     \item Note that if $L \subset V$ is an independent set, then for any two neighboring vertices $u$ and $v$, at most one of them is in $L$ or else it wouldn't be an independent set. So then at $least$ one of every pair of neighbors is in $M = V - L$. Thus every edge in $E$ has an endpoint in $M$, so $M$ is a vertex cover.
     \item Conversely, if $M \subset V$ is a vertex cover, then consider any two vertices $x$ and $y$ in $L = V - M$. These two points can't be neighbors, else $M$ wouldn't be a cover. Thus no two points in $L$ are adjacent, so it must be an independent set.
   \end{itemize}
   \begin{lstlisting}
-function IndepenentSet(G, k)
+function IndependentSet(G, k)
   return VertexCover(G, n - k)
   \end{lstlisting}
   \begin{lstlisting}
 function VertexCover(G, k)
-  return IndepenentSet(G, n - k)
+  return IndependentSet(G, n - k)
   \end{lstlisting}
 \end{enumerate}
 

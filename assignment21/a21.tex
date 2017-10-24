@@ -1,6 +1,7 @@
 \documentclass{article}
 \author{Isaac B Goss\\ James Hahn\\ Jonathan Dyer}
 \title{Assignment 21}
+\date{25 Oct 2017}
 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -21,6 +22,9 @@
 \providecommand{\tightlist}{
     \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
 }
+\providecommand{\reducible}[2]{
+  \textbf{#1} $\leq$ \textbf{#2}
+}
 
 % ============ USED FOR CODE LISTINGS ============
 \usepackage{listings}
@@ -37,38 +41,48 @@
     deletekeywords = {len, max, format, min},
     morekeywords = {yield, function, then, do, to},
     keywordstyle = \color{blue},
-    escapeinside={(*}{*)}
+    escapeinside = {(*}{*)},
+    mathescape
 }
 
 
 \begin{document}
 \maketitle
 
+\prob{13}
+\begin{enumerate}[label=(\alph*)]
+  \item This is NP-hard. We will show \reducible{Clique}{$\dfrac{3}{4}$IndependentSet}.
+  \begin{lstlisting}
+function Clique(Graph G, int k)
+  //want $\dfrac{3}{4}n$ to be at least k, since all k-cliques contain (k-1)-cliques, etc.
+  while k $> \dfrac{3}{4}n$
+    add some leaf vertex anywhere in G
+  return 34Clique(G, k)
+  \end{lstlisting}
+
+  \item This is NP-hard. We will show \reducible{$\dfrac{3}{4}$Clique}{$\dfrac{3}{4}$IndependentSet}. This is identical to the \reducible{Clique}{IndependentSet} that we did previously.
+  \begin{lstlisting}
+function 34Clique(Graph G, int k)
+  return 34IndependentSet(G$^C$, k)
+  \end{lstlisting}
+
+  \item This is NP-hard. We will show \reducible{Clique}{CliqueAndInd}
+  \begin{lstlisting}
+function Clique(Graph G, int k)
+  let H = new independent set of k vertices
+  if CliqueAndInd(G+H,k)  //if the known independent set plus G passes the AND test, then G$\ni$(k-clique)
+    return 1
+  \end{lstlisting}
+
+  \item This is NP-hard. We will show \reducible{IndependentSet}{CliqueOrInd}
+
+  \item This is NP-hard. We will show \reducible{$\dfrc{3}{4}$Clique}{$\dfrac{3}{4}$CliqueAndInd}.
+
+  \item This is too hard. I'm done.
+\end{enumerate}
+
+
+\prob{14}
 
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

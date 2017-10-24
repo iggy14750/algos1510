@@ -21,6 +21,9 @@
 \providecommand{\tightlist}{
     \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
 }
+\providecommand{\reducible}[2]{
+  \textbf{#1} $\leq$ \textbf{#2}
+}
 
 % ============ USED FOR CODE LISTINGS ============
 \usepackage{listings}
@@ -38,6 +41,7 @@
     morekeywords = {yield, function, then, do, to},
     keywordstyle = \color{blue},
     escapeinside={(*}{*)}
+    mathescape
 }
 
 
@@ -47,28 +51,3 @@
 
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
