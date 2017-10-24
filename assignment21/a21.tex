@@ -51,41 +51,89 @@
 
 \prob{13}
 \begin{enumerate}[label=(\alph*)]
-  \item This is NP-hard. We will show \reducible{Clique}{$\dfrac{3}{4}$IndependentSet}.
-  \begin{lstlisting}
+ \item This is NP-hard. We will show \reducible{Clique}{$\dfrac{3}{4}$IndependentSet}.
+       \begin{lstlisting}
 function Clique(Graph G, int k)
     //want $\dfrac{3}{4}n$ to be at least k, since all k-cliques contain (k-1)-cliques, etc.
     while k $> \dfrac{3}{4}n$
         add some leaf vertex anywhere in G
     return 34Clique(G, k)
-  \end{lstlisting}
+ \end{lstlisting}
 
-  \item This is NP-hard. We will show \reducible{$\dfrac{3}{4}$Clique}{$\dfrac{3}{4}$IndependentSet}. This is identical to the \reducible{Clique}{IndependentSet} that we did previously.
-  \begin{lstlisting}
+ \item This is NP-hard. We will show \reducible{$\dfrac{3}{4}$Clique}{$\dfrac{3}{4}$IndependentSet}. This is identical to the \reducible{Clique}{IndependentSet} that we did previously.
+       \begin{lstlisting}
 function 34Clique(Graph G, int k)
     return 34IndependentSet(G$^C$, k)
   \end{lstlisting}
 
-  \item This is NP-hard. We will show \reducible{Clique}{CliqueAndInd}
-  \begin{lstlisting}
+ \item This is NP-hard. We will show \reducible{Clique}{CliqueAndInd}
+       \begin{lstlisting}
 function Clique(Graph G, int k)
     let H = new independent set of k vertices
-    if CliqueAndInd(G+H,k)  //if the known independent 
-        //set plus G passes the AND test, then G$\ni$(k-clique)
-        return 1
+    if CliqueAndInd(G+H,k)  // if the known independent set plus G passes the AND test, 
+        return 1            // then G$\ni$(k-clique)
   \end{lstlisting}
 
-  \item This is NP-hard. We will show \reducible{IndependentSet}{CliqueOrInd}
+ \item This is NP-hard. We will show  \reducible{IndependentSet}{CliqueOrInd}
 
-  \item This is NP-hard. We will show \reducible{$\dfrac{3}{4}$Clique}{$\dfrac{3}{4}$CliqueAndInd}.
+ \item This is NP-hard. We will show \reducible{$\dfrac{3}{4}$Clique}{$\dfrac{3}{4}$CliqueAndInd}.
 
-  \item This is too hard. I'm done.
+ \item This is too hard. I'm done.
 \end{enumerate}
 
-
+\pagebreak
 \prob{14}
-Each linear inequality can be viewed as a clause in a CNF Boolean formula, 
-in the sense that \textbf{all} inequalities must be satisfied, just as \textbf{all} clauses in a CNF forumla must be.
+Each clause of a CNF Boolean formula can be viewed as a linear inequality in a system thereof,
+in the sense that \textbf{all} inequalities must be satisfied, 
+just as \textbf{all} clauses in a CNF forumla must be.
+Let's represent every variable in the CNF by a variable of the same name in our system.
+Then, each vaiable can either be added to or subtracted from the inequality based on whether it is inverted in the respective CNF clause.
 
+We want these variables to only be assigned 1 or -1 (representing logic true and false, respectively), so we need to add an extra condition for each variable.
+Some options are that for each variable $x$, we could choose one of the following:
+\begin{itemize}
+  \item $-1 \leq x \leq 1$, but this still allows for assignment of intermediate values.
+  \item $n^2 = 1$, but this is not a linear equation.
+  \item $(-1)^x$ could be used as the variable to satisfy, but this of course is not linear either.
+  \item $|x| = 1$ is the closest to linear, so this is what we'll use.
+\end{itemize}
+
+Each inequality then is satisfied when any of the terms evaluate to positive 1.
+To accomplish this, we can put negative the number of terms in the equation.
+
+Let's look at an example to explain this.
+Consider the following CNF forumla.
+
+\begin{align*}
+    (\overline{x} \lor y \lor z) \land (x \lor \overline{y} \lor z \lor w \lor \overline{u})
+\end{align*}
+
+This can be transformed into the following system of linear inequalities.
+
+\begin{align*}
+    -x + y + z &\geq 2\\
+    x - y + z + w -u &\geq 4\\
+    |x| = |y| = |z| = |w| = |u| &= 1
+\end{align*}
+
+Thus, this here is our ultimate reduction.
+
+\begin{lstlisting}
+function CNF-Decider(F)
+    S = a system of linear inequalities
+    for clause C in F do
+        I = a new linear inequality, default "0 $\geq$ 0"
+        for literal l in C do
+            subtract 1 from right-hand-side of I
+            let v = the variable in literal l
+            if v has not been seen in S then
+                add equality "|v| = 1" to S // make sure only 1 or -1 is assigned.
+            if l = $\overline{v}$ then
+                add term "-v" to left-hand-side of I
+            else
+                add term "+v" to left-hand-side of I
+        add inequality I to S
+    return LinearIneqDecider(S)
+\end{lstlisting}
 
 \end{document}
