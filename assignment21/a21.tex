@@ -15,7 +15,7 @@
 \providecommand{\soln}{\textbf{Solution: }}
 \providecommand{\image}[1]{
     \begin{center}
-        \includegraphics%[width=0.95\textwidth]
+        \includegraphics[width=0.3\textwidth]
             {#1}
     \end{center}
 }
@@ -139,12 +139,22 @@ function CNF-Decider(F)
 \pagebreak
 \prob{19}
 
+We set up $G$ as stated in the hint.
+The we add an edge between all vertices in $R$ which represent the edges of $H$, and the vertices incident to them.
+Further, we make all vertices in $G - R$ adjacent to the single source vertex $s$.
+As an example, this leaves us with $G$ looking something like this:
+
+\begin{center}
+    \includegraphics[width=0.3\textwidth]{a21p19first}
+    \includegraphics[width=0.3\textwidth]{a21p19graph}
+\end{center}
+
+Where the original graph $H$ is on the left, and our construction $G$ is on the right.
 \begin{lstlisting}
 function VertexCover(H, l)
     let R = $\{ e \text{ (as a vetex)} \ |\ e \in E(H) \}$ $\cup$ $\{s\}$
     let T = V(H)
-    let V = T $\cup$ R
-    let G = (V, E = $\emptyset$)
+    let G = (V = T $\cup$ R, E = $\emptyset$)
     for vertex v in T do
         add edge between s and v in G
     for vertex e in R do
