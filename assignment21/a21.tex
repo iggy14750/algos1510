@@ -149,7 +149,14 @@ As an example, this leaves us with $G$ looking something like this:
     \includegraphics[width=0.3\textwidth]{a21p19graph}
 \end{center}
 
-Where the original graph $H$ is on the left, and our construction $G$ is on the right.
+Where the original graph $H$ is on the left, and our construction $G$ is on the right. Note, for the sake of brevity, I will call a solution to the problem presented here a \textbf{walk}.
+
+Note that we can find a vertex cover of size 2 in $H$, $\{b, d\}$.
+Likewise, $U = \{b, d\} \cup R$ is a walk of $G$.
+But, we cannot create any vertex cover of size 1, no matter what vertex we choose.
+In the same way, no signle vertex can be added to $R$ to create a walk.
+Keep this example in mind when considering the following algorithm and following proof of correctness.
+
 \begin{lstlisting}
 function VertexCover(H, l)
     let R = $\{ e \text{ (as a vetex)} \ |\ e \in E(H) \}$ $\cup$ $\{s\}$
@@ -161,7 +168,31 @@ function VertexCover(H, l)
         let uv = e // the vertices to which e is adjacent in H
         add edge between e and v in G
         add edge between e and u in G
-    return ThisProblem(G, |R| + l)
+    return ThisProblem(G, R, |R| + l)
 \end{lstlisting}
+
+\begin{proof}
+    In order for this algorithm to correctly solve vertex cover, we must have that some vertex cover $S$ exists for $H$ if and only if $R \cup S$ is a walk for $G$.
+    \begin{itemize}
+        \item $S$ is a vertex cover $\implies$ $R \cup S$ is a walk.
+
+        Assume this is not so.
+        Then there exists some vertex $e \in R$ which has no path to some other vertex in $R$.
+        One of these vertices must be completely disconnected in $G$; we shall say it is $e$ without loss of generality 
+        [if both were adjacent to any vertex outside of $R$, then they would be connected through $s$].
+        We know that $e$ has exactly 2 neighbors $u,v \in V(G)$.
+        Thus, $u, v \not\in U \implies u, v \not\in S$.
+        Thus, we have a contradiction.
+        Some edge is not covered in our vertex cover.
+
+        \item $R \cup S$ is a walk $\implies$ $S$ is a vertex cover.
+
+        Again, assume this is not the case.
+        Then there exists some edge $e = uv$ which is not covered.
+        That is, $u, v \not\in S \implies u, v \not\in R \cup S = U$.
+        Then, $\exists e \in R$ which has no neighbors in $U$.
+        This is a contradiction of our walk.
+    \end{itemize}
+\end{proof}
 
 \end{document}
