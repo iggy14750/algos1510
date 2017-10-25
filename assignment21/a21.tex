@@ -70,21 +70,29 @@ function 34Clique(Graph G, int k)
        \begin{lstlisting}
 function Clique(Graph G, int k)
     let H = new independent set of k vertices
-    if CliqueAndInd(G+H,k)  // if the known independent set plus G passes the AND test, 
+    if CliqueAndInd(G+H,k)  // if the known independent set plus G passes the AND test,
         return 1            // then G$\ni$(k-clique)
   \end{lstlisting}
 
- \item This is NP-hard. We will show  \reducible{IndependentSet}{CliqueOrInd}
+ \item This is NP-hard. We will show  \reducible{Clique}{CliqueOrInd}\\
+       We simply need to eliminate any independent set in G without compromising a possible clique.
+       The easiest way to do this is to simply add a new vertex and connect it to all vertices in G.
+       Then any clique will just be one vertex larger, which is of course fine since (k+1)-cliques of course contain k-cliques.
+       \begin{lstlisting}
+function Clique(Graph G, int k)
+    let H = G $\times$ v    // cross product of G and one vertex
+    return CliqueOrInd(H, k)
+       \end{lstlisting}
 
- \item This is NP-hard. We will show \reducible{$\dfrac{3}{4}$Clique}{$\dfrac{3}{4}$CliqueAndInd}.
+ \item This is NP-hard. We can show \reducible{$\dfrac{3}{4}$Clique}{$\dfrac{3}{4}$CliqueAndInd} in a way analogous to the above proof.
 
- \item This is too hard. I'm done.
+ \item This is $\rule[0.5ex]{4em}{0.1ex}\hspace{-4em}\text{NP-hard}$ too hard. I'm done.
 \end{enumerate}
 
 \pagebreak
 \prob{14}
 Each clause of a CNF Boolean formula can be viewed as a linear inequality in a system thereof,
-in the sense that \textbf{all} inequalities must be satisfied, 
+in the sense that \textbf{all} inequalities must be satisfied,
 just as \textbf{all} clauses in a CNF forumla must be.
 Let's represent every variable in the CNF by a variable of the same name in our system.
 Then, each vaiable can either be added to or subtracted from the inequality based on whether it is inverted in the respective CNF clause.
@@ -154,12 +162,12 @@ Where the original graph $H$ is on the left, and our construction $G$ is on the 
 Note that we can find a vertex cover of size 2 in $H$, $\{b, d\}$.
 Likewise, $U = \{b, d\} \cup R$ is a walk of $G$.
 But, we cannot create any vertex cover of size 1, no matter what vertex we choose.
-In the same way, no signle vertex can be added to $R$ to create a walk.
+In the same way, no single vertex can be added to $R$ to create a walk.
 Keep this example in mind when considering the following algorithm and following proof of correctness.
 
 \begin{lstlisting}
 function VertexCover(H, l)
-    let R = $\{ e \text{ (as a vetex)} \ |\ e \in E(H) \}$ $\cup$ $\{s\}$
+    let R = $\{ e \text{ (as a vertex)} \ |\ e \in E(H) \}$ $\cup$ $\{s\}$
     let T = V(H)
     let G = (V = T $\cup$ R, E = $\emptyset$)
     for vertex v in T do
@@ -178,7 +186,7 @@ function VertexCover(H, l)
 
         Assume this is not so.
         Then there exists some vertex $e \in R$ which has no path to some other vertex in $R$.
-        One of these vertices must be completely disconnected in $G$; we shall say it is $e$ without loss of generality 
+        One of these vertices must be completely disconnected in $G$; we shall say it is $e$ without loss of generality
         [if both were adjacent to any vertex outside of $R$, then they would be connected through $s$].
         We know that $e$ has exactly 2 neighbors $u,v \in V(G)$.
         Thus, $u, v \not\in U \implies u, v \not\in S$.
