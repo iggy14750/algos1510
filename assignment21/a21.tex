@@ -136,4 +136,22 @@ function CNF-Decider(F)
     return LinearIneqDecider(S)
 \end{lstlisting}
 
+\pagebreak
+\prob{19}
+
+\begin{lstlisting}
+function VertexCover(H, l)
+    let R = $\{ e \text{ (as a vetex)} \ |\ e \in E(H) \}$ $\cup$ $\{s\}$
+    let T = V(H)
+    let V = T $\cup$ R
+    let G = (V, E = $\emptyset$)
+    for vertex v in T do
+        add edge between s and v in G
+    for vertex e in R do
+        let uv = e // the vertices to which e is adjacent in H
+        add edge between e and v in G
+        add edge between e and u in G
+    return ThisProblem(G, |R| + l)
+\end{lstlisting}
+
 \end{document}
