@@ -48,6 +48,12 @@
 \begin{document}
 \maketitle
 \prob{17}
+I believe that in triad-free graphs... the max independent set size could be associated with the number of edges? So perhaps a line graph would give more intuition. Anyways, the problem is to show \reducible{IndependentSet}{TriadFree}. In other words, to come up with an algorithm that solves IndependentSet using TriadFree in polynomial time, so that we can show TriadFree is NP-hard. But I'm out of time, so I can only say that I think something like this would work:
+\begin{lstlisting}
+function IndependentSet(Graph G)
+    let H = G $\times$ {v} for some new vertex v, or manipulated in some other way
+    return TriadFree(H, k)
+\end{lstlisting}
 
 
 
