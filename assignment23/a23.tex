@@ -48,6 +48,48 @@
 \begin{document}
 \maketitle
 
+\section*{Reduction}
+\prob{21}
+We tried. Truly we did.
+
+\bigskip
+
+\section*{Parallel}
+\prob{1}
+\begin{itemize}
+  \item When $p = n$, this is identical to the problem done in class. We have:
+  \begin{lstlisting}
+AND($x_1 \dots x_n$, p)
+    if p==1 then return $x_1$
+    else return AND($x_1 \dots x_{\frac{n}{2}}$, p) && AND($x_{\frac{n}{2}+1} \dots x_n$)
+  \end{lstlisting}
+  \begin{itemize}
+    \item As in class, we get $T(n,p) = T(\frac{n}{2},\frac{p}{2}) + 1$ which means this algorithm runs in $O(lg(n))$ time.
+    \item The efficiency is $E(n,p) = \frac{n}{n*lg(n)}$ = $\frac{1}{lg(n)}$
+    \item With $n^{\frac{1}{3}}$ processors, we get that $T(n,n^{\frac{1}{3}}) \leq n^{\frac{2}{3}}*lg(n)$ = $O(n^{\frac{2}{3}}*lg(n))$
+  \end{itemize}
+
+  \item When $p = \frac{n}{lg(n)}$ we have almost the same code as above:
+  \begin{lstlisting}
+logAND($x_1 \dots x_n$, p)
+    if p==1 then return SequentialAND($x_1 \dots x_n$)
+    else return logAND($x_1 \dots x_{\frac{n}{2}}$, p) && logAND($x_{\frac{n}{2}+1} \dots x_n$)
+  \end{lstlisting}
+  \begin{itemize}
+    \item We showed in class that each leaf in the call tree for these kinds of algorithm will run in $\frac{n}{p}$ time, which in this case is $\frac{n}{\frac{n}{lg(n)}} = lg(n)$ time. So the overall $\frac{n}{p} + lg(n)$ that we usually have becomes $lg(n) + lg(n) \rightarrow O(lg(n))$ time.
+    \item The efficiency is $\frac{n}{\frac{n}{lg(n)}*lg(n)} = 1$
+    \item The upper bound for $n^{\frac{1}{3}}$ processors is $T(n,n^{\frac{1}{3}}) \leq \frac{n^{\frac{2}{3}}}{lg(n)}*T(n,\frac{n}{lg(n)}) = n^{\frac{2}{3}} \rightarrow O(n^{\frac{2}{3}})$
+  \end{itemize}
+
+  \item When we have a CRCW machine with $n$ processors we simply give every processor its own bit and have them all check if it's a zero. Using the 'common' write model, we have each of those processors write a 0 to the same location if and only if that processor's bit is zero (as checked above). Otherwise don't write anything.
+  \begin{itemize}
+    \item The above algorithm obviously runs in $O(1)$ time, since it just takes one check and write for each processor.
+    \item The efficiency is $E(n,p) = \frac{n}{n*1} = 1$.
+    \item With $n^{\frac{2}{3}}$ processors we get an upper bound of $n^{\frac{1}{3}}*T(n,n) \rightarrow O(n^{\frac{1}{3}})$
+  \end{itemize}
+\end{itemize}
+
+
 
 
 \end{document}
