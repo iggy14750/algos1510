@@ -48,9 +48,10 @@
 \begin{document}
 \maketitle
 
-    \prob{22}
-    We consider the following transformation from input of \textbf{Triangle Problem} to input of \textbf{Dr. Seuss}.
-    \begin{lstlisting}
+\section*{Reductions}
+\prob{22}
+We consider the following transformation from input of \textbf{Triangle Problem} to input of \textbf{Dr. Seuss}.
+\begin{lstlisting}
 function transform(U)
     A = T = $\emptyset$
     for triple t in U do
@@ -61,7 +62,7 @@ function transform(U)
         }
         add  $x_t$, $y_t$, and $z_t$ to A
     return A, T
-    \end{lstlisting}
+\end{lstlisting}
 
 Then the following is our reduction, notice that we invert the output:
 \begin{lstlisting}
@@ -74,7 +75,7 @@ function Triangle(U)
     This algorithm correctly reduces \textbf{Triangle} to \textbf{Dr. Seuss}
 \end{thm}
 \begin{proof} We need to satisfy incorrect input to  \textbf{Dr. Seuss} $\iff$ correct input to \textbf{Triangle}.
-    
+
     \begin{enumerate}
         \item Incorrect input to \textbf{Dr. Seuss} $\implies$ correct input to \textbf{Triangle}
         Such an incorrect input would look like two diseases $a, b$ for which $T_i(a) = T_i(b)$ for all functions $T_i \in T$.
@@ -88,5 +89,57 @@ function Triangle(U)
         This is incorrect input to \textbf{Dr. Suess}.
     \end{enumerate}
 \end{proof}
+
+
+\pagebreak
+\section*{Parallel Algos}
+\prob{2}
+
+
+\prob{3}
+The problem is to initialize an array of length $n$ with each cell filled with the integer $x$. The parts are each simple enough, and almost exactly the same as in our last assigment.
+\begin{itemize}
+  \item On an EREW PRAM with $n$ processors, the following algorithm runs in $\frac{n}{n} + lg(n) = O(lg(n))$ time:
+  \begin{lstlisting}
+ARR($A[1] \dots A[n], x, p$)
+    if p==1 then $A[1] = x$
+    else (*\(
+          \left \{
+              \begin{tabular}{l}
+              ARR($A[1] \dots A[\frac{n}{2}], x, \frac{p}{2}$) \\
+              ARR($A[\frac{n}{2}+1] \dots A[n], x, \frac{p}{2}$)
+              \end{tabular}
+          \right \}
+          \)*)
+  \end{lstlisting}
+  \begin{itemize}
+    \item The efficiency is $E(n,n) = \frac{n}{n*lg(n)} = \frac{1}{lg(n)}$
+    \item With $n^{\frac{1}{3}}$ processors we get that $T(n,n^{\frac{1}{3}}) \leq n^{\frac{2}{3}}*lg(n) \rightarrow O(n^{\frac{2}{3}}*lg(n))$
+  \end{itemize}
+
+  \item On an EREW PRAM with $\frac{n}{lg(n)}$ processors, the following alg runs in $lg(n) + lg(n) \rightarrow O(lg(n))$ time:
+  \begin{lstlisting}
+logARR($A[1] \dots A[n], x, p$)
+    if p==1 then SequentialARR($A[1] \dots A[n]$)
+    else (*\(
+          \left \{
+              \begin{tabular}{l}
+              logARR($A[1] \dots A[\frac{n}{2}], x, \frac{p}{2}$) \\
+              logARR($A[\frac{n}{2}+1] \dots A[n], x, \frac{p}{2}$)
+              \end{tabular}
+          \right \}
+          \)*)
+  \end{lstlisting}
+  \begin{itemize}
+    \item The efficiency is $\frac{n}{\frac{n}{lg(n)}*lg(n)} = 1$
+    \item The upper bound for $n^{\frac{1}{3}}$ processors is $T(n,n^{\frac{1}{3}}) \leq \frac{n^{\frac{2}{3}}}{lg(n)}*T(n,\frac{n}{lg(n)}) = n^{\frac{2}{3}} \rightarrow O(n^{\frac{2}{3}})$
+  \end{itemize}
+
+  \item This algorithm is trivial: concurrently read $x$ with each processor, then concurrently write $x$ into $A[i]$ for each $i \in [n]$
+  \begin{itemize}
+    \item The efficiency is $E(n,p) = E(n,n) = \frac{n}{n*1} = 1$.
+    \item With $n^{\frac{2}{3}}$ processors we get an upper bound of $T(n, n^{\frac{2}{3}}) \leq n^{\frac{1}{3}}*T(n,n) \rightarrow O(n^{\frac{1}{3}})$
+  \end{itemize}
+\end{itemize}
 
 \end{document}
