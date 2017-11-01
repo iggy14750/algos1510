@@ -94,7 +94,8 @@ function Triangle(U)
 \pagebreak
 \section*{Parallel Algos}
 \prob{2}
-
+We can perform a reduction. If we can successfully reduce \textbf{Boolean Formula Value Problem} (BFV) to our new problem N, such that our reduction is fast and efficient, then we can say that if we could find a fast and effecient algorithm for N, then we know we have a fast and efficient algorithm for BFV.
+In this sense, finding an algorithm for N is now as hard as finding an algorithm for BFV.
 
 \prob{3}
 The problem is to initialize an array of length $n$ with each cell filled with the integer $x$. The parts are each simple enough, and almost exactly the same as in our last assigment.
@@ -102,7 +103,7 @@ The problem is to initialize an array of length $n$ with each cell filled with t
   \item On an EREW PRAM with $n$ processors, the following algorithm runs in $\frac{n}{n} + lg(n) = O(lg(n))$ time:
   \begin{lstlisting}
 ARR($A[1] \dots A[n], x, p$)
-    if p==1 then $A[1] = x$
+    if p == 1 then $A[1] = x$
     else (*\(
           \left \{
               \begin{tabular}{l}
@@ -120,7 +121,7 @@ ARR($A[1] \dots A[n], x, p$)
   \item On an EREW PRAM with $\frac{n}{lg(n)}$ processors, the following alg runs in $lg(n) + lg(n) \rightarrow O(lg(n))$ time:
   \begin{lstlisting}
 logARR($A[1] \dots A[n], x, p$)
-    if p==1 then SequentialARR($A[1] \dots A[n]$)
+    if p == 1 then SequentialARR($A[1] \dots A[n]$)
     else (*\(
           \left \{
               \begin{tabular}{l}
