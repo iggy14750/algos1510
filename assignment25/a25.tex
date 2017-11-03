@@ -10,6 +10,7 @@
 
 % ============ USED FOR OUR FORMAT ============
 \newtheorem{thm}{Claim}
+\newtheorem{lemma}{Lemma}
 \providecommand{\prob}[1]{\section*{Problem #1}}
 \providecommand{\soln}{\textbf{Solution: }}
 \providecommand{\image}[1]{
@@ -48,6 +49,28 @@
 \begin{document}
 \maketitle
 
+    \prob{23}
+    We can say that \reducible{Vertex Cover}{River Crossing} by the following reduction:
+    \begin{lstlisting}
+function VertexCover(G, k)
+    return RiverCrossing(G, k)
+    \end{lstlisting}
+    \begin{proof}
+        We must establish that a $k$-cover is possible iff a $k$-crossing is possible.
 
+        \begin{itemize}
+            \item $k$-cover impossible $\implies$ $k$-crossing impossible.
+            If this is the case, then we cannot make the first move.
+            Attempting to take any subset of vertices without breaking up every edge means we have lost the game.
+
+            \item $k$-cover possible $\implies$ $k$-crossing possible.
+            \begin{lemma}
+                If a graph $G$ has a $k$-cover, then all subgraphs of $G$ contain a $k$-cover.
+            \end{lemma}
+
+            This tells us that it is always possible to collect a subset of vertices so that either side of the river is edge-free.
+
+        \end{itemize}
+    \end{proof}
 
 \end{document}
