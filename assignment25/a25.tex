@@ -56,10 +56,25 @@
 On an EREW PRAM with $n$ processors, we get the following algorithm for computing $n!$ in $O(lg(n))$ time:\\
 \begin{lstlisting}
 fact($k, n, p$)   // k is the starting value for our partial product
-  if p == 1 then return 1
-  else return fact($k, \frac{n+k}{2}, \frac{p}{2}$) $\times$ fact($\frac{n+k}{2}, n, \frac{p}{2}$)
+    if k == n then return 1
+    else return fact($k, \frac{n+k}{2}, \frac{p}{2}$) $\times$ fact($\frac{n+k}{2}, n, \frac{p}{2}$)
 \end{lstlisting}
+Obviously the first call would be $fact(1, n, n)$ for computing $n!$ with $n$ processors. By the same recursive call tree and calculations we did in class for performing sums in parallel, this algorithm runs in $O(lg(n))$ time.
 
+\prob{6}
+\begin{itemize}
+    \item On a CREW PRAM with $n^2$ processors, we can think of assigning each processor to a unique element of the $n \times n$ matrix $C$ that results from the matrix multiplication of $A*B$.
+    \begin{lstlisting}
+each processor $C_{ij}$ does (simultaneously):
+    read row $i$ from matrix $A$      // n ops
+    read column $j$ from matrix $B$   // n ops
+    write $C_{ij} = A_i * B_j$        // dot product of two vectors; n ops
+  \end{lstlisting}
+  Clearly, with all $n^2$ processors running at once (reading concurrently from wherever and writing exclusively to their individual answer slots), we get $O(n)$ time.
+  \begin{itemize}
+    \item Efficiency is
+  \end{itemize}
+\end{itemize}
 
 
 \end{document}
