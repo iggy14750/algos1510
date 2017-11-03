@@ -130,6 +130,14 @@ We can see that this algorithm runs in $1+0+1+ lg(n)$ time. In particular, note 
   \item Efficiency is $E(n,n^3) = \frac{n^3}{n^3 * lg(n)} = \frac{1}{lg(n)}$.
   \item With $n^{\frac{1}{4}}$ processors we get that $T(n,n^{\frac{1}{4}}) \leq n^{\frac{11}{4}}*lg(n) \rightarrow O(n^{\frac{11}{4}}*lg(n))$
 \end{itemize}
+
+\item On a CREW PRAM with $\frac{n^3}{lg(n)}$ processors, we perform a similar algorithm to above, except that instead of concurrently performing the multiplications, we assign $\frac{n}{lg(n)}$ processors to each row of multiplications, which gives the same runtime as our typical format algorithm for commutative operations, that is $lg(n)$. Then we can perform our logarithmic sum algorithm for the elements in $C$, giving roughly $O(lg(n) + lg(n)) = O(lg(n))$ time.
+\begin{itemize}
+  \item Efficiency is $E(n,\frac{n^3}{lg(n)}) = \frac{n^3}{\frac{n^3}{lg(n)}*lg(n)} = 1$
+  \item With $n^{\frac{1}{4}}$ processors we get that $T(n,n^{\frac{1}{4}}) \leq \frac{n^{\frac{11}{4}}}{lg(n)}*lg(n) \rightarrow O(n^{\frac{11}{4}})$
+\end{itemize}
+
+\item Efficiency and upper bound are the same as above...?
 \end{itemize}
 
 
