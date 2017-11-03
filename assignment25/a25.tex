@@ -68,7 +68,19 @@ function VertexCover(G, k)
             \end{lemma}
             
             This tells us that it is always possible to collect a subset of vertices so that either side of the river is edge-free.
-            
+
+            Thus, the only issue is whether we can complete the entire move.
+            I am going to say here that large cliques are the hardest problem.
+            That is, in the sense that all subproblems possible on some number of vertices are subproblems of the clique on those vertices.
+            I want to show that even in these hardest of problems, having a $k$-cover available implies it is possible to find a $k$-crossing.
+
+            So, let's say we have a $k+1$-clique to start out with.
+            Well, then we move a $k$-clique over, leaving one lone vertex.
+            But we can't leave this entire clique and go back, so we leave just one vertex, and carry our $k-1$-cover back.
+            We then join back up with our vertex left on the left, invite him to our boat, and complete the challenge.
+
+            This can be extended to support graphs which contain a $k+1$-clique as a proper subgraph but have a $k$-cover, by moving vertices outside of the clique one at a time, with our $k-1$ cover on board.
+
         \end{itemize}
     \end{proof}
     
