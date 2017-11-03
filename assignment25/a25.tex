@@ -48,6 +48,18 @@
 \begin{document}
 \maketitle
 
+\prob{23}
+
+
+
+\prob{5}
+On an EREW PRAM with $n$ processors, we get the following algorithm for computing $n!$ in $O(lg(n))$ time:\\
+\begin{lstlisting}
+fact($k, n, p$)   // k is the starting value for our partial product
+  if p == 1 then return 1
+  else return fact($k, \frac{n+k}{2}, \frac{p}{2}$) $\times$ fact($\frac{n+k}{2}, n, \frac{p}{2}$)
+\end{lstlisting}
+
 
 
 \end{document}
