@@ -49,42 +49,42 @@
 \begin{document}
 \maketitle
 
-    \prob{23}
-    We can say that \reducible{Vertex Cover}{River Crossing} by the following reduction:
-    \begin{lstlisting}
+\prob{23}
+We can say that \reducible{Vertex Cover}{River Crossing} by the following reduction:
+\begin{lstlisting}
 function VertexCover(G, k)
     return RiverCrossing(G, k)
-    \end{lstlisting}
-    \begin{proof}
-        We must establish that a $k$-cover is possible iff a $k$-crossing is possible.
-        \begin{itemize}
-            \item $k$-cover impossible $\implies$ $k$-crossing impossible.
-            If this is the case, then we cannot make the first move.
-            Attempting to take any subset of vertices without breaking up every edge means we have lost the game.
+\end{lstlisting}
+\begin{proof}
+ We must establish that a $k$-cover is possible iff a $k$-crossing is possible.
+ \begin{itemize}
+  \item $k$-cover impossible $\implies$ $k$-crossing impossible.
+        If this is the case, then we cannot make the first move.
+        Attempting to take any subset of vertices without breaking up every edge means we have lost the game.
 
-            \item $k$-cover possible $\implies$ $k$-crossing possible.
-            \begin{lemma}
-                If a graph $G$ has a $k$-cover, then all subgraphs of $G$ contain a $k$-cover.
-            \end{lemma}
+  \item $k$-cover possible $\implies$ $k$-crossing possible.
+        \begin{lemma}
+         If a graph $G$ has a $k$-cover, then all subgraphs of $G$ contain a $k$-cover.
+        \end{lemma}
 
-            This tells us that it is always possible to collect a subset of vertices so that either side of the river is edge-free.
+        This tells us that it is always possible to collect a subset of vertices so that either side of the river is edge-free.
 
-            Thus, the only issue is whether we can complete the entire move.
-            I am going to say here that large cliques are the hardest problem.
-            That is, in the sense that all subproblems possible on some number of vertices are subproblems of the clique on those vertices.
-            I want to show that even in these hardest of problems, having a $k$-cover available implies it is possible to find a $k$-crossing.
+        Thus, the only issue is whether we can complete the entire move.
+        I am going to say here that large cliques are the hardest problem.
+        That is, in the sense that all subproblems possible on some number of vertices are subproblems of the clique on those vertices.
+        I want to show that even in these hardest of problems, having a $k$-cover available implies it is possible to find a $k$-crossing.
 
-            So, let's say we have a $k+1$-clique to start out with.
-            Well, then we move a $k$-clique over, leaving one lone vertex.
-            But we can't leave this entire clique and go back, so we leave just one vertex, and carry our $k-1$-cover back.
-            We then join back up with our vertex left on the left, invite him to our boat, and complete the challenge.
+        So, let's say we have a $k+1$-clique to start out with.
+        Well, then we move a $k$-clique over, leaving one lone vertex.
+        But we can't leave this entire clique and go back, so we leave just one vertex, and carry our $k-1$-cover back.
+        We then join back up with our vertex left on the left, invite him to our boat, and complete the challenge.
 
-            This can be extended to support graphs which contain a $k+1$-clique as a proper subgraph but have a $k$-cover, by moving vertices outside of the clique one at a time, with our $k-1$ cover on board.
+        This can be extended to support graphs which contain a $k+1$-clique as a proper subgraph but have a $k$-cover, by moving vertices outside of the clique one at a time, with our $k-1$ cover on board.
 
-        \end{itemize}
-    \end{proof}
+ \end{itemize}
+\end{proof}
 
-  
+
 \prob{5}
 On an EREW PRAM with $n$ processors, we get the following algorithm for computing $n!$ in $O(lg(n))$ time:\\
 \begin{lstlisting}
@@ -96,17 +96,17 @@ Obviously the first call would be $fact(1, n, n)$ for computing $n!$ with $n$ pr
 
 \prob{6}
 \begin{itemize}
-    \item On a CREW PRAM with $n^2$ processors, we can think of assigning each processor to a unique element of the $n \times n$ matrix $C$ that results from the matrix multiplication of $A*B$.
-    \begin{lstlisting}
+ \item On a CREW PRAM with $n^2$ processors, we can think of assigning each processor to a unique element of the $n \times n$ matrix $C$ that results from the matrix multiplication of $A*B$.
+       \begin{lstlisting}
 each processor $C_{ij}$ does (simultaneously):
     read row $i$ from matrix $A$      // n ops
     read column $j$ from matrix $B$   // n ops
     write $C_{ij} = A_i * B_j$        // dot product of two vectors; n ops
-  \end{lstlisting}
-  Clearly, with all $n^2$ processors running at once (reading concurrently from wherever and writing exclusively to their individual answer slots), we get $O(n)$ time.
-  \begin{itemize}
-    \item Efficiency is
-  \end{itemize}
+ \end{lstlisting}
+ Clearly, with all $n^2$ processors running at once (reading concurrently from wherever and writing exclusively to their individual answer slots), we get $O(n)$ time.
+ \begin{itemize}
+  \item Efficiency is
+ \end{itemize}
 \end{itemize}
 
 
