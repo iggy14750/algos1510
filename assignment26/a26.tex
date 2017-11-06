@@ -48,6 +48,48 @@
 \begin{document}
 \maketitle
 
+\prob{9}
+Assume that the prefix and suffix cannot overlap.  Otherwise, if they could, the largest value of $k$ would be $n$ because the longest prefix and longest suffix would be the string itself.\\
 
+\begin{lstlisting}
+function LargestK(C):
+	Assign processor a to the first character y in C
+	Assign processor b to the last character z in C
+	Assign processor d to keep track of current value of k (initialize to n/2)
+	
+	Assign one processor per character in C //think of each processor as containing a 
+						//substring of C
+	Let k = 1
+	while k < n/2: // Concatenate until we have 2 substrings of length n/2
+		Concatenate neighbor pairs of substrings in C
+		k *= 2
+	
+	while k > 1:
+		Let a = earliest substring of C that was created in the previous while loop
+		Let b = latest substring of C that was created in the previous while loop
+		if a = b:
+			return k
+		else if c = d:
+			return length(c)		
+		else:
+			// a+1 represents the neighbor substring to the right of a
+			c = a.splitInHalf() + [a+1].splitInHalf()
+			// b-1 represents the neighbor substring to the left of b
+			d = b.splitInHalf() + [b-1].splitInHalf()
+			a = a.splitInHalf()
+			b = b.splitInHalf()
+			k /= 2
+			
+	if a = b: // Substrings of length 1 (first and last characters) match, return 1
+		return 1
+	else:
+		return 0			
+\end{lstlisting}
+
+See the below image for a step-by-step process.
+
+\image{longestSubstringEREW}
+
+Basically, in our algorithm, we use $n$ processors to split the string up character by character.  Then, we use $n/2$ processors to concatenate each of those $n$ processors.  We repeat this until we have two substrings of length $n/2$.  From there, we compare both substrings in constant time by assigning 1 processor each respective index in each substring.  If there is any difference, we have to recursively split the substrings.  Otherwise, we can return k at the moment.  However, let's say we recursively keep splitting in half.  We might return k=2 when k=3 was the real answer.  In order to prevent this, every time we notice a different in two substrings, we must 1) split it like we normally would above and keep on splitting down and 2) concatenate to each substring (start and end substrings that we've obtained so far) with half of their neighbors.  This way, if we get down to k=2, we should split to k=1 and then also add half of those substrings' neighbors (creating k=3).  If those k=3 substrings match, we return k=3.  Otherwise, keep splitting.  This is poly-logarithmic time in the sense that we logarithmically merge and split substrings.  We also use polynomial processors to concatenate strings and check for matches between substrings.
 
 \end{document}
