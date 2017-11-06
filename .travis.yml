@@ -1,6 +1,6 @@
 env:
   global:
-    A_NUM: 25
+    A_NUM: 26
 before_install:
   - sudo apt-get update
   - sudo apt-get install texlive-latex-extra
