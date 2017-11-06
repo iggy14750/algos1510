@@ -53,37 +53,37 @@ Assume that the prefix and suffix cannot overlap.  Otherwise, if they could, the
 
 \begin{lstlisting}
 function LargestK(C):
-	Assign processor a to the first character y in C
-	Assign processor b to the last character z in C
-	Assign processor d to keep track of current value of k (initialize to n/2)
-	
-	Assign one processor per character in C //think of each processor as containing a 
-						//substring of C
-	Let k = 1
-	while k < n/2: // Concatenate until we have 2 substrings of length n/2
-		Concatenate neighbor pairs of substrings in C
-		k *= 2
-	
-	while k > 1:
-		Let a = earliest substring of C that was created in the previous while loop
-		Let b = latest substring of C that was created in the previous while loop
-		if a = b:
-			return k
-		else if c = d:
-			return length(c)
-		else:
-			// a+1 represents the neighbor substring to the right of a
-			c = a.splitInHalf() + [a+1].splitInHalf()
-			// b-1 represents the neighbor substring to the left of b
-			d = b.splitInHalf() + [b-1].splitInHalf()
-			a = a.splitInHalf()
-			b = b.splitInHalf()
-			k /= 2
-			
-	if a = b: // Substrings of length 1 (first and last characters) match, return 1
-		return 1
-	else:
-		return 0
+    Assign processor a to the first character y in C
+    Assign processor b to the last character z in C
+    Assign processor d to keep track of current value of k (initialize to n/2)
+    
+    Assign one processor per character in C //think of each processor as containing a 
+                        //substring of C
+    Let k = 1
+    while k < n/2: // Concatenate until we have 2 substrings of length n/2
+        Concatenate neighbor pairs of substrings in C
+        k *= 2
+    
+    while k > 1:
+        Let a = earliest substring of C that was created in the previous while loop
+        Let b = latest substring of C that was created in the previous while loop
+        if a = b:
+            return k
+        else if c = d:
+            return length(c)
+        else:
+            // a+1 represents the neighbor substring to the right of a
+            c = a.splitInHalf() + [a+1].splitInHalf()
+            // b-1 represents the neighbor substring to the left of b
+            d = b.splitInHalf() + [b-1].splitInHalf()
+            a = a.splitInHalf()
+            b = b.splitInHalf()
+            k /= 2
+            
+    if a = b: // Substrings of length 1 (first and last characters) match, return 1
+        return 1
+    else:
+        return 0
 \end{lstlisting}
 
 % See the below image for a step-by-step process.
