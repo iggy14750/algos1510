@@ -92,4 +92,22 @@ function LargestK(C):
 
 Basically, in our algorithm, we use $n$ processors to split the string up character by character.  Then, we use $n/2$ processors to concatenate each of those $n$ processors.  We repeat this until we have two substrings of length $n/2$.  From there, we compare both substrings in constant time by assigning 1 processor each respective index in each substring.  If there is any difference, we have to recursively split the substrings.  Otherwise, we can return k at the moment.  However, let's say we recursively keep splitting in half.  We might return k=2 when k=3 was the real answer.  In order to prevent this, every time we notice a different in two substrings, we must 1) split it like we normally would above and keep on splitting down and 2) concatenate to each substring (start and end substrings that we've obtained so far) with half of their neighbors.  This way, if we get down to k=2, we should split to k=1 and then also add half of those substrings' neighbors (creating k=3).  If those k=3 substrings match, we return k=3.  Otherwise, keep splitting.  This is poly-logarithmic time in the sense that we logarithmically merge and split substrings.  We also use polynomial processors to concatenate strings and check for matches between substrings.
 
+\prob{10}
+
+\begin{lstlisting}
+function PrefixSuffix(C)
+    Have $O(n^2)$ processors consider all prefixes of C,
+        one processor for each character of each prefix.
+    let Ans = boolean array of length n initialized to all ones.
+    For each prefix of length k do
+        For each processor at position p do
+            If C[p] $\ne$ C[n-k+p] then
+                Ans[k] = 0
+    output the maximum m such that Ans[m] = 1
+\end{lstlisting}
+
+We can see that each processor makes two reads, one comparison, and perhaps one write.
+All writes to the same location will be common (only writting 0 if that prefix is not a candidate).
+We can also see that using $O(n^2)$ processors means we have polynomial number of processors.
+
 \end{document}
