@@ -24,6 +24,9 @@
 \providecommand{\reducible}[2]{
   \textbf{#1} $\leq$ \textbf{#2}
 }
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
 % ============ USED FOR CODE LISTINGS ============
 \usepackage{listings}
@@ -51,5 +54,15 @@
 \prob{4}
 
 \prob{7}
+    \begin{lstlisting}
+function EvaluatePoly($c_k, c_{k-1}, \dots, c_j$, p)
+    if p == 1 then
+        sequentially compute $c_kx^k + c_{k-1}x^{k-1} + \dots + c_jx^j$
+    else
+        return EvaluatePoly($c_k, c_{k-1}, \dots, c_{\floor*{\frac{k+j}{2}}}$, p/2) + 
+            EvaluatePoly($c_{\floor*{\frac{k+j}{2}} - 1}, \dots c_j$, p/2)
+    \end{lstlisting}
 
+    We assume that computing a single term $c_kx^k$ is a constant-time operation.
+    This leaves us with $T(n, p) = T(n/2, p/2) + 1$ with the base case $T(n, 1) = \Theta(\frac{n}{n/\log n}) = \Theta(\log n)$ $\implies$ $\Theta(\log n)$ overall.
 \end{document}
