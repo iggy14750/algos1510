@@ -53,6 +53,23 @@
 
 \prob{4}
 
+\begin{lstlisting}
+function ParPrefix($x_1, x_2, \dots, x_n$, p)
+    if p == 1 then
+        return SeqPrefix($x_1, x_2, \dots, x_n$)
+    else
+        A = new int[n]
+        C = ParPrefix($x_2, x_4, \dots, x_n$, p/2) // Assume n to be even WLOG
+        B = ParPrefix($x_1, x_3, \dots, x_{n-1}$, p/2)
+        parFor i = 1 to n do
+            A[i] = B[ceil(i/2)] + C[floor(i/2)]
+        return A
+\end{lstlisting}
+
+Considering we have $p = \frac{n}{\log n}$ processors, this means that we have $T(n, p) = T(n/2, p/2) + \log n$, since that parallel for loop will have to schedule $\log n$ loop bodies to each processor.
+We also have a base case of $T(n, 1) = \log n$.
+Overall, we have $\Theta(\log^2 n)$.
+
 \prob{7}
     \begin{lstlisting}
 function EvaluatePoly($c_k, c_{k-1}, \dots, c_j$, p)
