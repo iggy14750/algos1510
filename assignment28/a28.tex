@@ -84,6 +84,22 @@ for i = 1 to n do
     else
         C[i] = C[i-1] // propagate grabs the previous one, already computed.
     \end{lstlisting}
+    Note that this is an associative operator (try a few to convince yourself).
+    So this should be parallizable.
+    However, each new output value is dependent on previous values.
+    This looks familiar -- Parallel Prefix!
+
+    It is known that Parallel Prefix can be solved in $O(\log n)$ on $n$ CREW processors, and in $O(\log^2 n)$ on $n$ EREW processors (\textbf{these are the conditions of a and b}).
+    Thus, our overall algorithm is the following
+
+\begin{lstlisting}
+function Add(A, B)
+    T = generate T as described from A, B
+    C = ParPrefix(T)
+    parFor i = 1 to n do
+        S[i] = C[i] xor A[i] xor B[i]
+    return S
+\end{lstlisting}
 
     \pagebreak
     \prob{12}
