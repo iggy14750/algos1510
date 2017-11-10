@@ -52,7 +52,38 @@
 \begin{document}
 \maketitle
     \prob{11}
+    We will consider constructing an array T, which holds the tristate (or temporary, if you like) carries.
+    That is, we can in constant time determine for each index $i$ whether summing those bits will:
+    \begin{enumerate}\tightlist
+        \item definitely carry out (generate)
+        \item definitely not carry out (halt)
+        \item will carry out if there is a carry into it (propagate)
+    \end{enumerate}
+    This can be computed in constant time in the following way (n processors in parallel).
+    \begin{lstlisting}
+if A[i] and B[i] == 1 then
+    T[i] = 1 // generate
+else if (A[i] or B[i]) == 0 then
+    T[i] = 0 // halt
+else
+    T[i] = -1 // propagate
+    \end{lstlisting}
+    Note, also, that if we knew the actual carries, C, then addition would be constant time as well.
+    \begin{lstlisting}
+Sum[i] = Cin[i] xor A[i] xor B[i]
+    \end{lstlisting}
 
+    So the problem, then, is some transformation T $\to$ C.
+    Sequentially, we can perform something like this.
+    \begin{lstlisting}
+for i = 1 to n do
+    if T[i] == 1 then
+        C[i] = 1 // Carry was definitely generated.
+    else if T[i] == 0 then
+        C[i] = 0 // Halts any carries
+    else
+        C[i] = C[i-1] // propagate grabs the previous one, already computed.
+    \end{lstlisting}
     \prob{12}
 
     \prob{13}
