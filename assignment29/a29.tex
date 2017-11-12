@@ -51,6 +51,37 @@
 \prob{15}
 
 \prob{16}
+Let us call the elements of the right array $r_1, r_2, \dots, r_{n/2}$, and those of the left array $l_1, l_2, \dots, l_{n/2}$.
+We assign to each of these elements $\frac{n}{2}$ processors, giving us $n * \frac{n}{2} = O(n^2)$ pocessors.
+Now say that we are dealing with finding the position of $l_k$, without loss of generality.
+Then, for starters, we know that at least $k-1$ elements (the $l_i$'s) will be to the left of $l_k$ in the merged array.
+The question is how many of the $r_i$'s will also be to the left of $l_k$.
+
+As stated, we have $\frac{n}{2}$ processors to do this, so each of these compares some $r_i$ against $l_k$, to determine if $r_i \leq l_k$.
+The last element which satisfies this condition will be the last element to the left of $l_k$, meaning that the position of $l_k$ in the merged array will be $k - 1 + i$.
+The question is, how do we know which of these was the last in constant time?
+If we find that $r_i > l_k$, then we send a message to the processor comparing $l_k$ to $r_{i-1}$.
+Only one processor will both not send such a message and recieve one, and this is the last $r_i$ which will be to the left of $l_k$.
+With this, we can calculate the position of $l_k$ in the merged array.
+
+\begin{lstlisting}
+function ParMerge(L, R)
+    A = new int[n]
+    let $p_{k, i}$ = the processor merging in $l_k$ by comparing it to $r_i$, WLOG
+    parFor k = 1 to n do
+        parFor i = 1 to n/2 do
+            if k $\leq$ n/2 then // the elements of L
+                if L[k] < R[i] then
+                    send a message to $p_{k, i-1}$
+                else if $p_{k, i}$ recived a message then
+                    A[k - 1 + i] = L[k]
+            else // elements of R
+                if R[k] < L[i] then
+                    send a message to $p_{k, i-1}$
+                else if $p_{k, i}$ recived a message then
+                    A[k - 1 + i] = R[k]
+    return A
+\end{lstlisting}
 
 \prob{17}
 
