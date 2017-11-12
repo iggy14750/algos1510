@@ -85,7 +85,7 @@ for i = 1 to n do
         C[i] = C[i-1] // propagate grabs the previous one, already computed.
     \end{lstlisting}
     Note that this is an associative operator (try a few to convince yourself).
-    So this should be parallizable.
+    So this should be parallelizable.
     However, each new output value is dependent on previous values.
     This looks familiar -- Parallel Prefix!
 
@@ -104,14 +104,14 @@ function Add(A, B)
     \pagebreak
     \prob{12}
         The innermost loop can be reduced from $O(n)$ to $O(\log n)$ by introducing a new array, T.
-        This holds the weights of all alternative paths, and the minium of such a list can be taken in parallel log time.
+        This holds the weights of all alternative paths, and the minimum of such a list can be taken in parallel log time.
         \begin{lstlisting}
 T = new int[n]
 parFor k = 1 to n do
     T[k] = A[i, k] + A[k, j]
 A[i, j] = min(A[i, j], ParMin(T, p = n))
         \end{lstlisting}
-    
+
     \prob{13}
         In this case, we can introduce \textbf{another} new matrix, P, which holds the actual path from each pair of vertices.
         We shall also modify the usual parallel minimum function to create \texttt{ParMinI} which returns the \textbf{index} of the minimum element in an array, rather than the value itself.
