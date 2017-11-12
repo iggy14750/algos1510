@@ -5,11 +5,12 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{enumitem}
-\usepackage[margin=0.8in]{geometry}
+\usepackage[margin=1.2in]{geometry}
 \usepackage{graphicx}
 
 % ============ USED FOR OUR FORMAT ============
 \newtheorem{thm}{Claim}
+\newtheorem{lemma}{Lemma}
 \providecommand{\prob}[1]{\section*{Problem #1}}
 \providecommand{\soln}{\textbf{Solution: }}
 \providecommand{\image}[1]{
@@ -83,6 +84,26 @@ function ParMerge(L, R)
     return A
 \end{lstlisting}
 
+\pagebreak
 \prob{17}
+\begin{lemma}
+    For any $x$, $\underbrace{\sqrt{\sqrt{\cdots\sqrt{x}}}}_{n\text{ times}}=x^{1/2^n}\leq \sqrt{2}$ iff $n = \lceil\log_2(\log_2(x))+1\rceil$
+\end{lemma}
+\begin{proof}
+    See this: https://math.stackexchange.com/questions/129446/square-root-of-a-square-root-of-a-square-root
+\end{proof}
+
+That is, we can reduce $n$ elements into a constant number of elements in $O(\log \log n)$ steps.
+
+\begin{lstlisting}
+function ParMin2(X[1...n], p = n)
+    if len(X) == 1 then
+        return X[1]
+    Sub = new int[$\sqrt{n}$]
+    parFor i = 1 to $\sqrt{n}$ do
+        k = i * $\sqrt{n}$ // plus or minus something...
+        Sub[i] = ParMin2(X[k ... k + $\sqrt{n}$], $\sqrt{p}$)
+    return ParMin1(Sub, p) // The algorithm from class. Note that $\sqrt{p}$ = |Sub|
+\end{lstlisting}
 
 \end{document}
