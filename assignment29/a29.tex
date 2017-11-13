@@ -5,7 +5,7 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{enumitem}
-\usepackage[margin=1.2in]{geometry}
+\usepackage[margin=0.8in]{geometry}
 \usepackage{graphicx}
 
 % ============ USED FOR OUR FORMAT ============
@@ -54,10 +54,9 @@ This is the minimum edit distance that we covered from the dynamic programming p
 
 First, split the strings up in $O(logn)$ time; visually, this creates $n$ leaves in a tree for each string where each leaf is a letter of the string.  Compare each corresponding leaf node of each string.  If they match, great, we don't have to make any modifications because our minimum edit distance is cost 0 (we don't modify either substring).  Otherwise, create three copies of the "edit" string in $3*logn = O(logn)$ time, each representing one operation to the string (modify character, delete character, add character) and do this for every index of the substring (perform three operations for a one character substring, six operations for two-character, nine operations for three-character).  Now, in each tree, merge every sibling node in $O(logn)$ time; this is similar to our merge() function that we created in class for MergeSort().  Continue performing this exact same pattern and merge up the tree until we have reached the root with several cost values.  Choose the minimum cost value in $O(logn)$ time (this runtime should be pretty obvious with $n$ processors and $n$ items).
 
-This fits the CREW PRAM specification because we can concurrently read any character of the string we want.  However, it's exclusive write because we write our modified substrings to new locations in memory (via the copies as mentioned above).  This requires us to perform an $O(logn)$ copy, but allows us to have the exclusive write capability.
+%This fits the CREW PRAM specification because we can concurrently read any character of the string we want.  However, it's exclusive write because we write our modified substrings to new locations in memory (via the copies as mentioned above).  This requires us to perform an $O(logn)$ copy, but allows us to have the exclusive write capability.
 
 Finally, this has a polynomial number of processors.  As mentioned above, we only need $m$ processors for all $n$ substrings at the leaves to create copies, compare strings, and merge.  Therefore, for every $n$ substring, we require $m$ (approaches $n$ as we reach substrings of size $n$) processors.  As a result, we need $n*n = n^2$ processors.
-\pagebreak
 \begin{lstlisting}
 // Start = start string, Goal = string we want to reach
 function MinEdit(Start s, Goal g, p):
