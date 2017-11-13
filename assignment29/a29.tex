@@ -96,14 +96,17 @@ function ParMerge(L, R)
 That is, we can reduce $n$ elements into a constant number of elements in $O(\log \log n)$ steps.
 
 \begin{lstlisting}
-function ParMin2(X[1...n], p = n)
+function ParMax2(X[1...n], p = n)
     if len(X) == 1 then
         return X[1]
     Sub = new int[$\sqrt{n}$]
     parFor i = 1 to $\sqrt{n}$ do
         k = i * $\sqrt{n}$ // plus or minus something...
-        Sub[i] = ParMin2(X[k ... k + $\sqrt{n}$], $\sqrt{p}$)
-    return ParMin1(Sub, p) // The algorithm from class. Note that $\sqrt{p}$ = |Sub|
+        Sub[i] = ParMax2(X[k ... k + $\sqrt{n}$], $\sqrt{p}$)
+    return ParMax1(Sub, p) // The algorithm from class. Note that $\sqrt{p}$ = |Sub|
 \end{lstlisting}
+
+Note that ParMax1 is simply the 'minimum' algorithm (for $k$ elements using $k^2$ procs, equivalently $\sqrt{k}$ elements with $k$ procs) that we discussed in class (performed in constant time) except simply replace all 'minimum' with 'maximum'. Thus the recursive call tree for the algorithm above has internal nodes that happen in constant time. And of course leaf operations also all happen at constant time (base case is size 1). Also, as noted above this subdivision of the problem (via square roots) happens in $O(\log \log n)$ steps. Thus our tree overall has $\log \log n$ levels, each of which happens in (parallel) constant time, giving us the desired runtime. 
+
 
 \end{document}
