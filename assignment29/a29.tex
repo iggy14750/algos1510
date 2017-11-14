@@ -5,7 +5,7 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{enumitem}
-\usepackage[margin=1.2in]{geometry}
+\usepackage[margin=0.8in]{geometry}
 \usepackage{graphicx}
 
 % ============ USED FOR OUR FORMAT ============
@@ -50,7 +50,46 @@
 \maketitle
 
 \prob{15}
+This is the minimum edit distance that we covered from the dynamic programming portion of the class to which we created an $n^3$ solution.  We need to create a poly-log time algorithm with a polynomial number of processors for this problem.
 
+First, split the strings up in $O(logn)$ time; visually, this creates $n$ leaves in a tree for each string where each leaf is a letter of the string.  Compare each corresponding leaf node of each string.  If they match, great, we don't have to make any modifications because our minimum edit distance is cost 0 (we don't modify either substring).  Otherwise, create three copies of the "edit" string in $3*logn = O(logn)$ time, each representing one operation to the string (modify character, delete character, add character) and do this for every index of the substring (perform three operations for a one character substring, six operations for two-character, nine operations for three-character).  Now, in each tree, merge every sibling node in $O(logn)$ time; this is similar to our merge() function that we created in class for MergeSort().  Continue performing this exact same pattern and merge up the tree until we have reached the root with several cost values.  Choose the minimum cost value in $O(logn)$ time (this runtime should be pretty obvious with $n$ processors and $n$ items).
+
+%This fits the CREW PRAM specification because we can concurrently read any character of the string we want.  However, it's exclusive write because we write our modified substrings to new locations in memory (via the copies as mentioned above).  This requires us to perform an $O(logn)$ copy, but allows us to have the exclusive write capability.
+
+Finally, this has a polynomial number of processors.  As mentioned above, we only need $m$ processors for all $n$ substrings at the leaves to create copies, compare strings, and merge.  Therefore, for every $n$ substring, we require $m$ (approaches $n$ as we reach substrings of size $n$) processors.  As a result, we need $n*n = n^2$ processors.
+\begin{lstlisting}
+// Start = start string, Goal = string we want to reach
+function MinEdit(Start s, Goal g, p):
+    if p = n:
+        if Start = Goal:
+	    return (0, merge(Start, Goal)) // 0 cost, they already match
+	else:
+	    // Modify this character so they match
+	    // Make a copy of the string and THEN modify it
+            modCharString = modifyChar((*$s_1$*))
+	
+	    // Delete a character so they match
+	    // Make a copy of the string and THEN delete a character
+            delCharString = delChar((*$s_1$*))
+			
+	    // Add a character so the two strings match
+	    // Make a copy of the string and THEN add a character
+            addCharString = addChar(s)
+            listOfSubstrings = [modCharString, delCharString, addCharString]
+            return listOfSubstrings
+    leftHalfSubstrings = MinEdit(Start (*$s_1 ... s_{n/2}$*), Goal (*$g_1 ... g_{k/2}$*), p/2)
+    rightHalfSubstrings = MinEdit(Start (*$s_{n/2 + 1} ... s_n$*), Goal (*$g_{k/2 + 1} ... g_k$*), p/2)
+	
+    newSubstrings = list of substrings resulting from merging siblings in the tree
+    // For parallel prefix, we can merge all the items in two lists in O(logn) time
+    parFor each leftString, rightString in leftHalfSubstrings, rightHalfSubstrings:
+        // stores a pair of the sum of the costs of both strings and the 
+        // resultant merged string
+        costStringPair = merge(leftString, rightString)
+        newSubstrings.add(costStringPair)
+    return newSubstrings
+\end{lstlisting}
+\pagebreak
 \prob{16}
 Let us call the elements of the right array $r_1, r_2, \dots, r_{n/2}$, and those of the left array $l_1, l_2, \dots, l_{n/2}$.
 We assign to each of these elements $\frac{n}{2}$ processors, giving us $n * \frac{n}{2} = O(n^2)$ pocessors.
@@ -84,7 +123,7 @@ function ParMerge(L, R)
     return A
 \end{lstlisting}
 
-\pagebreak
+
 \prob{17}
 \begin{lemma}
     For any $x$, $\underbrace{\sqrt{\sqrt{\cdots\sqrt{x}}}}_{n\text{ times}}=x^{1/2^n}\leq \sqrt{2}$ iff $n = \lceil\log_2(\log_2(x))+1\rceil$
