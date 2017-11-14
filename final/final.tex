@@ -1,0 +1,270 @@
+\documentclass[12pt]{article}
+\special{papersize=3in,5in}
+
+\usepackage{amssymb,amsmath}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\providecommand{\st}{\ \text{s.t.}\ }
+\providecommand{\tightlist}{
+    \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
+\providecommand{\reducible}[2]{
+  \textbf{#1} $\leq$ \textbf{#2}
+}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+
+
+\pagestyle{empty}
+\setlength{\parindent}{0in}
+\begin{document}
+
+\section{REDUCTIONS}
+\subsection{\reducible{Matrix Mult}{Lower Triang Matrix Mult}}
+\begin{lstlisting}
+function matrixMult(A, B):
+    C = [[0, 0, 0],
+         [B, 0, 0],
+         [0, A, 0]]
+    D = [[0, 0, 0],
+         [B, 0, 0],
+         [0, A, 0]]
+    E = lowerTriangeMult(C, D)
+    return lower left(E)  //bottom-left entry is AB
+\end{lstlisting}
+
+
+\subsection{\reducible{Matrix Mult}{Matrix Inverse}}
+\begin{lstlisting}
+function matrixMult(A, B):
+    C = [[I, A, 0],
+         [0, I, B],
+         [0, 0, I]]
+    /**
+     * Note now that C' = C-inverse is
+     * D = [[I, -A, AB],
+     *      [0,  I, -B],
+     *      [0,  0,  I]]
+     * This will be the output of our function matrixInverse(C)
+     */
+    D = matrixInverse(C)
+    return upper right(D)
+\end{lstlisting}
+
+
+\subsection{\reducible{PolyMult}{PolySquare}}
+Let $a$ and $b$ be polynomials.
+We have that $(a+b)^2 = a^2 + 2ab + b^2$.
+Or, $\displaystyle ab = \frac{(a+b)^2 - a^2 - b^2}{2}$.\\
+\begin{lstlisting}
+function PolyMult(A, B)
+    AB = PolySquare(A + B)
+    A2 = PolySquare(A)
+    B2 = PolySquare(B)
+    C = (AB - A2 - B2) / 2
+    return C
+\end{lstlisting}
+
+\subsection{\reducible{Sort N Numbers}{Min Steiner Tree}}
+Just like what we did in class with reducing "The Traveling Salesman" to sorting.
+Simply create a coordinate for each number $i$ to be sorted in the form $(i,i)$,
+giving you an adjacency list input that looks like $(a,a),(b,b), \dots, (n,n)$.
+Then you'll get a graph that has a line (fun fact, it's $y=x$) which will contain,
+in order from the origin, the sorted doubles of the numbers we want.
+Then just extract the x-coordinate of every pair and you're golden.
+
+
+\subsection{Graph Isomorphisms: \reducible{Directed}{Mixed}}
+A directed graph is already technically a mixed graph,
+so in your algorithm for directed graphs simply feed the assumed mixed graph algorithm your input.
+Return the output.
+
+
+\subsection{Graph Isomorphisms: \reducible{Undirected}{Directed}}
+Given an undirected graph, simply make a copy of it with all edges replaced by
+directed edge pairs to/from the endpoints of each (originally) undirected edge.
+Feed this new directed graph to the assumed directed graph alg, then return the output.
+
+\subsection{Graph Isomorphisms: \reducible{Mixed}{Undirected}}
+In this one we've assumed an algo that checks isomorphisms of undirected graphs,
+so the task is to convert a mixed graph into some number of undirected graphs that contain the same information.
+This is easily achieved as follows:
+\begin{itemize}
+  \item First label the vertices in order, i.e. number them from $1,\dots,n$.
+  \item Make one copy of the mixed graph with only edges where there were originally undirected edges in the mixed graph as well.
+  \item Make another copy of the mixed graph with only edges where, in the original mixed graph, the lower-numbered endpoint had a directed edge $towards$ the higher-numbered endpoint.
+  \item As above, but reversed (so the only edges here were originally directed edges from the higher endpoint to the lower endpoint).
+\end{itemize}
+Now do this process for both of the mixed graphs in question, say $F$ and $G$, and then feed the corresponding outputs into the assumed undirected algorithm. If they all check out, then $F$ and $G$ are isomorphic.
+
+
+\subsection{\reducible{Independent Set}{Clique}, and \reducible{Clique}{Independent Set}}
+We define the complement of some graph $G$, labelled $G^C$ to be a graph such that
+\begin{enumerate}
+  \item $V(G) = V(G^C)$
+  \item $uv \in E(G^C)$ iff $u,v \in V(G^C)$ and $uv \not\in E(G)$.
+\end{enumerate}
+An independent set of vertices are a subset of vertices which are all pairwise non-adjacent.
+Likewise, a clique is a subset of vertices which are all pairwise adjacent.
+In the complement of some graph, all independent sets become cliques, and vice versa.
+Thus we have the following reductions:
+\begin{lstlisting}
+function IndependentSet(G, i)
+return Clique((*$G^C$*), i)
+\end{lstlisting}
+\begin{lstlisting}
+function Clique(G, i)
+return IndependentSet((*$G^C$*), i)
+\end{lstlisting}
+
+
+\subsection{\reducible{Independent Set}{Vertex Cover} and \reducible{Vertex Cover}{Independent Set}}
+We can define a relationship between these two problems, by noting the following:
+\begin{itemize}
+  \item Define graph $G$ by its set of vertices and edges, as $G = (V,E)$.
+  \item Note that if $L \subset V$ is an independent set, then for any two neighboring vertices $u$ and $v$, at most one of them is in $L$ or else it wouldn't be an independent set. So then at $least$ one of every pair of neighbors is in $M = V - L$. Thus every edge in $E$ has an endpoint in $M$, so $M$ is a vertex cover.
+  \item Conversely, if $M \subset V$ is a vertex cover, then consider any two vertices $x$ and $y$ in $L = V - M$. These two points can't be neighbors, else $M$ wouldn't be a cover. Thus no two points in $L$ are adjacent, so it must be an independent set.
+\end{itemize}
+\begin{lstlisting}
+function IndependentSet(G, k)
+return VertexCover(G, n - k)
+\end{lstlisting}
+\begin{lstlisting}
+function VertexCover(G, k)
+return IndependentSet(G, n - k)
+\end{lstlisting}
+
+\subsection{\reducible{CliqueOpt}{cliqueDecision}}
+We can reduce the clique optimization problem to clique decision by simply checking every value of $k$,
+beginning at $n = |G|$ and decrementing.
+Follow this by a closure operation which removes all vertices with degree less than k-1,
+so that only the clique is left.
+\begin{lstlisting}
+alg cliqueOpt(Graph G)
+  let n = |G|
+  for k = n to 1 do
+    if cliqueDecision(G, k) then                    // we found the largest clique size
+      break                                         // so break and find the members
+
+  let H = G
+  do
+    G = H
+    for vertex v in H:
+      if degree(v) < k-1 then
+        delete v from H
+  until H == G
+
+  output H
+\end{lstlisting}
+
+\subsection{\reducible{cliqueDecision}{2Clique}}
+We can show that 2Clique is NP-hard by reducing another known NP-hard problem (here cliqueDecision) to it.
+That is, we must show that cliqueDecision $\leq$ 2Clique in polynomial time.
+We do this by giving an algorithm for cliqueDecision that uses 2Clique:
+\begin{lstlisting}
+alg cliqueDecision(H,j)   // simply create a new graph which is two copies of the original
+  let G = H + H           // if this new graph has two cliques of the desired size, then
+  return 2Clique(G,j)     // clearly the original has one
+\end{lstlisting}
+Obviously, creating a new graph that is just two copies of the original graph H takes $O(n)$ time, which when added to our cliqueDecision algorithm results in a total runtime of $O(n + f(n))$, where $f(n)$ is the runtime of cliqueDecision.
+
+
+\subsection{\reducible{HamiltonianCycle}{DoubleFixedHamiltonianPath}}
+\begin{lstlisting}
+HamiltonianCycle(Graph G)
+  choose any v (*$\in$*) G
+  return DoubleFixedHamiltonianPath(G, v, v)
+\end{lstlisting}
+
+\subsection{\reducible{DoubleFixedHamiltonianPath}{HamiltonianCycle}}
+\begin{lstlisting}
+DoubleFixedHamiltonianPath(G, s, t)
+  let H = G + (s,t)             // add edge (s,t) to graph
+  return HamiltonianCycle(H)    // see if that makes a cycle
+\end{lstlisting}
+
+\subsection{\reducible{SingleFixedHamiltonianPath}{DoubleFixedHamiltonianPath}}
+\begin{lstlisting}
+SingleFixedHamiltonianPath(G, s)
+  for vertex v (*$\in$*) G do
+      if DoubleFixedHamiltonianPath(G, s, v) then
+          return true
+  return false
+\end{lstlisting}
+
+\subsection{\reducible{DoubleFixedHamiltonianPath}{SingleFixedHamiltonianPath}}
+\begin{lstlisting}
+DoubleFixedHamiltonianPath(G, s, t)
+  if not (SFHP(G, s) and SFHP(G, t)) then
+      return false
+  C = G
+  for edge e (*$\in$*) E(G) do
+      if SFHP(C - e, s) and SFHP(C - e, t) then
+          C = C - e
+  if degree(*$_C$*)(s) == degree(*$_C$*)(s) == 1 then
+      return true
+  else return false
+\end{lstlisting}
+At the end of this process if we've removed all unnecessary edges whilst ensuring that paths starting at each endpoint are
+intact, then neither will be left with more than one incident edge.
+
+\subsection{\reducible{HamCycleOpt}{HamCycleDecision}}
+\begin{lstlisting}
+HamCycleOpt(Graph G)
+    C = G
+    for edge uv (*$\in$*) E(G) do
+        if HamCycleDecision(C - uv) then    // this means there's still a HamCycle in the graph
+            C = C - uv                      // so get rid of the unnecessary edge
+    return C                                // what's left is the Hamiltonian Cycle
+\end{lstlisting}
+
+\subsection{\reducible{VertexCover}{DominatingSet}}
+
+
+
+\subsection{\reducible{Clique}{$\dfrac{3}{4}$Clique}}
+Check Max's solutions.
+
+\subsection{\reducible{IndependentSet}{$\dfrac{3}{4}$IndependentSet}}
+Check Max's solutions.
+
+
+\subsection{\reducible{Clique}{CliqueAndInd}}
+\begin{lstlisting}
+function Clique(Graph G, int k)
+    let H = new independent set of k vertices
+    if CliqueAndInd(G+H,k)  // if the known independent set plus G passes the AND test,
+        return 1            // then G$\ni$(k-clique)
+\end{lstlisting}
+
+
+\subsection{\reducible{Clique}{CliqueOrInd}}
+We simply need to eliminate any independent set in G without compromising a possible clique.
+The easiest way to do this is to simply add a new vertex and connect it to all vertices in G.
+Then any clique will just be one vertex larger, which is of course fine since (k+1)-cliques of course contain k-cliques.
+\begin{lstlisting}
+function Clique(Graph G, int k)
+    let H = G $\times$ v    // cross product of G and one vertex
+    return CliqueOrInd(H, k)
+\end{lstlisting}
+
+
+\subsection{$\dfrac{3}{4}$Clique AND $\dfrac{3}{4}$IndependentSet}
+Polynomial time algorithm! (via Max)
+
+\subsection{\reducible{IndependentSet}{$\dfrac{3}{4}$Clique OR $\dfrac{3}{4}$IndependentSet}}
+Check Max's solutions.
+
+
+
+
+
+
+\end{document}
+
+
+
+\begin{centering}\textbf{Gas Station pt 1}\par\end{centering}
