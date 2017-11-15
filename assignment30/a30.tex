@@ -65,5 +65,27 @@ function MAX($x_1, \dots, x_n$):
     return max            // so that's the value that will get written
 \end{lstlisting}
 
+\prob{20}
+
+The major issue in this case is advoiding concurrent reads.
+This will arise when two positions of B are equal, and we'll neively read from the same position at the same time.
+What we're going to do to prevent that is to ``collect'' all such positions of B with the problem (or, processors trying to write the same value).
+We will then implement a log-time copy operation, such that the value is first written to two of the positions in C.
+Then, each of these (which each have processors assigned) will write to 2 other positions in C, and so on.
+It is possible to include some more optimization on that, but this gives us our polynomial time.
+
+Let us say that processor $p_i$ is assigned position $i$ in A and C.
+The question then is how we might collect all of these processors.
+\begin{lstlisting}
+function Compose(A, B, C, P, lo, hi)
+    if lo == hi then
+        begin copy operation described above.
+    else
+        mid = (lo + hi) / 2
+        Compose(A, B, C, {$p_i \in P$ | B[i] $\leq$ mid}, lo, mid)
+        Compose(A, B, C, {$p_i \in P$ | B[i] > mid}, mid, hi)
+\end{lstlisting}
+
+Then, the collect portion is log-time, leaving us with $O(\log n)$.
 
 \end{document}
