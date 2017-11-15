@@ -47,7 +47,23 @@
 
 \begin{document}
 \maketitle
-
+\prob{18}
+We're given a list of integers in the range 1 to $n$, and a CRCW Priority PRAM with $n$ processors. The following algorithm clearly runs in constant time (assumes that $p_1$ is the proc with highest priority, $p_n$ with lowest):
+\begin{lstlisting}
+function MAX($x_1, \dots, x_n$):
+    T = new int[n]
+    int max
+    parFor i = 1 to n do
+        // each processor puts a 1 in T, indexed by $x$-value
+        arbitrarily assign procs $p_1 \dots p_n$ to the inputs, one each
+        T[$x_i$] = 1
+    parFor i = n to 1 do
+        // now assign procs to cells in T in reverse order
+        $p_i$ is assigned to T[n-i+1]
+        if T[i] == 1 then
+            max = T[i]    // highest priority proc with a '1' will be at index of max
+    return max            // so that's the value that will get written
+\end{lstlisting}
 
 
 \end{document}
