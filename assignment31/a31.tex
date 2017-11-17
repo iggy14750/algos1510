@@ -76,4 +76,32 @@ Then $g(k)$ can be calculated in constant time, and $g(k)*f(x)$ will still be a 
 
 So, in this way, we can apply the exact same algorithm from class to success here.
 
+\prob{24}
+This is again a modification of the arithmetic trees in class.
+In this case, we are also concerned with whether the Boolean functions on these edges will grow to unreasonable size.
+It is not immediately obvious in this case that we can avoid this.
+We might expect that some nasty expression like $\lnot(1 \land ((\lnot 0 \land x ) \lor 1))$ might appear.
+
+Notice, however, that all edge functions are functions of one variable.
+In Boolean logic, this constrains us to only 4 functions: 1, 0, identity, and inversion.
+Moreover, they can be combined in constant time.
+Let $f: \mathbb{B} \to \mathbb{B}$ be one of those Boolean function.
+
+% I imagine there's a better table for this
+\begin{align*}
+    f \lor 1 &= 1\\
+    f \lor 0 &= f\\
+    f \land 1 &= f\\
+    f \land 0 &= 0\\
+    \lnot 1 &= 0\\
+    \lnot 0 &= 1\\
+    \lnot x &= \lnot x\\
+    \lnot (\lnot x) &= x
+\end{align*}
+
+Note that again, at least one the arguments into the reductions are constant.
+In the case of \verb|not|, the argument is a function, but one such function can be reduced in constant time, as well.
+
+Therefore, all other aspects of our in-class algorithm are unchanged, meaning that we can use it here with this modification with success.
+
 \end{document}
