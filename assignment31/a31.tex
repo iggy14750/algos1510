@@ -95,7 +95,7 @@ function Smash(list)
 \prob{22}
 To find the balance factor of a given node, simply perform the node depth algorithm as given in class, with a few minor changes:
 \begin{itemize}
-  \item When the list is first created with the Eulerian tour, keep all three copies of a Node even if both children are not present. (Refer to the three instances of a Node as mere nodes). If a child is missing, simply skip it and point at the next node in the triplet (see image at the end for example).
+  \item When the list is first created with the Eulerian tour, keep all three copies of a Node even if both children are not present. (Refer to the three instances of a Node as mere nodes). If a child is missing, simply skip it and point at the next node in the triplet (see image in Appendix for example).
   \item Then, when calculating depth with parallel prefix, give each processor one extra job (a scalar multiple on the amount of work overall): in another location, record the largest sum encountered between your node (in the triplet of three) and your sibling to the right (again in your three). This will give the max depth reached in that subtree of that Node.
   \item If you are the rightmost node in a Node, finally write the balance factor which is $(localMaxDepthLeft - depthOfNode) - (localMaxDepthRight - depthOfNode) = localMaxDepthLeft - localMaxDepthRight$. Done.
 \end{itemize}
@@ -157,6 +157,7 @@ In the case of \verb|not|, the argument is a function, but one such function can
 Therefore, all other aspects of our in-class algorithm are unchanged, meaning that we can use it here with this modification with success.
 
 
+\subsection*{Appendix}
 
 \image{image.jpg}
 \end{document}
