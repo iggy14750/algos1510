@@ -317,24 +317,66 @@ Note: 'dominating set' = set S s.t. every vertex $v \in G$ is either in S or adj
 \section{PARALLEL ALGORITHMS}
 \subsection{AND of $n$ bits}
 \subsubsection{AND -- O(lg(n)), n procs, EREW}
-????
+\begin{itemize}\tightlist
+  \item Recurse, halving the input size every time (AND-ing pairs of bits)
+  \item This way it takes lg(height of call tree) = lg(n) constant time activations
+  \item $E(n,n) = \frac{1}{lg(n)}$
+\end{itemize}
 \subsubsection{AND -- O(lg(n)), n/lg(n) procs, EREW}
-????
+\begin{itemize}\tightlist
+  \item Start by AND-ing lg(n) bits with each processor
+  \item Recurse, halving the results every time (AND-ing pairs of bits)
+  \item This way it takes lg(height of call tree) = lg($\frac{n}{lg(n)}$) constant time activations
+  \item $T(n) = \theta(lg(n))$ | $E(n,n) = 1$
+\end{itemize}\tightlist
 \subsubsection{AND -- O(1), n procs, CRCW Common}
-????
+\begin{lstlisting}
+parFor each processor $p_i$ (pointing to unique bit)
+    if bit $i$ == 0, then RESULT = FALSE
+\end{lstlisting}
 
 
 \subsection{\reducible{Boolean Formula Value}{New Problem N}}
-????
+Write an alg $A$ for the boolean formula value problem that:\\
+\begin{enumerate}\tightlist
+  \item Only lacks code for problem N
+  \item Runs in poly-log time w/ a poly # of procs
+\end{enumerate}
+Then you'd have it...
 
 
 \subsection{ARRAY of $n$ ints}
 \subsubsection{ARRAY -- O(lg(n)), n procs, EREW}
-????
+\begin{lstlisting}
+ARR($A[1] \dots A[n], x, p$)
+  if p == 1 then $A[1] = x$
+  else (*\(
+        \left \{
+            \begin{tabular}{l}
+            ARR($A[1] \dots A[\frac{n}{2}], x, \frac{p}{2}$) \\
+            ARR($A[\frac{n}{2}+1] \dots A[n], x, \frac{p}{2}$)
+            \end{tabular}
+        \right \}
+        \)*)
+\end{lstlisting}
+$E(n,n) = \frac{1}{lg(n)}$
 \subsubsection{ARRAY -- O(lg(n)), n/lg(n) procs, EREW}
-????
+\begin{lstlisting}
+logARR($A[1] \dots A[n], x, p$)
+  if p == 1 then SequentialARR($A[1] \dots A[n]$)
+  else (*\(
+        \left \{
+            \begin{tabular}{l}
+            logARR($A[1] \dots A[\frac{n}{2}], x, \frac{p}{2}$) \\
+            logARR($A[\frac{n}{2}+1] \dots A[n], x, \frac{p}{2}$)
+            \end{tabular}
+        \right \}
+        \)*)
+\end{lstlisting}
+$T(n) = \theta(lg(n))$ | $E(n,n) = 1$
 \subsubsection{ARRAY -- O(1), n procs, CRCW Common}
-????
+Concurrently read $x$ with each processor, then concurrently write $x$ into $A[i]$ for each $i \in [n]$.\\
+$E(n,p) = E(n,n) = \frac{n}{n*1} = 1$
 
 
 \subsection{ParPrefix -- O(lg(n)), n/lg(n) procs, EREW}
