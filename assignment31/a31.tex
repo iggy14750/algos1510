@@ -4,6 +4,7 @@
 
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{amsfonts}
 \usepackage{enumitem}
 \usepackage[margin=0.8in]{geometry}
 \usepackage{graphicx}
@@ -24,6 +25,7 @@
 \providecommand{\reducible}[2]{
   \textbf{#1} $\leq$ \textbf{#2}
 }
+\providecommand{\R}{\mathbb{R}}
 
 % ============ USED FOR CODE LISTINGS ============
 \usepackage{listings}
@@ -48,6 +50,30 @@
 \begin{document}
 \maketitle
 
+\prob{23}
+This is quite similar to the problem described in class, of reducing an expression tree of addition and subtraction operations.
+The major difference lies in the addition of multiplication and division as operatations.
+This seems to have no effect on the algorithm discussed in class, except when performing contractions on the tree.
 
+When working with addition and subtraction, we knew that every edge function was of the form $\pm x + c$ ($c \in \R$), and that combining two of these functions with either of our operations would leave the result of the same form.
+That is, we knew that our functions were closed under the relevant operations.
+
+The problem, then, is with multiplication.
+When multiplying two functions of this form, we will have a quadratic function.
+And that, in general, the size of these functions can then, in the worst case, grow to a degree linear in $n$.
+So that is clearly unacceptable.
+
+However, this problem will only arise on multiplication operations of two non-leaf children.
+But, as discussed in class, reducing in such a situation doesn't make sense anyway.
+For multiplication, this decision avoids the production of arbitrarily-growing polynomials.
+
+In the case that one or both children are leaves, the actual value can be calculated in constant time.
+That is, suppose we chose to reduce a node with two children.
+One was a non-leaf, with the function $f(x)$ on the edge to it.
+The other was a leaf with a value $k$, and a function $g(x)$ on the edge to it.
+Then $g(k)$ can be calculated in constant time, and $g(k)*f(x)$ will still be a linear polynomial
+(what we see here is that now our functions are general linear formulae, but this does not affect our algorithm or its runtime).
+
+So, in this way, we can apply the exact same algorithm from class to success here.
 
 \end{document}
