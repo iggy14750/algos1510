@@ -15,7 +15,7 @@
 \providecommand{\soln}{\textbf{Solution: }}
 \providecommand{\image}[1]{
     \begin{center}
-        \includegraphics%[width=0.95\textwidth]
+        \includegraphics[width=0.95\textwidth]
             {#1}
     \end{center}
 }
@@ -51,6 +51,11 @@
 \maketitle
 
 \prob{21}
+The task is to number the \textit{leaves} of the tree in-order, that is left to right. This is straightforward.
+Once we create a list of the nodes via an Eulerian tour as stated in class (constant time), we simply perform the following function ('Smash') on the list.
+Note that this function copies only the leaf-nodes from the list to an array of the same size as the list.
+It then removes the empty space between the leaves in $O(lg(n))$ time by "smashing" recursively.
+The result is an ordered list of leaves (which could be easily "numbered" by again performing parallel prefix).
 
 \begin{lstlisting}
 function Smash(list)
@@ -73,7 +78,7 @@ function Smash(list)
     return inner(array)
 \end{lstlisting}
 
-Or, in a less precise, but perhaps more straigt-forward style.
+Or, in a less precise, but perhaps more straight-forward style.
 
 \begin{lstlisting}
 function Smash(list)
@@ -85,6 +90,17 @@ function Smash(list)
         Otherwise, glue together the two lists and return that lists head and tail.
     Return that shit.
 \end{lstlisting}
+
+
+\prob{22}
+To find the balance factor of a given node, simply perform the node depth algorithm as given in class, with a few minor changes:
+\begin{itemize}
+  \item When the list is first created with the Eulerian tour, keep all three copies of a Node even if both children are not present. (Refer to the three instances of a Node as mere nodes). If a child is missing, simply skip it and point at the next node in the triplet (see image at the end for example).
+  \item Then, when calculating depth with parallel prefix, give each processor one extra job (a scalar multiple on the amount of work overall): in another location, record the largest sum encountered between your node (in the triplet of three) and your sibling to the right (again in your three). This will give the max depth reached in that subtree of that Node.
+  \item If you are the rightmost node in a Node, finally write the balance factor which is $(localMaxDepthLeft - depthOfNode) - (localMaxDepthRight - depthOfNode) = localMaxDepthLeft - localMaxDepthRight$. Done.
+\end{itemize}
+
+
 
 \prob{23}
 This is quite similar to the problem described in class, of reducing an expression tree of addition and subtraction operations.
@@ -141,4 +157,6 @@ In the case of \verb|not|, the argument is a function, but one such function can
 Therefore, all other aspects of our in-class algorithm are unchanged, meaning that we can use it here with this modification with success.
 
 
+
+\image{image.jpg}
 \end{document}
