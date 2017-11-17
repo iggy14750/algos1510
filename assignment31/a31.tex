@@ -73,6 +73,19 @@ function Smash(list)
     return inner(array)
 \end{lstlisting}
 
+Or, in a less precise, but perhaps more straigt-forward style.
+
+\begin{lstlisting}
+function Smash(list)
+    Each node finds its position in the list using linked list parPrefix
+    Copy your element into an array at the position found before.
+    If you are a node we want to get rid of, delete it from the array.
+    Top-down recursion:
+        On 1 element, return it as both head and tail of list.
+        Otherwise, glue together the two lists and return that lists head and tail.
+    Return that shit.
+\end{lstlisting}
+
 \prob{23}
 This is quite similar to the problem described in class, of reducing an expression tree of addition and subtraction operations.
 The major difference lies in the addition of multiplication and division as operatations.
