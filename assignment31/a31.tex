@@ -50,6 +50,29 @@
 \begin{document}
 \maketitle
 
+\prob{21}
+
+\begin{lstlisting}
+function Smash(list)
+    array = new int[|list|]
+    By parPrefix(list), we know the position of each node.
+    parFor i = 1 to 3n do
+        if list[i] is a leaf node then
+            array[i] = list[i]
+    function inner(A)
+        if |A| == 1 then
+            return (null, null)
+        left_head, left_tail = inner(A[0...n/2])
+        right_head, right_tail = inner(A[n/2...n])
+        if right_head == null then
+            return (left_head, left_tail)
+        else if left_head == null then
+            return (right_head, right_tail)
+        Connect left_tail to right_head.
+        return (left_head, right_tail)
+    return inner(array)
+\end{lstlisting}
+
 \prob{23}
 This is quite similar to the problem described in class, of reducing an expression tree of addition and subtraction operations.
 The major difference lies in the addition of multiplication and division as operatations.
