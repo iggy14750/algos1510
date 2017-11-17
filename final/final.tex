@@ -137,7 +137,7 @@ function VertexCover(G, k)
 return IndependentSet(G, n - k)
 \end{lstlisting}
 
-\subsection{\reducible{CliqueOpt}{cliqueDecision}}
+\subsection{\reducible{CliqueOpt}{CliqueDecision}}
 We can reduce the clique optimization problem to clique decision by simply checking every value of $k$,
 beginning at $n = |G|$ and decrementing.
 Follow this by a closure operation which removes all vertices with degree less than k-1,
@@ -160,7 +160,7 @@ alg cliqueOpt(Graph G)
   output H
 \end{lstlisting}
 
-\subsection{\reducible{cliqueDecision}{2Clique}}
+\subsection{\reducible{CliqueDecision}{2Clique}}
 We can show that 2Clique is NP-hard by reducing another known NP-hard problem (here cliqueDecision) to it.
 That is, we must show that cliqueDecision $\leq$ 2Clique in polynomial time.
 We do this by giving an algorithm for cliqueDecision that uses 2Clique:
@@ -221,9 +221,6 @@ HamCycleOpt(Graph G)
     return C                                // what's left is the Hamiltonian Cycle
 \end{lstlisting}
 
-\subsection{\reducible{VertexCover}{DominatingSet}}
-
-
 
 \subsection{\reducible{Clique}{$\dfrac{3}{4}$Clique}}
 Check Max's solutions.
@@ -258,8 +255,35 @@ Polynomial time algorithm! (via Max)
 \subsection{\reducible{IndependentSet}{$\dfrac{3}{4}$Clique OR $\dfrac{3}{4}$IndependentSet}}
 Check Max's solutions.
 
+\subsection{\reducible{CNF-SAT}{Linear Inequality}}
+Create a set of inequalities S as follows:\\
+\begin{itemize}
+  \item For each variable $x_i$ in boolean formula F, create integer var $x_i$.
+  \item Add inequalities $x_i \geq 0$ and $x_i \leq 1$ to make it either 0 or 1.
+  \item For each disjunction make a sum: if literal is $x_i$, add $x_i$; if $\overline{x_i}$, add $(1-x_i)$. Require the sum to be at least 1.
+  \item This set of inequalities S is satisfied iff F is satisfied.
+\end{itemize}
+
+\subsection{\reducible{3-coloring}{CNF-SAT}}
+\begin{itemize}
+  \item For each vertex $x$ in $G$, create $x_{red}$, $x_{blue}$, and $x_{green}$.
+  \item Exactly one of those must be true for each vertex $x$.
+  \item For each neighbor $y$ of $x$, we must have ($x_{color} \lor y_{color}$).
+  \item Just "and" together all vertex clauses constructed above.
+\end{itemize}
+
+\subsection{\reducible{Vertex Cover}{Dominating Set}}
+Note: 'dominating set' = set S s.t. every vertex $v \in G$ is either in S or adjacent to S.
+\begin{itemize}
+  \item Make $G'$ by replacing each edge $e = (x,y)$ in $G$ by new vertex $v_e$ and edges $(x,v_e),(y,v_e),$ and $(x,y)$.
+  \item Note: the vertex $v_e$ forces edge $e$ to be covered by a dominating set.
+  \item Get minimum dominating set, call it $D$. If any $v_e \in D$, replace $v_e$ by $x$ (or $y$). Call this new set $D'$.
+  \item Note that $D'$ is still dominating in $G'$, therefore we have a minimum cardinality vertex cover.
+\end{itemize}
 
 
+\subsection{\reducible{IndependentSet}{TriadFree}}
+????
 
 
 
