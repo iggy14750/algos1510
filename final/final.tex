@@ -113,11 +113,11 @@ In the complement of some graph, all independent sets become cliques, and vice v
 Thus we have the following reductions:
 \begin{lstlisting}
 function IndependentSet(G, i)
-return Clique((*$G^C$*), i)
+    return Clique($G^C$, i)
 \end{lstlisting}
 \begin{lstlisting}
 function Clique(G, i)
-return IndependentSet((*$G^C$*), i)
+    return IndependentSet($G^C$, i)
 \end{lstlisting}
 
 
@@ -130,11 +130,11 @@ We can define a relationship between these two problems, by noting the following
 \end{itemize}
 \begin{lstlisting}
 function IndependentSet(G, k)
-return VertexCover(G, n - k)
+    return VertexCover(G, n - k)
 \end{lstlisting}
 \begin{lstlisting}
 function VertexCover(G, k)
-return IndependentSet(G, n - k)
+    return IndependentSet(G, n - k)
 \end{lstlisting}
 
 \subsection{\reducible{CliqueOpt}{CliqueDecision}}
@@ -143,21 +143,17 @@ beginning at $n = |G|$ and decrementing.
 Follow this by a closure operation which removes all vertices with degree less than k-1,
 so that only the clique is left.
 \begin{lstlisting}
+function maxClique(G)
+    for i = |G| downto 1 do
+        if cliqueDecision(G, i) then
+            return i
+    return 0
+
 alg cliqueOpt(Graph G)
-  let n = |G|
-  for k = n to 1 do
-    if cliqueDecision(G, k) then                    // we found the largest clique size
-      break                                         // so break and find the members
-
-  let H = G
-  do
-    G = H
-    for vertex v in H:
-      if degree(v) < k-1 then
-        delete v from H
-  until H == G
-
-  output H
+    for v $\in$ V(G) do
+        if maxClique(G) == maxClique(G - v) then
+            G = G - v
+    output G
 \end{lstlisting}
 
 \subsection{\reducible{CliqueDecision}{2Clique}}
