@@ -32,7 +32,7 @@ function matrixMult(A, B):
     D = [[0, 0, 0],
          [B, 0, 0],
          [0, A, 0]]
-    E = lowerTriangeMult(C, D)
+    E = lowerTriangMult(C, D)
     return lower left(E)  //bottom-left entry is AB
 \end{lstlisting}
 
@@ -304,7 +304,8 @@ Note: 'dominating set' = set S s.t. every vertex $v \in G$ is either in S or adj
 
 
 \subsection{\reducible{TriangleProblem}{DrCuddyDiseases}}
-????
+All triangles become tests.
+"Minimum Test Collection Problem"
 
 
 \subsection{\reducible{VertexCover}{Fox,Goose,BoB}}
@@ -380,17 +381,38 @@ $E(n,p) = E(n,n) = \frac{n}{n*1} = 1$
 
 
 \subsection{ParPrefix -- O(lg(n)), n/lg(n) procs, EREW}
-????
+\begin{lstlisting}
+function ParPrefix($x_1, x_2, \dots, x_n$, p)
+    if p == 1 then
+        return SeqPrefix($x_1, x_2, \dots, x_n$)
+    else
+        A = new int[n]
+        C = ParPrefix($x_2, x_4, \dots, x_n$, p/2) // Assume n to be even WLOG
+        B = ParPrefix($x_1, x_3, \dots, x_{n-1}$, p/2)
+        parFor i = 1 to n do
+            A[i] = B[ceil(i/2)] + C[floor(i/2)]
+        return A
+\end{lstlisting}
+!!!!!!!!!!CHECK THIS!!!!!!!!!!!!!
 
 
 \subsection{$n$ factorial -- O(lg(n)), n procs, EREW}
-????
+\begin{lstlisting}
+fact($k, n, p$)   // k is the starting value for our partial product
+    if k == n then return 1
+    else return fact($k, \frac{n+k}{2}, \frac{p}{2}$) $\times$ fact($\frac{n+k}{2}, n, \frac{p}{2}$)
+\end{lstlisting}
 
 
 
 \subsection{MatMult of 2 $n\times n$ matrices}
 \subsubsection{MatMult -- O(n), $n^2$ procs, CREW}
-????
+\begin{lstlisting}
+each processor $C_{ij}$ does (simultaneously):
+    read row $i$ from matrix $A$      // n ops
+    read column $j$ from matrix $B$   // n ops
+    write $C_{ij} = A_i * B_j$        // dot product of two vectors; n + n ops
+\end{lstlisting}
 \subsubsection{MatMult -- O(lg(n)), $n^3$ procs, CREW}
 ????
 \subsubsection{MatMult -- O(lg(n)), $n^3$/lg(n) procs, CRCW Common}
