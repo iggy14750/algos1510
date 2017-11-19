@@ -14,6 +14,7 @@
 \usepackage{listings}
 \lstset{
   basicstyle=\ttfamily,
+  escapeinside = {(*}{*)},
   mathescape
 }
 
@@ -337,7 +338,7 @@ parFor each processor $p_i$ (pointing to unique bit)
 Write an alg $A$ for the boolean formula value problem that:\\
 \begin{enumerate}\tightlist
   \item Only lacks code for problem N
-  \item Runs in poly-log time w/ a poly # of procs
+  \item Runs in poly-log time w/ a poly \# of procs
 \end{enumerate}
 Then you'd have it...
 
@@ -389,7 +390,7 @@ function ParPrefix($x_1, x_2, \dots, x_n$, p)
             A[i] = B[ceil(i/2)] + C[floor(i/2)]
         return A
 \end{lstlisting}
-!!!!!!!!!!CHECK THIS!!!!!!!!!!!!!
+
 
 
 \subsection{$n$ factorial -- O(lg(n)), n procs, EREW}
@@ -410,73 +411,160 @@ each processor $C_{ij}$ does (simultaneously):
     write $C_{ij} = A_i * B_j$        // dot product of two vectors; n + n ops
 \end{lstlisting}
 \subsubsection{MatMult -- O(lg(n)), $n^3$ procs, CREW}
-????
+Use $n$ procs per entry $C_{i,j}$.
+Compute the $n$ products $A_{i,k}B{k.j}, k\in [n]$ in constant time.
+In lg(n) time do the sum $\sum_{k=1}^n A_{i,k}B_{k.j}$.
 \subsubsection{MatMult -- O(lg(n)), $n^3$/lg(n) procs, CRCW Common}
-????
+Each of the $n^2$ entries of C are done in parallel using $\frac{n}{lg(n)}$ procs.
+Each proc does a sum of lg(n) products $\sum_{k=a}^b A_{i,k}B_{k,j}$ in lg(n) time.
+Then sum those sums as $C_{i,j}$.
 \subsubsection{MatMult -- O(lg(n)), $n^3$/lg(n) procs, EREW}
-????
+Same as CRCW alg but first use $\frac{n}{lg(n)}$ procs per A and B entry to make $n$ copies of A and B in lg(n) time.
+Then there are unique entries to read from.
+
 
 
 \subsection{Polynomial $p(x)$, compute $p(k)$ -- O(lg(n)), n procs, EREW}
-????
+In lg(n) time get $1,k,k^2,\dots ,k^n$. Then multiply coefficients in constant time.
+Finally sum the terms in lg(n) time as usual (associative).
 
 
 \subsection{Prefix-Suffix -- poly-log, poly procs, EREW}
-????
+\begin{itemize}\tightlist
+  \item Take $n^2$ procs, $n$ for each letter. Copy the entire input $n$ times in lg(n) time.
+  \item Each of these copies goes with a $k$ from 1 to $n-1$ and gets $n$ procs.
+  \item Each copy checks if it has a pref-suf match of length $k$; each proc checks a char (some do nothing) and gets a 1 if matched, 0 otherwise.
+  \item Now AND the first and last $k$ bits for each copy in lg(n) time.
+  \item Now run the standard parallel MAX alg (replacing 1's with $k$'s) in lg(n) time with $n$ procs.
+\end{itemize}
 
 
 \subsection{Prefix-Suffix -- constant, poly procs, CRCW Common}
-????
+Same as EREW version with following changes:\\
+\begin{itemize}\tightlist
+  \item CR means we don't need to copy.
+  \item Still consider each $k$ from $1 \dots n-1$ but read from same chars; still get $n$ bits for each group of $n$ procs.
+  \item AND these using constant time CRCW AND alg. Now we need the maximum.
+  \item Replace 1's with $k$'s (constant time). For each $k$ value (with $n$ procs), a proc looks at its own $k$ and one other group's $k$--it then writes $k$ to its output then checks its assigned other group. If the other $k$ is bigger, it writes 0 to its output. At this point only one of the possible "max-k's" should have a value other than 0. Find it.
+\end{itemize}
+\begin{lstlisting}
+function PrefixSuffix(C)
+    Have $O(n^2)$ processors consider all prefixes of C,
+        one processor for each character of each prefix.
+    let Ans = boolean array of length n initialized to all ones.
+    For each prefix of length k do
+        For each processor at position p do
+            If C[p] $\ne$ C[n-k+p] then
+                Ans[k] = 0
+    output the maximum m such that Ans[m] = 1
+\end{lstlisting}
 
 
 \subsection{ADD 2 $n$-bit ints}
 \subsubsection{ADD -- O(lg(n)), n procs, CREW}
-????
+\begin{itemize}\tightlist
+  \item Calculate Generates (T[i]=1), Halts (T[i]=0), and Propagates (T[i]=-1).
+  \item To convert to Carries, do (T[i]==1 $\rightarrow$ C[i]=1), (T[i]==0 $\rightarrow$ C[i]=0), else (C[i]=C[i-1]).
+  This is done via Parallel Prefix (since it's associative) in lg(n).
+  \item Sum[i] = C[i] XOR A[i] XOR B[i]   // constant time
+\end{itemize}
 \subsubsection{ADD -- O(lg$^2$(n)), n procs, EREW}
 ????
 
 
-\subsection{AllPairsShortestPath -- O(lg$^2$(n)), $n^3$ procs, EREW}
-????
+\subsection{AllPairsShortestPath -- O(lg$^2$(n)), $n^3$ procs, CREW (from class) into EREW}
+The innermost loop can be $O(\lg n)$ time by introducing a new array, T.
+This holds the weights of all alternative paths, and the minimum of such a list can be taken in parallel log time.
+\begin{lstlisting}
+T = new int[n]
+parFor k = 1 to n do
+    T[k] = A[i, k] + A[k, j]
+    A[i, j] = min(A[i, j], ParMin(T, p = n))
+\end{lstlisting}
 
 \subsection{AllPairsShortestPath, return paths -- O(lg$^2$(n)), $n^3$ procs, EREW}
-????
+Introduce \textbf{another} new matrix, P, which holds the actual path from each pair of vertices.
+We shall also modify the usual parallel minimum function to create \texttt{ParMinI} which returns the \textbf{index} of the minimum element in an array, rather than the value itself.
+\begin{lstlisting}
+T = new int[n]
+parFor k = 1 to n do
+    T[k] = A[i, k] + A[k, j]
+l = ParMinI(T, p = n)
+if T[l] < A[i, j] then
+    P[i, j] = P[i, l] + P[l, j]
+A[i, j] = T[l]
+\end{lstlisting}
 
 
 \subsection{Min Edit Distance -- poly-log, poly procs, CREW}
-????
+\begin{itemize}\tightlist
+  \item Construct an $n\times n$ graph/matrix M with [i,j] indicating row A[i] and col B[j].
+  \item Processor $p_{i,j}$ looks at A[i] and B[j]:\\
+    -  If they match, make an edge from M[i,j] to M[i+1,j+1] of cost 0.\\
+    -  If not,
+    \begin{itemize}\tightlist
+      \item Make edge M[i,j] to M[i+1,j] of cost 3
+      \item Make edge M[i,j] to M[i,j+1] of cost 4
+      \item Make edge M[i,j] to M[i+1,j+1] of cost 5
+    \end{itemize}
+  \item Final row/column is cost 4/3.
+  \item Run AllPairsShortestPath, look up shortest path from [1,1] to [n+1,n+1].
+  \item Takes time O(lg$^2$(n)) with O($n^2$) procs
+\end{itemize}
 
 
 \subsection{MERGE 2 sorted arrays -- O(1), poly procs, CRCW Common}
-????
+Divide into L and R arrays, then for each $l_k$ we're trying to find the position of,
+compare every $r_i$ to $l_k$ (in parallel) and check if $r_i > l_k$. If so, send a message
+to the processor to the left (checking $r_{i-1}$ with $l_k$). Only one proc will both not send
+such a message and receive one, and that's the rightmost $r$ left of $l_k$. Add the index of that
+and $l_k$ and you've got your final spot.
 
 
 \subsection{MAX of $n$ ints -- O(lg(lg(n))), n procs, CRCW Common}
-????
+Simply divide into $\sqrt{n}$ subproblems of size $\sqrt{n}$ each. Recurse on these, and note that with $n$ procs
+we can compute the max of $\sqrt{n}$ elements in constant time using our standard
 
 \subsection{MAX of $n$ ints $\leq n$ -- O(1), n procs, CRCW Priority}
-????
+\begin{lstlisting}
+function MAX($x_1, \dots, x_n$):
+    T = new int[n]
+    int max
+    parFor i = 1 to n do
+        // each processor puts a 1 in T, indexed by $x$-value
+        arbitrarily assign procs $p_1 \dots p_n$ to the inputs, one each
+        T[$x_i$] = 1
+    parFor i = n to 1 do
+        // now assign procs to cells in T in reverse order
+        $p_i$ is assigned to T[n-i+1]
+        if T[i] == 1 then
+            max = T[i]    // highest priority proc with a '1' will be at index of max
+    return max            // so that's the value that will get written
+\end{lstlisting}
 
 \subsection{MAX of $n$ ints $\leq n$ -- O(1), n procs, CRCW Common}
-????
+\begin{itemize}
+  \item Write a 1 to A[$x_i$] for each number
+  \item Write a 1 to array R of length $\sqrt{n}$ in slot R[i] if there is a 1 anywhere in the i$^{th}$ $\sqrt{n}$-sized segment of A.
+  \item Perform a "max" on the indices of R (find the largest index with a 1) in constant time (sqrt-sized, n procs)
+  \item Perform an actual MAX on the sqrt-sized chunk of A that we just identified, also in constant time
+\end{itemize}
 
 
 \subsection{COMPOSE arrays -- O(lg$^2$(n)), n procs, EREW}
 ????
 
 \subsection{BINARY TREE, number leaves -- O(lg(n)), n procs, EREW}
-????
-
+Eulerian tour via pointer doubling as in class, but leaves get '1' and other nodes get '0' when we do parallel prefix.
 
 \subsection{BINARY TREE, balance factor -- O(lg(n)), n procs, EREW}
-????
-
+Calculate height in O(lg(n)) time, using magic.
 
 \subsection{BINARY EXPRESSION TREE, evaluate -- O(lg$^2$(n)), n procs, CREW}
-????
+Use the class of functions $\frac{ax+b}{cx+d}$ and do evaluation as in class. Show this class is closed under desired ops.
 
 \subsection{BINARY BOOL EXPRESSION TREE, evaluate -- O(lg$^2$(n)), n procs, CREW}
-????
+At least one argument to every function is a constant--boolean expressions will not grow to unreasonable size, because each step can be simplified in constant time. Everything else is the same as in class. 
 
 
 
