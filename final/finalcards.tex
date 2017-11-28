@@ -24,7 +24,7 @@
 \begin{document}
 
 \section{REDUCTIONS}
-\subsection{\reducible{Matrix Mult}{Lower Triang Matrix Mult}}
+\begin{centering}\textbf{\reducible{Matrix Mult}{Lower Triang Matrix Mult}}\par\end{centering}
 \begin{lstlisting}
 function matrixMult(A, B):
     C = [[0, 0, 0],
@@ -38,7 +38,7 @@ function matrixMult(A, B):
 \end{lstlisting}
 
 
-\subsection{\reducible{Matrix Mult}{Matrix Inverse}}
+\begin{centering}\textbf{\reducible{Matrix Mult}{Matrix Inverse}}\par\end{centering}
 \begin{lstlisting}
 function matrixMult(A, B):
     C = [[I, A, 0],
@@ -56,7 +56,7 @@ function matrixMult(A, B):
 \end{lstlisting}
 
 
-\subsection{\reducible{PolyMult}{PolySquare}}
+\begin{centering}\textbf{\reducible{PolyMult}{PolySquare}}\par\end{centering}
 Let $a$ and $b$ be polynomials.
 We have that $(a+b)^2 = a^2 + 2ab + b^2$.
 Or, $\displaystyle ab = \frac{(a+b)^2 - a^2 - b^2}{2}$.\\
@@ -69,7 +69,7 @@ function PolyMult(A, B)
     return C
 \end{lstlisting}
 
-\subsection{\reducible{Sort N Numbers}{Min Steiner Tree}}
+\begin{centering}\textbf{\reducible{Sort N Numbers}{Min Steiner Tree}}\par\end{centering}
 Just like what we did in class with reducing "The Traveling Salesman" to sorting.
 Simply create a coordinate for each number $i$ to be sorted in the form $(i,i)$,
 giving you an adjacency list input that looks like $(a,a),(b,b), \dots, (n,n)$.
@@ -78,18 +78,18 @@ in order from the origin, the sorted doubles of the numbers we want.
 Then just extract the x-coordinate of every pair and you're golden.
 
 
-\subsection{Graph Isomorphisms: \reducible{Directed}{Mixed}}
+\begin{centering}\textbf{Graph Isomorphisms: \reducible{Directed}{Mixed}}\par\end{centering}
 A directed graph is already technically a mixed graph,
 so in your algorithm for directed graphs simply feed the assumed mixed graph algorithm your input.
 Return the output.
 
 
-\subsection{Graph Isomorphisms: \reducible{Undirected}{Directed}}
+\begin{centering}\textbf{Graph Isomorphisms: \reducible{Undirected}{Directed}}\par\end{centering}
 Given an undirected graph, simply make a copy of it with all edges replaced by
 directed edge pairs to/from the endpoints of each (originally) undirected edge.
 Feed this new directed graph to the assumed directed graph alg, then return the output.
 
-\subsection{Graph Isomorphisms: \reducible{Mixed}{Undirected}}
+\begin{centering}\textbf{Graph Isomorphisms: \reducible{Mixed}{Undirected}}\par\end{centering}
 In this one we've assumed an algo that checks isomorphisms of undirected graphs,
 so the task is to convert a mixed graph into some number of undirected graphs that contain the same information.
 This is easily achieved as follows:
@@ -102,7 +102,7 @@ This is easily achieved as follows:
 Now do this process for both of the mixed graphs in question, say $F$ and $G$, and then feed the corresponding outputs into the assumed undirected algorithm. If they all check out, then $F$ and $G$ are isomorphic.
 
 
-\subsection{\reducible{Independent Set}{Clique}, and \reducible{Clique}{Independent Set}}
+\begin{centering}\textbf{\reducible{Independent Set}{Clique}, and \reducible{Clique}{Independent Set}}\par\end{centering}
 We define the complement of some graph $G$, labelled $G^C$ to be a graph such that
 \begin{enumerate}
   \item $V(G) = V(G^C)$
@@ -122,7 +122,7 @@ function Clique(G, i)
 \end{lstlisting}
 
 
-\subsection{\reducible{Independent Set}{Vertex Cover} and \reducible{Vertex Cover}{Independent Set}}
+\begin{centering}\textbf{\reducible{Independent Set}{Vertex Cover} and \reducible{Vertex Cover}{Independent Set}}\par\end{centering}
 We can define a relationship between these two problems, by noting the following:
 \begin{itemize}
   \item Define graph $G$ by its set of vertices and edges, as $G = (V,E)$.
@@ -138,7 +138,7 @@ function VertexCover(G, k)
     return IndependentSet(G, n - k)
 \end{lstlisting}
 
-\subsection{\reducible{CliqueOpt}{CliqueDecision}}
+\begin{centering}\textbf{\reducible{CliqueOpt}{CliqueDecision}}\par\end{centering}
 We can reduce the clique optimization problem to clique decision by simply checking every value of $k$,
 beginning at $n = |G|$ and decrementing.
 Follow this by a closure operation which removes all vertices with degree less than k-1,
@@ -157,7 +157,7 @@ alg cliqueOpt(Graph G)
     output G
 \end{lstlisting}
 
-\subsection{\reducible{CliqueDecision}{2Clique}}
+\begin{centering}\textbf{\reducible{CliqueDecision}{2Clique}}\par\end{centering}
 We can show that 2Clique is NP-hard by reducing another known NP-hard problem (here cliqueDecision) to it.
 That is, we must show that cliqueDecision $\leq$ 2Clique in polynomial time.
 We do this by giving an algorithm for cliqueDecision that uses 2Clique:
@@ -169,21 +169,21 @@ alg cliqueDecision(H,j)   // simply create a new graph which is two copies of th
 Obviously, creating a new graph that is just two copies of the original graph H takes $O(n)$ time, which when added to our cliqueDecision algorithm results in a total runtime of $O(n + f(n))$, where $f(n)$ is the runtime of cliqueDecision.
 
 
-\subsection{\reducible{HamiltonianCycle}{DoubleFixedHamiltonianPath}}
+\begin{centering}\textbf{\reducible{HamiltonianCycle}{DoubleFixedHamiltonianPath}}\par\end{centering}
 \begin{lstlisting}
 HamiltonianCycle(Graph G)
   choose any v (*$\in$*) G
   return DoubleFixedHamiltonianPath(G, v, v)
 \end{lstlisting}
 
-\subsection{\reducible{DoubleFixedHamiltonianPath}{HamiltonianCycle}}
+\begin{centering}\textbf{\reducible{DoubleFixedHamiltonianPath}{HamiltonianCycle}}\par\end{centering}
 \begin{lstlisting}
 DoubleFixedHamiltonianPath(G, s, t)
   let H = G + (s,t)             // add edge (s,t) to graph
   return HamiltonianCycle(H)    // see if that makes a cycle
 \end{lstlisting}
 
-\subsection{\reducible{SingleFixedHamiltonianPath}{DoubleFixedHamiltonianPath}}
+\begin{centering}\textbf{\reducible{SingleFixedHamiltonianPath}{DoubleFixedHamiltonianPath}}\par\end{centering}
 \begin{lstlisting}
 SingleFixedHamiltonianPath(G, s)
   for vertex v (*$\in$*) G do
@@ -192,7 +192,7 @@ SingleFixedHamiltonianPath(G, s)
   return false
 \end{lstlisting}
 
-\subsection{\reducible{DoubleFixedHamiltonianPath}{SingleFixedHamiltonianPath}}
+\begin{centering}\textbf{\reducible{DoubleFixedHamiltonianPath}{SingleFixedHamiltonianPath}}\par\end{centering}
 \begin{lstlisting}
 DoubleFixedHamiltonianPath(G, s, t)
   if not (SFHP(G, s) and SFHP(G, t)) then
@@ -208,7 +208,7 @@ DoubleFixedHamiltonianPath(G, s, t)
 At the end of this process if we've removed all unnecessary edges whilst ensuring that paths starting at each endpoint are
 intact, then neither will be left with more than one incident edge.
 
-\subsection{\reducible{HamCycleOpt}{HamCycleDecision}}
+\begin{centering}\textbf{\reducible{HamCycleOpt}{HamCycleDecision}}\par\end{centering}
 \begin{lstlisting}
 HamCycleOpt(Graph G)
     C = G
@@ -219,14 +219,14 @@ HamCycleOpt(Graph G)
 \end{lstlisting}
 
 
-\subsection{\reducible{Clique}{$\dfrac{3}{4}$Clique}}
+\begin{centering}\textbf{\reducible{Clique}{$\dfrac{3}{4}$Clique}}\par\end{centering}
 Check Max's solutions.
 
-\subsection{\reducible{IndependentSet}{$\dfrac{3}{4}$IndependentSet}}
+\begin{centering}\textbf{\reducible{IndependentSet}{$\dfrac{3}{4}$IndependentSet}}\par\end{centering}
 Check Max's solutions.
 
 
-\subsection{\reducible{Clique}{CliqueAndInd}}
+\begin{centering}\textbf{\reducible{Clique}{CliqueAndInd}}\par\end{centering}
 \begin{lstlisting}
 function Clique(Graph G, int k)
     let H = new independent set of k vertices
@@ -235,7 +235,7 @@ function Clique(Graph G, int k)
 \end{lstlisting}
 
 
-\subsection{\reducible{Clique}{CliqueOrInd}}
+\begin{centering}\textbf{\reducible{Clique}{CliqueOrInd}}\par\end{centering}
 We simply need to eliminate any independent set in G without compromising a possible clique.
 The easiest way to do this is to simply add a new vertex and connect it to all vertices in G.
 Then any clique will just be one vertex larger, which is of course fine since (k+1)-cliques of course contain k-cliques.
@@ -246,13 +246,13 @@ function Clique(Graph G, int k)
 \end{lstlisting}
 
 
-\subsection{$\dfrac{3}{4}$Clique AND $\dfrac{3}{4}$IndependentSet}
+\begin{centering}\textbf{$\dfrac{3}{4}$Clique AND $\dfrac{3}{4}$IndependentSet}\par\end{centering}
 Polynomial time algorithm! (via Max)
 
-\subsection{\reducible{IndependentSet}{$\dfrac{3}{4}$Clique OR $\dfrac{3}{4}$IndependentSet}}
+\begin{centering}\textbf{\reducible{IndependentSet}{$\dfrac{3}{4}$Clique OR $\dfrac{3}{4}$IndependentSet}}\par\end{centering}
 Check Max's solutions.
 
-\subsection{\reducible{CNF-SAT}{Linear Inequality}}
+\begin{centering}\textbf{\reducible{CNF-SAT}{Linear Inequality}}\par\end{centering}
 Create a set of inequalities S as follows:\\
 \begin{itemize}
   \item For each variable $x_i$ in boolean formula F, create integer var $x_i$.
@@ -261,7 +261,7 @@ Create a set of inequalities S as follows:\\
   \item This set of inequalities S is satisfied iff F is satisfied.
 \end{itemize}
 
-\subsection{\reducible{3-coloring}{CNF-SAT}}
+\begin{centering}\textbf{\reducible{3-coloring}{CNF-SAT}}\par\end{centering}
 \begin{itemize}
   \item For each vertex $x$ in $G$, create $x_{red}$, $x_{blue}$, and $x_{green}$.
   \item Exactly one of those must be true for each vertex $x$.
@@ -269,7 +269,7 @@ Create a set of inequalities S as follows:\\
   \item Just "and" together all vertex clauses constructed above.
 \end{itemize}
 
-\subsection{\reducible{Vertex Cover}{Dominating Set}}
+\begin{centering}\textbf{\reducible{Vertex Cover}{Dominating Set}}\par\end{centering}
 Note: 'dominating set' = set S s.t. every vertex $v \in G$ is either in S or adjacent to S.
 \begin{itemize}
   \item Make $G'$ by replacing each edge $e = (x,y)$ in $G$ by new vertex $v_e$ and edges $(x,v_e),(y,v_e),$ and $(x,y)$.
@@ -279,33 +279,33 @@ Note: 'dominating set' = set S s.t. every vertex $v \in G$ is either in S or adj
 \end{itemize}
 
 
-\subsection{\reducible{IndependentSet}{TriadFree}}
+\begin{centering}\textbf{\reducible{IndependentSet}{TriadFree}}\par\end{centering}
 ????
 
 
-\subsection{\reducible{3Color}{Planar3Color}}
+\begin{centering}\textbf{\reducible{3Color}{Planar3Color}}\par\end{centering}
 ????
 
 
-\subsection{\reducible{VertexCover}{StrangeSubsetTraverse}}
+\begin{centering}\textbf{\reducible{VertexCover}{StrangeSubsetTraverse}}\par\end{centering}
 ????
 
 
-\subsection{\reducible{3SAT}{DisjointPaths}}
+\begin{centering}\textbf{\reducible{3SAT}{DisjointPaths}}\par\end{centering}
 ????
 
 
-\subsection{\reducible{3SAT}{TriangleProblem}}
+\begin{centering}\textbf{\reducible{3SAT}{TriangleProblem}}\par\end{centering}
 ????
 
 
 
-\subsection{\reducible{TriangleProblem}{DrCuddyDiseases}}
+\begin{centering}\textbf{\reducible{TriangleProblem}{DrCuddyDiseases}}\par\end{centering}
 All triangles become tests.
 "Minimum Test Collection Problem"
 
 
-\subsection{\reducible{VertexCover}{Fox,Goose,BoB}}
+\begin{centering}\textbf{\reducible{VertexCover}{Fox,Goose,BoB}}\par\end{centering}
 ????
 
 
@@ -313,28 +313,28 @@ All triangles become tests.
 
 
 \section{PARALLEL ALGORITHMS}
-\subsection{AND of $n$ bits}
-\subsubsection{AND -- O(lg(n)), n procs, EREW}
+\begin{centering}\textbf{AND of $n$ bits}\par\end{centering}
+\subsubsection*{AND -- O(lg(n)), n procs, EREW}
 \begin{itemize}\tightlist
   \item Recurse, halving the input size every time (AND-ing pairs of bits)
   \item This way it takes lg(height of call tree) = lg(n) constant time activations
   \item $E(n,n) = \frac{1}{lg(n)}$
 \end{itemize}
-\subsubsection{AND -- O(lg(n)), n/lg(n) procs, EREW}
+\subsubsection*{AND -- O(lg(n)), n/lg(n) procs, EREW}
 \begin{itemize}\tightlist
   \item Start by AND-ing lg(n) bits with each processor
   \item Recurse, halving the results every time (AND-ing pairs of bits)
   \item This way it takes lg(height of call tree) = lg($\frac{n}{lg(n)}$) constant time activations
   \item $T(n) = \theta(lg(n))$ | $E(n,n) = 1$
 \end{itemize}\tightlist
-\subsubsection{AND -- O(1), n procs, CRCW Common}
+\subsubsection*{AND -- O(1), n procs, CRCW Common}
 \begin{lstlisting}
 parFor each processor $p_i$ (pointing to unique bit)
     if bit $i$ == 0, then RESULT = FALSE
 \end{lstlisting}
 
 
-\subsection{\reducible{Boolean Formula Value}{New Problem N}}
+\begin{centering}\textbf{\reducible{Boolean Formula Value}{New Problem N}}\par\end{centering}
 Write an alg $A$ for the boolean formula value problem that:\\
 \begin{enumerate}\tightlist
   \item Only lacks code for problem N
@@ -343,8 +343,8 @@ Write an alg $A$ for the boolean formula value problem that:\\
 Then you'd have it...
 
 
-\subsection{ARRAY of $n$ ints}
-\subsubsection{ARRAY -- O(lg(n)), n procs, EREW}
+\begin{centering}\textbf{ARRAY of $n$ ints}\par\end{centering}
+\subsubsection*{ARRAY -- O(lg(n)), n procs, EREW}
 \begin{lstlisting}
 ARR($A[1] \dots A[n], x, p$)
   if p == 1 then $A[1] = x$
@@ -358,7 +358,7 @@ ARR($A[1] \dots A[n], x, p$)
         \)*)
 \end{lstlisting}
 $E(n,n) = \frac{1}{lg(n)}$
-\subsubsection{ARRAY -- O(lg(n)), n/lg(n) procs, EREW}
+\subsubsection*{ARRAY -- O(lg(n)), n/lg(n) procs, EREW}
 \begin{lstlisting}
 logARR($A[1] \dots A[n], x, p$)
   if p == 1 then SequentialARR($A[1] \dots A[n]$)
@@ -372,12 +372,12 @@ logARR($A[1] \dots A[n], x, p$)
         \)*)
 \end{lstlisting}
 $T(n) = \theta(lg(n))$ | $E(n,n) = 1$
-\subsubsection{ARRAY -- O(1), n procs, CRCW Common}
+\subsubsection*{ARRAY -- O(1), n procs, CRCW Common}
 Concurrently read $x$ with each processor, then concurrently write $x$ into $A[i]$ for each $i \in [n]$.\\
 $E(n,p) = E(n,n) = \frac{n}{n*1} = 1$
 
 
-\subsection{ParPrefix -- O(lg(n)), n/lg(n) procs, EREW}
+\begin{centering}\textbf{ParPrefix -- O(lg(n)), n/lg(n) procs, EREW}\par\end{centering}
 \begin{lstlisting}
 function ParPrefix($x_1, x_2, \dots, x_n$, p)
     if p == 1 then
@@ -393,43 +393,43 @@ function ParPrefix($x_1, x_2, \dots, x_n$, p)
 
 
 
-\subsection{$n$ factorial -- O(lg(n)), n procs, EREW}
+\begin{centering}\textbf{$n$ factorial -- O(lg(n)), n procs, EREW}\par\end{centering}
 \begin{lstlisting}
 fact($k, n, p$)   // k is the starting value for our partial product
-    if k == n then return 1
+    if k == n then return k
     else return fact($k, \frac{n+k}{2}, \frac{p}{2}$) $\times$ fact($\frac{n+k}{2}, n, \frac{p}{2}$)
 \end{lstlisting}
 
 
 
-\subsection{MatMult of 2 $n\times n$ matrices}
-\subsubsection{MatMult -- O(n), $n^2$ procs, CREW}
+\begin{centering}\textbf{MatMult of 2 $n\times n$ matrices}\par\end{centering}
+\subsubsection*{MatMult -- O(n), $n^2$ procs, CREW}
 \begin{lstlisting}
 each processor $C_{ij}$ does (simultaneously):
     read row $i$ from matrix $A$      // n ops
     read column $j$ from matrix $B$   // n ops
     write $C_{ij} = A_i * B_j$        // dot product of two vectors; n + n ops
 \end{lstlisting}
-\subsubsection{MatMult -- O(lg(n)), $n^3$ procs, CREW}
+\subsubsection*{MatMult -- O(lg(n)), $n^3$ procs, CREW}
 Use $n$ procs per entry $C_{i,j}$.
 Compute the $n$ products $A_{i,k}B{k.j}, k\in [n]$ in constant time.
 In lg(n) time do the sum $\sum_{k=1}^n A_{i,k}B_{k.j}$.
-\subsubsection{MatMult -- O(lg(n)), $n^3$/lg(n) procs, CRCW Common}
+\subsubsection*{MatMult -- O(lg(n)), $n^3$/lg(n) procs, CRCW Common}
 Each of the $n^2$ entries of C are done in parallel using $\frac{n}{lg(n)}$ procs.
 Each proc does a sum of lg(n) products $\sum_{k=a}^b A_{i,k}B_{k,j}$ in lg(n) time.
 Then sum those sums as $C_{i,j}$.
-\subsubsection{MatMult -- O(lg(n)), $n^3$/lg(n) procs, EREW}
+\subsubsection*{MatMult -- O(lg(n)), $n^3$/lg(n) procs, EREW}
 Same as CRCW alg but first use $\frac{n}{lg(n)}$ procs per A and B entry to make $n$ copies of A and B in lg(n) time.
 Then there are unique entries to read from.
 
 
 
-\subsection{Polynomial $p(x)$, compute $p(k)$ -- O(lg(n)), n procs, EREW}
+\begin{centering}\textbf{Polynomial $p(x)$, compute $p(k)$ -- O(lg(n)), n procs, EREW}\par\end{centering}
 In lg(n) time get $1,k,k^2,\dots ,k^n$. Then multiply coefficients in constant time.
 Finally sum the terms in lg(n) time as usual (associative).
 
 
-\subsection{Prefix-Suffix -- poly-log, poly procs, EREW}
+\begin{centering}\textbf{Prefix-Suffix -- poly-log, poly procs, EREW}\par\end{centering}
 \begin{itemize}\tightlist
   \item Take $n^2$ procs, $n$ for each letter. Copy the entire input $n$ times in lg(n) time.
   \item Each of these copies goes with a $k$ from 1 to $n-1$ and gets $n$ procs.
@@ -439,7 +439,7 @@ Finally sum the terms in lg(n) time as usual (associative).
 \end{itemize}
 
 
-\subsection{Prefix-Suffix -- constant, poly procs, CRCW Common}
+\begin{centering}\textbf{Prefix-Suffix -- constant, poly procs, CRCW Common}\par\end{centering}
 Same as EREW version with following changes:\\
 \begin{itemize}\tightlist
   \item CR means we don't need to copy.
@@ -460,19 +460,19 @@ function PrefixSuffix(C)
 \end{lstlisting}
 
 
-\subsection{ADD 2 $n$-bit ints}
-\subsubsection{ADD -- O(lg(n)), n procs, CREW}
+\begin{centering}\textbf{ADD 2 $n$-bit ints}\par\end{centering}
+\subsubsection*{ADD -- O(lg(n)), n procs, CREW}
 \begin{itemize}\tightlist
   \item Calculate Generates (T[i]=1), Halts (T[i]=0), and Propagates (T[i]=-1).
   \item To convert to Carries, do (T[i]==1 $\rightarrow$ C[i]=1), (T[i]==0 $\rightarrow$ C[i]=0), else (C[i]=C[i-1]).
   This is done via Parallel Prefix (since it's associative) in lg(n).
   \item Sum[i] = C[i] XOR A[i] XOR B[i]   // constant time
 \end{itemize}
-\subsubsection{ADD -- O(lg$^2$(n)), n procs, EREW}
+\subsubsection*{ADD -- O(lg$^2$(n)), n procs, EREW}
 ????
 
 
-\subsection{AllPairsShortestPath -- O(lg$^2$(n)), $n^3$ procs, CREW (from class) into EREW}
+\begin{centering}\textbf{AllPairsShortestPath -- O(lg$^2$(n)), $n^3$ procs, CREW (from class) into EREW}\par\end{centering}
 The innermost loop can be $O(\lg n)$ time by introducing a new array, T.
 This holds the weights of all alternative paths, and the minimum of such a list can be taken in parallel log time.
 \begin{lstlisting}
@@ -482,7 +482,7 @@ parFor k = 1 to n do
     A[i, j] = min(A[i, j], ParMin(T, p = n))
 \end{lstlisting}
 
-\subsection{AllPairsShortestPath, return paths -- O(lg$^2$(n)), $n^3$ procs, EREW}
+\begin{centering}\textbf{AllPairsShortestPath, return paths -- O(lg$^2$(n)), $n^3$ procs, EREW}\par\end{centering}
 Introduce \textbf{another} new matrix, P, which holds the actual path from each pair of vertices.
 We shall also modify the usual parallel minimum function to create \texttt{ParMinI} which returns the \textbf{index} of the minimum element in an array, rather than the value itself.
 \begin{lstlisting}
@@ -496,7 +496,7 @@ A[i, j] = T[l]
 \end{lstlisting}
 
 
-\subsection{Min Edit Distance -- poly-log, poly procs, CREW}
+\begin{centering}\textbf{Min Edit Distance -- poly-log, poly procs, CREW}\par\end{centering}
 \begin{itemize}\tightlist
   \item Construct an $n\times n$ graph/matrix M with [i,j] indicating row A[i] and col B[j].
   \item Processor $p_{i,j}$ looks at A[i] and B[j]:\\
@@ -513,19 +513,21 @@ A[i, j] = T[l]
 \end{itemize}
 
 
-\subsection{MERGE 2 sorted arrays -- O(1), poly procs, CRCW Common}
-Divide into L and R arrays, then for each $l_k$ we're trying to find the position of,
-compare every $r_i$ to $l_k$ (in parallel) and check if $r_i > l_k$. If so, send a message
-to the processor to the left (checking $r_{i-1}$ with $l_k$). Only one proc will both not send
-such a message and receive one, and that's the rightmost $r$ left of $l_k$. Add the index of that
-and $l_k$ and you've got your final spot.
+\begin{centering}\textbf{MERGE 2 sorted arrays -- O(1), poly procs, CRCW Common}\par\end{centering}
+  \begin{itemize}
+    \item Divide into L and R arrays, then give $n$ procs to each $l_k$ we're trying to find the position of.
+    \item Compare every $r_i$ to $l_k$ (in parallel) and check if $r_i > l_k$.
+    \item If so, send a message to the processor to the left (checking $r_{i-1}$ with $l_k$).
+    \item Only one proc will both not send such a message and receive one, and that's the rightmost $r$ left of $l_k$.
+    \item Add the index of that and $l_k$ and you've got your final spot.
+\end{itemize}
 
 
-\subsection{MAX of $n$ ints -- O(lg(lg(n))), n procs, CRCW Common}
+\begin{centering}\textbf{MAX of $n$ ints -- O(lg(lg(n))), n procs, CRCW Common}\par\end{centering}
 Simply divide into $\sqrt{n}$ subproblems of size $\sqrt{n}$ each. Recurse on these, and note that with $n$ procs
 we can compute the max of $\sqrt{n}$ elements in constant time using our standard
 
-\subsection{MAX of $n$ ints $\leq n$ -- O(1), n procs, CRCW Priority}
+\begin{centering}\textbf{MAX of $n$ ints $\leq n$ -- O(1), n procs, CRCW Priority}\par\end{centering}
 \begin{lstlisting}
 function MAX($x_1, \dots, x_n$):
     T = new int[n]
@@ -542,7 +544,7 @@ function MAX($x_1, \dots, x_n$):
     return max            // so that's the value that will get written
 \end{lstlisting}
 
-\subsection{MAX of $n$ ints $\leq n$ -- O(1), n procs, CRCW Common}
+\begin{centering}\textbf{MAX of $n$ ints $\leq n$ -- O(1), n procs, CRCW Common}\par\end{centering}
 \begin{itemize}
   \item Write a 1 to A[$x_i$] for each number
   \item Write a 1 to array R of length $\sqrt{n}$ in slot R[i] if there is a 1 anywhere in the i$^{th}$ $\sqrt{n}$-sized segment of A.
@@ -551,16 +553,15 @@ function MAX($x_1, \dots, x_n$):
 \end{itemize}
 
 
-\subsection{COMPOSE arrays -- O(lg$^2$(n)), n procs, EREW}
-The major issue in this case is advoiding concurrent reads.
-This will arise when two positions of B are equal, and we'll neively read from the same position at the same time.
-What we're going to do to prevent that is to ``collect'' all such positions of B with the problem (or, processors trying to write the same value).
-We will then implement a log-time copy operation, such that the value is first written to two of the positions in C.
-Then, each of these (which each have processors assigned) will write to 2 other positions in C, and so on.
-It is possible to include some more optimization on that, but this gives us our polynomial time.
-
+\begin{centering}\textbf{COMPOSE arrays -- O(lg$^2$(n)), n procs, EREW}\par\end{centering}
+\begin{itemize}\tightlist
+  \item The major issue in this case is avoiding concurrent reads, which happens when two places in B are equal.
+  \item What we're going to do to prevent that is to ``collect`` all processors trying to write the same value.
+  \item This is done by dividing the B-space (domain) in binary fashion, keeping all procs with value above/below the midpoint in their respective bins.
+  \item We will then implement a log-time copy operation, such that the value is first written to two of the positions in C.
+  \item Then, each of these (which each have processors assigned) will write to 2 other positions in C, and so on.
+\end{itemize}
 Let us say that processor $p_i$ is assigned position $i$ in A and C.
-The question then is how we might collect all of these processors.
 \begin{lstlisting}
 function Compose(A, B, C, P, lo, hi)
     if lo == hi then
@@ -571,16 +572,16 @@ function Compose(A, B, C, P, lo, hi)
         Compose(A, B, C, {$p_i \in P$ | B[i] > mid}, mid, hi)
 \end{lstlisting}
 
-\subsection{BINARY TREE, number leaves -- O(lg(n)), n procs, EREW}
+\begin{centering}\textbf{BINARY TREE, number leaves -- O(lg(n)), n procs, EREW}\par\end{centering}
 Eulerian tour via pointer doubling as in class, but leaves get '1' and other nodes get '0' when we do parallel prefix.
 
-\subsection{BINARY TREE, balance factor -- O(lg(n)), n procs, EREW}
+\begin{centering}\textbf{BINARY TREE, balance factor -- O(lg(n)), n procs, EREW}\par\end{centering}
 Calculate height in O(lg(n)) time, using magic.
 
-\subsection{BINARY EXPRESSION TREE, evaluate -- O(lg$^2$(n)), n procs, CREW}
+\begin{centering}\textbf{BINARY EXPRESSION TREE, evaluate -- O(lg$^2$(n)), n procs, CREW}\par\end{centering}
 Use the class of functions $\frac{ax+b}{cx+d}$ and do evaluation as in class. Show this class is closed under desired ops.
 
-\subsection{BINARY BOOL EXPRESSION TREE, evaluate -- O(lg$^2$(n)), n procs, CREW}
+\begin{centering}\textbf{BINARY BOOL EXPRESSION TREE, evaluate -- O(lg$^2$(n)), n procs, CREW}\par\end{centering}
 At least one argument to every function is a constant--boolean expressions will not grow to unreasonable size, because each step can be simplified in constant time. Everything else is the same as in class.
 
 
